@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { MainHeaderLinkProps } from "@src/interfaces";
 import { uiContext } from "@src/context/ui";
+import { useI18n } from "@src/hooks";
 
 export const MainHeaderLink: React.FC<MainHeaderLinkProps> = ({
   icon: Icon,
@@ -15,6 +16,8 @@ export const MainHeaderLink: React.FC<MainHeaderLinkProps> = ({
   const [activate, setActivate] = useState<boolean>(false);
 
   const { pathname } = useRouter();
+
+  const { t } = useI18n();
 
   const { handleToggleMenu } = useContext(uiContext);
 
@@ -42,7 +45,7 @@ export const MainHeaderLink: React.FC<MainHeaderLinkProps> = ({
             }`}
           >
             <Icon size={20} />
-            <span>{label}</span>
+            <span>{t(label)}</span>
           </div>
         </Link>
       </li>

@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import Image from "next/image";
-import React from "react";
+import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from "react";
 
 import FlagEn from "@src/assets/img/flags/en.png";
 import FlagEs from "@src/assets/img/flags/es.png";
@@ -13,25 +14,36 @@ const locales = [
 export const LanguageSelector = () => {
   const router = useRouter();
   const currentLocale = router.locale;
+  const [selectedLang, setSelectedLang] = useState(currentLocale);
+
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    setSelectedLang(currentLocale);
+  }, [currentLocale]);
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLocale = e.target.value;
 
     if (selectedLocale !== currentLocale) {
-      await router.push(router.pathname, router.asPath, {
+      await router.replace(router.pathname, router.asPath, {
         locale: selectedLocale,
+        scroll: false,
       });
+
+      // 🔥 fuerza cambio en react-i18next
+      await i18n.changeLanguage(selectedLocale);
     }
   };
 
   return (
-    <div className="language-selector">
+    <div className="language-selector flex items-center">
       <Image
         src={
-          locales.find((locale) => locale.code === currentLocale)?.flag ||
+          locales.find((locale) => locale.code === selectedLang)?.flag ||
           FlagEn.src
         }
-        alt={`${currentLocale} flag`}
+        alt={`${selectedLang} flag`}
         width={24}
         height={24}
         className="inline-block mr-2"
@@ -39,16 +51,12 @@ export const LanguageSelector = () => {
 
       <select
         name="lenguajes"
-        value={currentLocale}
+        value={selectedLang}
         onChange={handleChange}
         className="bg-transparent text-sm text-white outline-none"
       >
         {locales.map((locale) => (
-          <option
-            key={locale.code}
-            value={locale.code}
-            className="flex items-center gap-2 text-black"
-          >
+          <option key={locale.code} value={locale.code} className="text-black">
             {locale.label}
           </option>
         ))}

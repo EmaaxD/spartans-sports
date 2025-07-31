@@ -39,7 +39,7 @@ export default function Home() {
           <MainBanner />
 
           <ClubsHomeContainer
-            idSection="topEbooksSection"
+            idSection="topClubsSection"
             titleSection={t("greeting")}
           >
             <TopClubs />
@@ -83,7 +83,7 @@ export default function Home() {
 
           <ClubsHomeContainer
             idSection="joinUsSection"
-            titleSection="Más motivos para unirte"
+            titleSection={t("joinUsSectionTitle")}
           >
             <JoinUsContainer>
               {joinUsData.map((item, index) => (

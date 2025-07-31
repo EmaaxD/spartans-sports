@@ -25,7 +25,7 @@ i18n
     },
     detection: {
       order: ["path", "cookie", "navigator"],
-      caches: ["cookie"], // ← Guarda el idioma elegido en cookies
+      caches: [],
     },
   });
 

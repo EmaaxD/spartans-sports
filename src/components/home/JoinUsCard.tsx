@@ -1,3 +1,4 @@
+import { useI18n } from "@src/hooks";
 import { JoinUsCardProps } from "@src/interfaces";
 
 export const JoinUsCard: React.FC<JoinUsCardProps> = ({
@@ -5,6 +6,8 @@ export const JoinUsCard: React.FC<JoinUsCardProps> = ({
   description,
   icon,
 }) => {
+  const { t } = useI18n();
+
   return (
     <>
       <div
@@ -14,9 +17,11 @@ export const JoinUsCard: React.FC<JoinUsCardProps> = ({
         }}
       >
         <div className="flex flex-col gap-4">
-          <h3 className="text-white text-base md:text-xl font-bold">{title}</h3>
+          <h3 className="text-white text-base md:text-xl font-bold">
+            {t(title)}
+          </h3>
           <p className="text-gray-400 font-normal text-sm md:text-base">
-            {description}
+            {t(description)}
           </p>
         </div>
         <div className="flex justify-end items-end">{icon}</div>

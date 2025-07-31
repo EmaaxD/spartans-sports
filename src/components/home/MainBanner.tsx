@@ -1,8 +1,11 @@
+import { useI18n } from "@src/hooks";
 import { BannerCarouselContainer } from "../containers";
 
 import { bannerImgs } from "@src/utils/const";
 
 export const MainBanner = () => {
+  const { t } = useI18n();
+
   return (
     <>
       <div className="relative h-[500px] overflow-hidden">
@@ -28,10 +31,10 @@ export const MainBanner = () => {
             >
               <div className="text-white text-left px-8 md:px-14 z-20">
                 <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold mb-4">
-                  {banner.title}
+                  {t(banner.title)}
                 </h1>
                 <p className="text-base sm:text-lg md:text-xl">
-                  {banner.description}
+                  {t(banner.description)}
                 </p>
               </div>
             </div>

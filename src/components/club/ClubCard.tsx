@@ -9,6 +9,7 @@ import { ClubCardProps } from "@src/interfaces";
 import { LazyProdVideo } from "../UI";
 
 import ClubImage from "@src/assets/img/Encabezado-GoClub-Mobile.png";
+import { useI18n } from "@src/hooks";
 
 export const ClubCard: React.FC<ClubCardProps> = ({
   _id,
@@ -20,6 +21,8 @@ export const ClubCard: React.FC<ClubCardProps> = ({
   presentationVideo,
   category,
 }) => {
+  const { t } = useI18n();
+
   return (
     <Link href={`/clubs/${_id}`} className="no-underline">
       <div className="flex flex-col">
@@ -42,23 +45,23 @@ export const ClubCard: React.FC<ClubCardProps> = ({
           <div className="flex flex-col gap-5 p-3">
             <div className="flex flex-col">
               <h2 className="text-lg font-semibold text-white">{name}</h2>
-              <p className="text-sm text-gray-300">{description}</p>
+              <p className="text-sm text-gray-300">{t(description)}</p>
             </div>
 
             <div className="flex justify-between items-center flex-wrap gap-3">
               <div className="flex flex-col items-center text-xs text-gray-200">
                 <BsCalendarDate className="inline" size={20} />
-                <span>Fundado</span>
+                <span>{t("founded")}</span>
                 <span className="font-semibold">{established}</span>
               </div>
               <div className="flex flex-col items-center text-xs text-gray-200">
                 <FaUsers className="inline" size={20} />
-                <span>Miembros</span>
+                <span>{t("members")}</span>
                 <span className="font-semibold">150</span>
               </div>
               <div className="flex flex-col items-center text-xs text-gray-200">
                 <MdCategory className="inline" size={20} />
-                <span>Categoría</span>
+                <span>{t("category")}</span>
                 <span className="font-semibold">{category}</span>
               </div>
             </div>

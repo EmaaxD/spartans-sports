@@ -94,6 +94,8 @@ export const MainHeader = () => {
                 className="menu_mobile items-center gap-6"
                 data-aos="zoom-in"
               >
+                <LanguageSelector />
+
                 <button
                   className="bg-red-600 p-2 grid place-items-center text-white rounded-full"
                   onClick={handleToggleMenu}

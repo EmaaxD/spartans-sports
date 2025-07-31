@@ -42,41 +42,41 @@ import SwimmingCardThree from "@src/assets/img/swimCardThree.png";
 
 export const footerLinks = [
   {
-    label: "Sobre nosotros",
+    label: "footerLinksLabelOne",
     data: "aboutUs",
-    text: "PeriCoins es una iniciativa comunitaria nacida en Perico, Jujuy, que propone una solución innovadora ante la escasez de liquidez económica. Funciona como un mercado voluntario de activos culturales digitales, donde cada persona puede convertir su talento, creación o conocimiento en un bien digital intercambiable dentro de una comunidad solidaria. Desde ebooks y música hasta capacitaciones y cortometrajes, el ecosistema permite comprar, vender o intercambiar productos utilizando una moneda interna llamada PeriCoin, equivalente al dólar o peso, dependiendo del caso.",
+    text: "footerLinksDescOne",
   },
   {
-    label: "Políticas de privacidad",
+    label: "footerLinksLabelTwo",
     data: "policyPrivacy",
-    text: "En PeriCoins priorizamos la transparencia y la seguridad. Toda la información personal recolectada se utiliza únicamente para garantizar el correcto funcionamiento de la plataforma y la trazabilidad de las operaciones entre miembros. Cumplimos con la Ley Nacional de Protección de Datos Personales (Ley 25.326) y sus actualizaciones, resguardando datos con estándares de cifrado y almacenamiento seguros. No compartimos información con terceros sin consentimiento explícito.",
+    text: "footerLinksDescTwo",
   },
   {
-    label: "Avíso legal",
+    label: "footerLinksLabelThree",
     data: "legalNotice",
-    text: "El uso de PeriCoins implica la aceptación de nuestras condiciones generales. La plataforma no es una entidad financiera ni un sistema bancario. Los PeriCoins funcionan como instrumentos de intercambio simbólico y solidario, válidos solo dentro de la comunidad que acepta sus reglas. Las transacciones son voluntarias y se consideran como contratos entre pares conforme al principio de autonomía de la voluntad (art. 958 del Código Civil y Comercial Argentino). Los productos ofrecidos son bienes culturales digitales y no constituyen valores mobiliarios.",
+    text: "footerLinksDescThree",
   },
   {
-    label: "Derechos",
+    label: "footerLinksLabelFour",
     data: "rights",
-    text: "Todos los contenidos alojados en la plataforma (ebooks, videos, música, cursos) respetan el derecho de autor vigente según la Ley 11.723. Cada creador conserva la propiedad intelectual de su obra, autorizando a la plataforma únicamente a exhibirla, intercambiarla o distribuirla según los términos pactados. Los usuarios tienen derecho a acceder a sus activos adquiridos, a recibir información clara y a ser parte de una comunidad basada en la equidad, la cooperación y el respeto por el trabajo cultural y creativo.",
+    text: "footerLinksDescFour",
   },
 ];
 
 export const headerLinks = [
   {
     icon: AiFillHome,
-    label: "Inicio",
+    label: "headerLinksLabelOne",
     href: "/",
   },
   {
     icon: MdSportsBasketball,
-    label: "Clubes",
+    label: "headerLinksLabelTwo",
     href: "/clubs",
   },
   {
     icon: GiBabyfootPlayers,
-    label: "Jugadores",
+    label: "headerLinksLabelThree",
     href: "/players",
   },
 ];
@@ -84,34 +84,29 @@ export const headerLinks = [
 export const bannerImgs = [
   {
     img: ImageOneBanner,
-    title: "Barrio Cripto: El fútbol amateur que mueve la nueva economía",
-    description:
-      "Desde las canchas de tierra y los arcos hechos con barriles, nace una nueva generación de jugadores que no solo sueñan con goles, sino también con libertad financiera",
-    alt: "Desde las canchas de tierra y los arcos hechos con barriles, nace una nueva generación de jugadores que no solo sueñan con goles, sino también con libertad financiera",
+    title: "bannerTitleOne",
+    description: "bannerDecriptionOne",
+    alt: "bannerTitleOne",
   },
   {
     img: ImageTwoBanner,
-    title:
-      "Fútbol Tokenizado: Donde el juego profesional se convierte en activos digitales",
-    description:
-      "Los clubes federados dan el salto al universo digital, combinando la pasión del fútbol con la potencia del gaming competitivo. En este nuevo modelo, cada jugada genera valor: los jugadores acumulan criptomonedas como recompensa por su rendimiento en la cancha",
-    alt: "Fútbol Tokenizado",
+    title: "bannerTitleTwo",
+    description: "bannerDecriptionTwo",
+    alt: "bannerTitleTwo",
   },
   {
     img: ImageThreeBanner,
-    title: "Game, Stream & Crypto: Apuesta en tiempo real, gana en digital",
-    description:
-      "La emoción del fútbol amateur se transforma en un espectáculo interactivo. Ahora puedes seguir los partidos en vivo, reaccionar junto a streamers y apostar al instante, mientras las recompensas llegan en forma de criptomonedas",
-    alt: "Game, Stream & Crypto: Apuesta en tiempo real, gana en digital",
+    title: "bannerTitleThree",
+    description: "bannerDecriptionThree",
+    alt: "bannerTitleThree",
   },
 ];
 
 export const joinUsData = [
   {
     id: 1,
-    title: "Adquirí ebooks que transforman",
-    description:
-      "Sumergite en historias, ensayos y manuales únicos de autores locales. Cada ebook es más que lectura: es una inversión en cultura y en la economía de tu comunidad. Valorá el conocimiento y llevá ideas a tu biblioteca digital.",
+    title: "joinUsDataTitleOne",
+    description: "joinUsDataDescOne",
     icon: (
       <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
         <g id="television-core-small">
@@ -235,9 +230,8 @@ export const joinUsData = [
   },
   {
     id: 2,
-    title: "Canjeá capacitaciones por Pericoins",
-    description:
-      "Accedé a cursos, talleres y masterclass sobre salud, arte, oficios, tecnología y más. Aprendé, compartí y convertí tu crecimiento personal en riqueza colectiva. ¡Aprender también paga!",
+    title: "joinUsDataTitleTwo",
+    description: "joinUsDataDescTwo",
     icon: (
       <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
         <g id="download-core-small">
@@ -381,9 +375,8 @@ export const joinUsData = [
   },
   {
     id: 3,
-    title: "Disfrutá música, cine y creatividad regional",
-    description:
-      "Descubrí cortometrajes, canciones originales, piezas audiovisuales y obras inéditas. Cada compra respalda artistas del NOA, visibiliza su talento y fortalece nuestra identidad cultural.",
+    title: "joinUsDataTitleThree",
+    description: "joinUsDataDescThree",
     icon: (
       <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
         <g id="telescope-core-small">
@@ -555,9 +548,8 @@ export const joinUsData = [
   },
   {
     id: 4,
-    title: "Convertí tu talento en activo digital",
-    description:
-      "¿Tenés una obra, una charla o un conocimiento para compartir? Subí tu contenido y activalo en la comunidad. Recibí Pericoins, conectá con otros creadores y potenciá tu impacto.",
+    title: "joinUsDataTitleFour",
+    description: "joinUsDataDescFour",
     icon: (
       <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
         <g id="profiles-core-small">
@@ -882,8 +874,7 @@ export const clubes = [
         _id: "1",
         name: "Club Deportivo Leones Dorados",
         logo: FootBollBg,
-        description:
-          "Club de fútbol ficticio con sede en el distrito de Vallealta. Fundado en 1905, es reconocido por su estilo de juego ofensivo y su cantera de jóvenes talentos.",
+        description: "descriptionClubOne",
         location: "Buenos Aires, Argentina",
         established: "1905",
         presentationVideo:
@@ -891,7 +882,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Delantero",
+            position: "front",
             value: 500,
             age: 25,
             presentationVideo:
@@ -899,7 +890,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Defensa",
+            position: "defense",
             value: 300,
             age: 28,
             presentationVideo:
@@ -907,7 +898,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Portero",
+            position: "goalie",
             value: 400,
             age: 30,
             presentationVideo:
@@ -915,7 +906,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Centrocampista",
+            position: "midfieldPlayer",
             value: 450,
             age: 27,
             presentationVideo:
@@ -923,7 +914,7 @@ export const clubes = [
           },
           {
             name: "Lucas Martínez",
-            position: "Delantero",
+            position: "front",
             value: 550,
             age: 24,
             presentationVideo:
@@ -931,7 +922,7 @@ export const clubes = [
           },
           {
             name: "Andrés Torres",
-            position: "Defensa",
+            position: "defense",
             value: 350,
             age: 29,
             presentationVideo:
@@ -943,8 +934,7 @@ export const clubes = [
         _id: "2",
         name: "Club Atlético Águilas Azules",
         logo: FootBollTwoBg,
-        description:
-          "Club de fútbol ficticio con sede en el barrio de Monteverde. Fundado en 1901, es famoso por su tradición en competencias internacionales y su hinchada apasionada.",
+        description: "descriptionClubTwo",
         location: "Buenos Aires, Argentina",
         established: "1901",
         presentationVideo:
@@ -952,7 +942,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Delantero",
+            position: "front",
             value: 500,
             age: 25,
             presentationVideo:
@@ -960,7 +950,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Defensa",
+            position: "defense",
             value: 300,
             age: 28,
             presentationVideo:
@@ -968,7 +958,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Portero",
+            position: "goalie",
             value: 400,
             age: 30,
             presentationVideo:
@@ -976,7 +966,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Centrocampista",
+            position: "midfieldPlayer",
             value: 450,
             age: 27,
             presentationVideo:
@@ -984,7 +974,7 @@ export const clubes = [
           },
           {
             name: "Lucas Martínez",
-            position: "Delantero",
+            position: "front",
             value: 550,
             age: 24,
             presentationVideo:
@@ -992,7 +982,7 @@ export const clubes = [
           },
           {
             name: "Andrés Torres",
-            position: "Defensa",
+            position: "defense",
             value: 350,
             age: 29,
             presentationVideo:
@@ -1004,8 +994,7 @@ export const clubes = [
         _id: "3",
         name: "Club Deportivo Tigres del Sur",
         logo: FootBollThreeBg,
-        description:
-          "Club de fútbol ficticio con sede en Villa Esperanza. Fundado en 1905, se caracteriza por su filosofía de juego técnico y su compromiso con el desarrollo comunitario.",
+        description: "descriptionClubThree",
         location: "Avellaneda, Buenos Aires, Argentina",
         established: "1905",
         presentationVideo:
@@ -1013,7 +1002,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Delantero",
+            position: "front",
             value: 500,
             age: 25,
             presentationVideo:
@@ -1021,7 +1010,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Defensa",
+            position: "defense",
             value: 300,
             age: 28,
             presentationVideo:
@@ -1029,7 +1018,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Portero",
+            position: "goalie",
             value: 400,
             age: 30,
             presentationVideo:
@@ -1037,7 +1026,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Centrocampista",
+            position: "midfieldPlayer",
             value: 450,
             age: 27,
             presentationVideo:
@@ -1045,7 +1034,7 @@ export const clubes = [
           },
           {
             name: "Lucas Martínez",
-            position: "Delantero",
+            position: "front",
             value: 550,
             age: 24,
             presentationVideo:
@@ -1053,7 +1042,7 @@ export const clubes = [
           },
           {
             name: "Andrés Torres",
-            position: "Defensa",
+            position: "defense",
             value: 350,
             age: 29,
             presentationVideo:
@@ -1065,8 +1054,7 @@ export const clubes = [
         _id: "4",
         name: "Club Atlético Halcones Rojos",
         logo: "https://spartans-sport-bucket.s3.sa-east-1.amazonaws.com/upload/footbollCardFour.png",
-        description:
-          "Club de fútbol ficticio con sede en el barrio de Nuevo Amanecer. Fundado en 1908, es conocido por su rica historia deportiva y su academia de formación juvenil.",
+        description: "descriptionClubFour",
         location: "Buenos Aires, Argentina",
         established: "1908",
         presentationVideo:
@@ -1074,7 +1062,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Delantero",
+            position: "front",
             value: 500,
             age: 25,
             presentationVideo:
@@ -1082,7 +1070,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Defensa",
+            position: "defense",
             value: 300,
             age: 28,
             presentationVideo:
@@ -1090,7 +1078,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Portero",
+            position: "goalie",
             value: 400,
             age: 30,
             presentationVideo:
@@ -1098,7 +1086,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Centrocampista",
+            position: "midfieldPlayer",
             value: 450,
             age: 27,
             presentationVideo:
@@ -1106,7 +1094,7 @@ export const clubes = [
           },
           {
             name: "Lucas Martínez",
-            position: "Delantero",
+            position: "front",
             value: 550,
             age: 24,
             presentationVideo:
@@ -1114,7 +1102,7 @@ export const clubes = [
           },
           {
             name: "Andrés Torres",
-            position: "Defensa",
+            position: "defense",
             value: 350,
             age: 29,
             presentationVideo:
@@ -1131,8 +1119,7 @@ export const clubes = [
         _id: "5",
         name: "Dragones Dorados Basketball Club",
         logo: BascketBallBg,
-        description:
-          "Prestigioso equipo de baloncesto conocido por su disciplina y estrategia innovadora. Especializado en desarrollar jóvenes talentos.",
+        description: "descriptionClubFive",
         location: "Buenos Aires, Argentina",
         established: "1916",
         presentationVideo:
@@ -1140,7 +1127,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Base",
+            position: "base",
             value: 500,
             age: 25,
             presentationVideo:
@@ -1148,7 +1135,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Alero",
+            position: "eaves",
             value: 300,
             age: 28,
             presentationVideo:
@@ -1156,7 +1143,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Pívot",
+            position: "pívot",
             value: 400,
             age: 30,
             presentationVideo:
@@ -1164,7 +1151,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Escolta",
+            position: "escort",
             value: 450,
             age: 27,
             presentationVideo:
@@ -1176,8 +1163,7 @@ export const clubes = [
         _id: "6",
         name: "Titanes del Norte Basketball",
         logo: BascketBallBgTwo,
-        description:
-          "Equipo de baloncesto reconocido por su juego agresivo y espíritu combativo. Famoso por formar jugadores defensivos excepcionales.",
+        description: "descriptionClubSix",
         location: "Corrientes, Argentina",
         established: "1932",
         presentationVideo:
@@ -1185,7 +1171,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Base",
+            position: "base",
             value: 500,
             age: 25,
             presentationVideo:
@@ -1193,7 +1179,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Alero",
+            position: "eaves",
             value: 300,
             age: 28,
             presentationVideo:
@@ -1201,7 +1187,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Pívot",
+            position: "pívot",
             value: 400,
             age: 30,
             presentationVideo:
@@ -1209,7 +1195,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Escolta",
+            position: "escort",
             value: 450,
             age: 27,
             presentationVideo:
@@ -1221,8 +1207,7 @@ export const clubes = [
         _id: "7",
         name: "Águilas Plateadas Club",
         logo: BascketBallBgThree,
-        description:
-          "Equipo de baloncesto conocido por su velocidad y técnica refinada. Se destaca por su academia de formación y métodos de entrenamiento vanguardistas.",
+        description: "descriptionClubSeven",
         location: "Córdoba, Argentina",
         established: "1918",
         presentationVideo:
@@ -1230,7 +1215,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Base",
+            position: "base",
             value: 500,
             age: 25,
             presentationVideo:
@@ -1238,7 +1223,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Alero",
+            position: "eaves",
             value: 300,
             age: 28,
             presentationVideo:
@@ -1246,7 +1231,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Pívot",
+            position: "pívot",
             value: 400,
             age: 30,
             presentationVideo:
@@ -1254,7 +1239,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Escolta",
+            position: "escort",
             value: 450,
             age: 27,
             presentationVideo:
@@ -1266,8 +1251,7 @@ export const clubes = [
         _id: "8",
         name: "Lobos Marinos Basketball Team",
         logo: BascketBallBgFour,
-        description:
-          "Equipo de baloncesto caracterizado por su resistencia y trabajo en equipo. Reconocido por su fuerte conexión con la comunidad local y su estilo de juego único.",
+        description: "descriptionClubEight",
         location: "Comodoro Rivadavia, Argentina",
         established: "1920",
         presentationVideo:
@@ -1275,7 +1259,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Base",
+            position: "base",
             value: 500,
             age: 25,
             presentationVideo:
@@ -1283,7 +1267,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Alero",
+            position: "eaves",
             value: 300,
             age: 28,
             presentationVideo:
@@ -1291,7 +1275,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Pívot",
+            position: "pívot",
             value: 400,
             age: 30,
             presentationVideo:
@@ -1299,7 +1283,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Escolta",
+            position: "escort",
             value: 450,
             age: 27,
             presentationVideo:
@@ -1316,8 +1300,7 @@ export const clubes = [
         _id: "9",
         name: "Club Raquetas Doradas",
         logo: TenisBg,
-        description:
-          "Centro deportivo especializado en tenis con canchas de última generación y programas de entrenamiento innovadores.",
+        description: "descriptionClubNine",
         location: "Buenos Aires, Argentina",
         established: "1920",
         presentationVideo:
@@ -1325,7 +1308,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Martín del Potro",
-            position: "Jugador",
+            position: "player",
             value: 1000,
             age: 32,
             presentationVideo:
@@ -1333,7 +1316,7 @@ export const clubes = [
           },
           {
             name: "Gabriela Sabatini",
-            position: "Jugadora",
+            position: "player",
             value: 900,
             age: 50,
             presentationVideo:
@@ -1341,7 +1324,7 @@ export const clubes = [
           },
           {
             name: "Diego Schwartzman",
-            position: "Jugador",
+            position: "player",
             value: 800,
             age: 30,
             presentationVideo:
@@ -1349,7 +1332,7 @@ export const clubes = [
           },
           {
             name: "Nadia Podoroska",
-            position: "Jugadora",
+            position: "player",
             value: 850,
             age: 26,
             presentationVideo:
@@ -1361,8 +1344,7 @@ export const clubes = [
         _id: "10",
         name: "Academia Tenis Estrella",
         logo: TenisBgTwo,
-        description:
-          "Academia de tenis enfocada en la formación integral de jugadores jóvenes con métodos de entrenamiento modernos.",
+        description: "descriptionClubTen",
         location: "Santa Fe, Argentina",
         established: "1935",
         presentationVideo:
@@ -1370,7 +1352,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Martín del Potro",
-            position: "Jugador",
+            position: "player",
             value: 1000,
             age: 32,
             presentationVideo:
@@ -1378,7 +1360,7 @@ export const clubes = [
           },
           {
             name: "Gabriela Sabatini",
-            position: "Jugadora",
+            position: "player",
             value: 900,
             age: 50,
             presentationVideo:
@@ -1386,7 +1368,7 @@ export const clubes = [
           },
           {
             name: "Diego Schwartzman",
-            position: "Jugador",
+            position: "player",
             value: 800,
             age: 30,
             presentationVideo:
@@ -1394,7 +1376,7 @@ export const clubes = [
           },
           {
             name: "Nadia Podoroska",
-            position: "Jugadora",
+            position: "player",
             value: 850,
             age: 26,
             presentationVideo:
@@ -1406,8 +1388,7 @@ export const clubes = [
         _id: "11",
         name: "Club Tenis Olimpo",
         logo: TenisBgThree,
-        description:
-          "Club deportivo con instalaciones premium y un equipo de entrenadores certificados internacionalmente.",
+        description: "descriptionClubEleven",
         location: "Córdoba, Argentina",
         established: "1940",
         presentationVideo:
@@ -1415,7 +1396,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Martín del Potro",
-            position: "Jugador",
+            position: "player",
             value: 1000,
             age: 32,
             presentationVideo:
@@ -1423,7 +1404,7 @@ export const clubes = [
           },
           {
             name: "Gabriela Sabatini",
-            position: "Jugadora",
+            position: "player",
             value: 900,
             age: 50,
             presentationVideo:
@@ -1431,7 +1412,7 @@ export const clubes = [
           },
           {
             name: "Diego Schwartzman",
-            position: "Jugador",
+            position: "player",
             value: 800,
             age: 30,
             presentationVideo:
@@ -1439,7 +1420,7 @@ export const clubes = [
           },
           {
             name: "Nadia Podoroska",
-            position: "Jugadora",
+            position: "player",
             value: 850,
             age: 26,
             presentationVideo:
@@ -1451,8 +1432,7 @@ export const clubes = [
         _id: "12",
         name: "Centro Tenis Horizonte",
         logo: TenisBgFour,
-        description:
-          "Moderno centro de tenis que combina tecnología avanzada con métodos tradicionales de enseñanza.",
+        description: "descriptionClubTwelve",
         location: "Mendoza, Argentina",
         established: "1950",
         presentationVideo:
@@ -1460,7 +1440,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Martín del Potro",
-            position: "Jugador",
+            position: "player",
             value: 1000,
             age: 32,
             presentationVideo:
@@ -1468,7 +1448,7 @@ export const clubes = [
           },
           {
             name: "Gabriela Sabatini",
-            position: "Jugadora",
+            position: "player",
             value: 900,
             age: 50,
             presentationVideo:
@@ -1476,7 +1456,7 @@ export const clubes = [
           },
           {
             name: "Diego Schwartzman",
-            position: "Jugador",
+            position: "player",
             value: 800,
             age: 30,
             presentationVideo:
@@ -1484,7 +1464,7 @@ export const clubes = [
           },
           {
             name: "Nadia Podoroska",
-            position: "Jugadora",
+            position: "player",
             value: 850,
             age: 26,
             presentationVideo:
@@ -1501,8 +1481,7 @@ export const clubes = [
         _id: "13",
         name: "Dragones de Acero Rugby Club",
         logo: RugbyBg,
-        description:
-          "Club de rugby de élite conocido por su feroz competitividad y tradición de formar jugadores excepcionales con disciplina de hierro.",
+        description: "descriptionClubThirteen",
         location: "Buenos Aires, Argentina",
         established: "1886",
         presentationVideo:
@@ -1510,7 +1489,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Apertura",
+            position: "opening",
             value: 600,
             age: 26,
             presentationVideo:
@@ -1518,7 +1497,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Segunda Línea",
+            position: "secondLine",
             value: 400,
             age: 29,
             presentationVideo:
@@ -1526,7 +1505,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Tercera Línea",
+            position: "thirdLine",
             value: 500,
             age: 31,
             presentationVideo:
@@ -1534,7 +1513,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Fullback",
+            position: "fullback",
             value: 550,
             age: 28,
             presentationVideo:
@@ -1546,8 +1525,7 @@ export const clubes = [
         _id: "14",
         name: "Lobos del Sur Rugby Club",
         logo: RugbyBgTwo,
-        description:
-          "Reconocido club de rugby que destaca por su estrategia táctica innovadora y su compromiso con el desarrollo de talentos jóvenes.",
+        description: "descriptionClubFourteen",
         location: "San Isidro, Argentina",
         established: "1935",
         presentationVideo:
@@ -1555,7 +1533,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Apertura",
+            position: "opening",
             value: 600,
             age: 26,
             presentationVideo:
@@ -1563,7 +1541,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Segunda Línea",
+            position: "secondLine",
             value: 400,
             age: 29,
             presentationVideo:
@@ -1571,7 +1549,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Tercera Línea",
+            position: "thirdLine",
             value: 500,
             age: 31,
             presentationVideo:
@@ -1579,7 +1557,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Fullback",
+            position: "fullback",
             value: 550,
             age: 28,
             presentationVideo:
@@ -1591,8 +1569,7 @@ export const clubes = [
         _id: "15",
         name: "Toros Dorados Rugby Club",
         logo: RugbyBgThree,
-        description:
-          "Club de rugby emergente que ha revolucionado el deporte con su estilo de juego dinámico y su enfoque en la inclusión deportiva.",
+        description: "descriptionClubFifteen",
         location: "La Plata, Argentina",
         established: "1960",
         presentationVideo:
@@ -1600,7 +1577,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Apertura",
+            position: "opening",
             value: 600,
             age: 26,
             presentationVideo:
@@ -1608,7 +1585,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Segunda Línea",
+            position: "secondLine",
             value: 400,
             age: 29,
             presentationVideo:
@@ -1616,7 +1593,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Tercera Línea",
+            position: "thirdLine",
             value: 500,
             age: 31,
             presentationVideo:
@@ -1624,7 +1601,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Fullback",
+            position: "fullback",
             value: 550,
             age: 28,
             presentationVideo:
@@ -1641,8 +1618,7 @@ export const clubes = [
         _id: "16",
         name: "Club Halcones Dorados",
         logo: HockeyCard,
-        description:
-          "Club elite especializado en la formación de talentos jóvenes con un enfoque innovador en técnicas de hockey sobre césped.",
+        description: "descriptionClubSixteen",
         location: "Buenos Aires, Argentina",
         established: "1920",
         presentationVideo:
@@ -1650,7 +1626,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Delantero",
+            position: "front",
             value: 600,
             age: 26,
             presentationVideo:
@@ -1658,7 +1634,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Defensor",
+            position: "defense",
             value: 400,
             age: 29,
             presentationVideo:
@@ -1666,7 +1642,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Centrocampista",
+            position: "midfieldPlayer",
             value: 500,
             age: 31,
             presentationVideo:
@@ -1674,7 +1650,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Delantero",
+            position: "front",
             value: 550,
             age: 28,
             presentationVideo:
@@ -1686,8 +1662,7 @@ export const clubes = [
         _id: "17",
         name: "Club Tormenta Azul",
         logo: HockeyCardTwo,
-        description:
-          "Reconocido por su excelencia deportiva y programas de entrenamiento de alto rendimiento para atletas profesionales.",
+        description: "descriptionClubSeventeen",
         location: "Santa Fe, Argentina",
         established: "1935",
         presentationVideo:
@@ -1695,7 +1670,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Delantero",
+            position: "front",
             value: 600,
             age: 26,
             presentationVideo:
@@ -1703,7 +1678,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Defensor",
+            position: "defense",
             value: 400,
             age: 29,
             presentationVideo:
@@ -1711,7 +1686,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Centrocampista",
+            position: "midfieldPlayer",
             value: 500,
             age: 31,
             presentationVideo:
@@ -1719,7 +1694,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Delantero",
+            position: "front",
             value: 550,
             age: 28,
             presentationVideo:
@@ -1731,8 +1706,7 @@ export const clubes = [
         _id: "18",
         name: "Club Leones de Acero",
         logo: HockeyCardThree,
-        description:
-          "Institución deportiva pionera en el desarrollo de metodologías de entrenamiento y competencias regionales de hockey.",
+        description: "descriptionClubEighteen",
         location: "Córdoba, Argentina",
         established: "1940",
         presentationVideo:
@@ -1740,7 +1714,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Delantero",
+            position: "front",
             value: 600,
             age: 26,
             presentationVideo:
@@ -1748,7 +1722,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Defensor",
+            position: "defense",
             value: 400,
             age: 29,
             presentationVideo:
@@ -1756,7 +1730,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Centrocampista",
+            position: "midfieldPlayer",
             value: 500,
             age: 31,
             presentationVideo:
@@ -1764,7 +1738,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Delantero",
+            position: "front",
             value: 550,
             age: 28,
             presentationVideo:
@@ -1781,8 +1755,7 @@ export const clubes = [
         _id: "19",
         name: "Águilas Doradas Volley Club",
         logo: VolleyCard,
-        description:
-          "Club especializado en la formación de talentos jóvenes con un enfoque innovador en técnicas de ataque y defensa moderna.",
+        description: "descriptionClubNineteen",
         location: "Buenos Aires, Argentina",
         established: "1980",
         presentationVideo:
@@ -1790,7 +1763,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Central",
+            position: "central",
             value: 600,
             age: 26,
             presentationVideo:
@@ -1798,7 +1771,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Receptor",
+            position: "receiver",
             value: 400,
             age: 29,
             presentationVideo:
@@ -1806,7 +1779,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Armador",
+            position: "shipowner",
             value: 500,
             age: 31,
             presentationVideo:
@@ -1814,7 +1787,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Opuesto",
+            position: "opposite",
             value: 550,
             age: 28,
             presentationVideo:
@@ -1826,8 +1799,7 @@ export const clubes = [
         _id: "20",
         name: "Tigres Azules Volleyball Academy",
         logo: VolleyCardTwo,
-        description:
-          "Academia deportiva reconocida por su programa de desarrollo integral y sus exitosas competencias regionales.",
+        description: "descriptionClubTwenty",
         location: "Santa Fe, Argentina",
         established: "1985",
         presentationVideo:
@@ -1835,7 +1807,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Central",
+            position: "central",
             value: 600,
             age: 26,
             presentationVideo:
@@ -1843,7 +1815,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Receptor",
+            position: "receiver",
             value: 400,
             age: 29,
             presentationVideo:
@@ -1851,7 +1823,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Armador",
+            position: "shipowner",
             value: 500,
             age: 31,
             presentationVideo:
@@ -1859,7 +1831,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Opuesto",
+            position: "opposite",
             value: 550,
             age: 28,
             presentationVideo:
@@ -1871,8 +1843,7 @@ export const clubes = [
         _id: "21",
         name: "Leones Rojos Volley Sport",
         logo: VolleyCardThree,
-        description:
-          "Institución deportiva pionera en metodologías de entrenamiento de alto rendimiento y desarrollo de atletas profesionales.",
+        description: "descriptionClubTwentyOne",
         location: "Córdoba, Argentina",
         established: "1990",
         presentationVideo:
@@ -1880,7 +1851,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Central",
+            position: "central",
             value: 600,
             age: 26,
             presentationVideo:
@@ -1888,7 +1859,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Receptor",
+            position: "receiver",
             value: 400,
             age: 29,
             presentationVideo:
@@ -1896,7 +1867,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Armador",
+            position: "shipowner",
             value: 500,
             age: 31,
             presentationVideo:
@@ -1904,7 +1875,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Opuesto",
+            position: "opposite",
             value: 550,
             age: 28,
             presentationVideo:
@@ -1921,8 +1892,7 @@ export const clubes = [
         _id: "22",
         name: "Club Atlético Velocidad Dorada",
         logo: AthleticsCard,
-        description:
-          "Instituto deportivo especializado en el desarrollo de talentos juveniles y la promoción de la excelencia atlética en todas las disciplinas.",
+        description: "descriptionClubTwentyTwo",
         location: "Buenos Aires, Argentina",
         established: "1995",
         presentationVideo:
@@ -1930,7 +1900,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Velocista",
+            position: "sprinter",
             value: 600,
             age: 26,
             presentationVideo:
@@ -1938,7 +1908,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Saltador de Longitud",
+            position: "longJumper",
             value: 400,
             age: 29,
             presentationVideo:
@@ -1946,7 +1916,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Lanzador de Jabalina",
+            position: "javelinThrower",
             value: 500,
             age: 31,
             presentationVideo:
@@ -1954,7 +1924,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Maratonista",
+            position: "marathonRunner",
             value: 550,
             age: 28,
             presentationVideo:
@@ -1966,8 +1936,7 @@ export const clubes = [
         _id: "23",
         name: "Centro Deportivo Relámpago Azul",
         logo: AthleticsCardTwo,
-        description:
-          "Organización pionera en técnicas de entrenamiento innovadoras y formación integral de atletas de alto rendimiento.",
+        description: "descriptionClubTwentyThree",
         location: "Santa Fe, Argentina",
         established: "2000",
         presentationVideo:
@@ -1975,7 +1944,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Velocista",
+            position: "sprinter",
             value: 600,
             age: 26,
             presentationVideo:
@@ -1983,7 +1952,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Saltador de Longitud",
+            position: "longJumper",
             value: 400,
             age: 29,
             presentationVideo:
@@ -1991,7 +1960,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Lanzador de Jabalina",
+            position: "javelinThrower",
             value: 500,
             age: 31,
             presentationVideo:
@@ -1999,7 +1968,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Maratonista",
+            position: "marathonRunner",
             value: 550,
             age: 28,
             presentationVideo:
@@ -2011,8 +1980,7 @@ export const clubes = [
         _id: "24",
         name: "Academia Atlética Estrella Plateada",
         logo: AthleticsCardThree,
-        description:
-          "Institución reconocida por su programa de becas deportivas y su enfoque en la preparación física y mental de los deportistas.",
+        description: "descriptionClubTwentyFour",
         location: "Córdoba, Argentina",
         established: "2005",
         presentationVideo:
@@ -2020,7 +1988,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Velocista",
+            position: "sprinter",
             value: 600,
             age: 26,
             presentationVideo:
@@ -2028,7 +1996,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Saltador de Longitud",
+            position: "longJumper",
             value: 400,
             age: 29,
             presentationVideo:
@@ -2036,7 +2004,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Lanzador de Jabalina",
+            position: "javelinThrower",
             value: 500,
             age: 31,
             presentationVideo:
@@ -2044,7 +2012,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Maratonista",
+            position: "marathonRunner",
             value: 550,
             age: 28,
             presentationVideo:
@@ -2061,8 +2029,7 @@ export const clubes = [
         _id: "25",
         name: "Aqua Dolphins Swimming Club",
         logo: SwimmingCard,
-        description:
-          "Club especializado en técnicas de natación de alta competencia con entrenadores internacionales y piscinas olímpicas.",
+        description: "descriptionClubTwentyFive",
         location: "Buenos Aires, Argentina",
         established: "1980",
         presentationVideo:
@@ -2070,7 +2037,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Nadador",
+            position: "swimmer",
             value: 600,
             age: 26,
             presentationVideo:
@@ -2078,7 +2045,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Nadador",
+            position: "swimmer",
             value: 400,
             age: 29,
             presentationVideo:
@@ -2086,7 +2053,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Nadador",
+            position: "swimmer",
             value: 500,
             age: 31,
             presentationVideo:
@@ -2094,7 +2061,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Nadador",
+            position: "swimmer",
             value: 550,
             age: 28,
             presentationVideo:
@@ -2106,8 +2073,7 @@ export const clubes = [
         _id: "26",
         name: "Waves Masters Academy",
         logo: SwimmingCardTwo,
-        description:
-          "Academia acuática enfocada en el desarrollo integral de nadadores desde niveles amateur hasta profesional.",
+        description: "descriptionClubTwentySix",
         location: "Santa Fe, Argentina",
         established: "1985",
         presentationVideo:
@@ -2115,7 +2081,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Nadador",
+            position: "swimmer",
             value: 600,
             age: 26,
             presentationVideo:
@@ -2123,7 +2089,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Nadador",
+            position: "swimmer",
             value: 400,
             age: 29,
             presentationVideo:
@@ -2131,7 +2097,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Nadador",
+            position: "swimmer",
             value: 500,
             age: 31,
             presentationVideo:
@@ -2139,7 +2105,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Nadador",
+            position: "swimmer",
             value: 550,
             age: 28,
             presentationVideo:
@@ -2151,8 +2117,7 @@ export const clubes = [
         _id: "27",
         name: "Neptune Elite Swimming",
         logo: SwimmingCardThree,
-        description:
-          "Centro de entrenamiento acuático con programas especializados en diferentes estilos de natación y deportes acuáticos.",
+        description: "descriptionClubTwentySeven",
         location: "Córdoba, Argentina",
         established: "1990",
         presentationVideo:
@@ -2160,7 +2125,7 @@ export const clubes = [
         players: [
           {
             name: "Juan Pérez",
-            position: "Nadador",
+            position: "swimmer",
             value: 600,
             age: 26,
             presentationVideo:
@@ -2168,7 +2133,7 @@ export const clubes = [
           },
           {
             name: "Carlos López",
-            position: "Nadador",
+            position: "swimmer",
             value: 400,
             age: 29,
             presentationVideo:
@@ -2176,7 +2141,7 @@ export const clubes = [
           },
           {
             name: "Miguel Fernández",
-            position: "Nadador",
+            position: "swimmer",
             value: 500,
             age: 31,
             presentationVideo:
@@ -2184,7 +2149,7 @@ export const clubes = [
           },
           {
             name: "Santiago García",
-            position: "Nadador",
+            position: "swimmer",
             value: 550,
             age: 28,
             presentationVideo:

@@ -19,7 +19,7 @@ const settings = {
     {
       breakpoint: 1440, // Pantallas grandes (laptops/desktop grandes)
       settings: {
-        slidesToShow: 6,
+        slidesToShow: 4.8,
         slidesToScroll: 3,
         infinite: true,
       },

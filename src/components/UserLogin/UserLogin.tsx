@@ -15,6 +15,7 @@ import { UserLoginProps } from "@src/interfaces";
 import { uiContext } from "@src/context/ui";
 
 import { LoginButton } from "../UI";
+import { useI18n } from "@src/hooks";
 
 export const UserLogin: React.FC<UserLoginProps> = ({ isMobile = false }) => {
   const { data: session, status } = useSession();
@@ -24,6 +25,8 @@ export const UserLogin: React.FC<UserLoginProps> = ({ isMobile = false }) => {
   const { handleToggleMenu } = useContext(uiContext);
 
   const { push } = useRouter();
+
+  const { t } = useI18n();
 
   const handleSignOut = async () => {
     try {
@@ -69,7 +72,7 @@ export const UserLogin: React.FC<UserLoginProps> = ({ isMobile = false }) => {
                       <span
                         className={`${isMobile ? "flex" : "hidden lg:flex"}`}
                       >
-                        Mi cuenta
+                        {t("myAccount")}
                       </span>
                     </MenuButton>
                   </div>

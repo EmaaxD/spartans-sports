@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import Link from "next/link";
+import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 
 import { uiContext } from "@src/context/ui";
+import { useI18n } from "@src/hooks";
 
 import { MainContainer } from "../containers";
 import { MainDialog } from "./MainDialog";
@@ -14,6 +14,8 @@ import LogoFooter from "@src/assets/img/logos/logo-completo-color.png";
 import LogoCrediCart from "@src/assets/img/card_logos.png";
 
 export const MainFooter = () => {
+  const [isClient, setIsClient] = useState(false);
+
   const {
     openFootData,
     titleFootData,
@@ -22,11 +24,19 @@ export const MainFooter = () => {
     handleToggleOpenFootData,
   } = useContext(uiContext);
 
+  const { t } = useI18n();
+
   const handleClickLink = (titleId: string) => {
     handleToggleOpenFootData();
     handleSetTitleFootData(titleId);
     handleSetContentFootData(titleId);
   };
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null; // Evita render en el SSR
 
   return (
     <>
@@ -51,7 +61,7 @@ export const MainFooter = () => {
                     data-aos-delay={`${index + 1 * 2}00`}
                     onClick={() => handleClickLink(item.data)}
                   >
-                    <span className="text-white">{item.label}</span>
+                    <span className="text-white">{t(item.label)}</span>
                   </button>
                 ))}
                 <a
@@ -59,7 +69,7 @@ export const MainFooter = () => {
                   data-aos="zoom-in"
                   href="mailto:jorgealbertolindon9@gmail.com"
                 >
-                  <span className="text-white">Contactar</span>
+                  <span className="text-white">{t("contactMe")}</span>
                 </a>
               </div>
             </div>

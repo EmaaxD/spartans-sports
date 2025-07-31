@@ -19,6 +19,7 @@ import { MainLayout } from "@src/components/layouts";
 import { AnimationAosContainer } from "@src/components/containers";
 
 import FaviconLogo from "@src/assets/img/logos/logo-icon-color.png";
+import { SyncLanguage } from "@src/components/HOC";
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
@@ -33,6 +34,8 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           <UiProvider>
             <AnimationAosContainer>
               <SkeletonTheme baseColor="#d7d4d4" highlightColor="#cbcbcb">
+                <SyncLanguage />
+
                 <MainLayout>
                   <Toaster />
                   <Component {...pageProps} />

@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { PlayerCardProps } from "@src/interfaces";
 import { useI18n } from "@src/hooks";
+import { BadgetInfo } from "./BadgetInfo";
+import { PlayerCardFooter } from "./PlayerCardFooter";
 
 export const PlayerCard: React.FC<PlayerCardProps> = ({
   age,
@@ -11,96 +13,68 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   name,
   position,
   clubId,
-  presentationVideo,
   value,
+  colorCard,
+  presentationVideo,
+  playerImg,
+  height,
+  weight,
+  ims,
 }) => {
   const { t } = useI18n();
 
   return (
     <Link href={`/players/${clubId}`} className="no-underline">
-      <div className="bg-gradient-to-br from-blue-900 to-indigo-800 text-white rounded-xl overflow-hidden shadow-2xl flex flex-col justify-between">
-        {/* Header */}
-        <div className="flex justify-between items-center p-3">
-          <div className="bg-white/20 px-2 py-1 rounded text-sm font-semibold">
-            SPORT NAME
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-pink-500 rounded-full" />{" "}
-            {/* Badge icon */}
-            <div className="w-6 h-4 bg-white border border-gray-300 rounded-sm" />{" "}
-            {/* Country flag placeholder */}
-          </div>
-        </div>
-
-        {/* Player image */}
-        <div className="flex justify-center items-center mt-2">
-          <Image
-            src={clubLogo.src}
-            alt={name}
-            width={120}
-            height={120}
-            className="rounded-full border-4 border-white object-contain"
-          />
-        </div>
-
-        {/* Atributos 99 */}
-        <div className="grid grid-cols-2 gap-2 mt-4 px-4 text-center text-sm font-bold">
-          <div className="bg-white/10 rounded py-1">INFO 99</div>
-          <div className="bg-white/10 rounded py-1">INFO 99</div>
-          <div className="bg-white/10 rounded py-1">INFO 99</div>
-          <div className="bg-white/10 rounded py-1">INFO 99</div>
-        </div>
-
-        {/* Número de camiseta grande */}
-        <div className="text-right px-4 mt-4">
-          <span className="text-6xl font-extrabold opacity-20">{clubId}</span>
-        </div>
-
-        {/* Información inferior */}
-        <div className="px-4 pb-4">
-          <h3 className="text-lg font-bold uppercase">{name}</h3>
-          <p className="text-sm opacity-80">
-            {t("position")}: {t(position)}
-          </p>
-          <p className="text-sm opacity-80">
-            {t("age")}: {age} - {t("value")}: ${value}k
-          </p>
-          <p className="text-sm opacity-80">
-            Club: <span className="font-semibold">{clubName}</span>
-          </p>
-          <p className="text-sm opacity-80">
-            {t("category")}: {category}
-          </p>
-
-          {/* Estrellas */}
-          <div className="flex mt-1 text-yellow-400 text-lg">
-            {"★★★★★".split("").map((star, idx) => (
-              <span key={idx}>{star}</span>
-            ))}
+      <div className="relative flex flex-col">
+        <div
+          className="relative p-2 rounded-md"
+          style={{
+            backgroundColor: colorCard,
+          }}
+        >
+          <div className="absolute bg-indigo-950 top-0 left-0 py-1 px-3 rounded-br-lg z-10">
+            <span className="text-white uppercase text-xs">
+              Sport <span className="font-bold">{category}</span>
+            </span>
           </div>
 
-          {/* Barras de habilidades */}
-          <div className="mt-3 space-y-1 text-xs">
-            <div>
-              <p className="font-semibold">YOUR TITLE</p>
-              <div className="w-full h-2 bg-white/20 rounded overflow-hidden">
-                <div className="h-full w-[95%] bg-blue-400" />
-              </div>
+          <div className="absolute top-3 right-4 z-10">
+            <div className="w-12 h-12">
+              <Image
+                src={clubLogo}
+                alt={clubName}
+                width={2000}
+                height={2000}
+                className="w-full h-full rounded-full"
+              />
             </div>
-            <div>
-              <p className="font-semibold">YOUR TITLE</p>
-              <div className="w-full h-2 bg-white/20 rounded overflow-hidden">
-                <div className="h-full w-[85%] bg-pink-400" />
-              </div>
-            </div>
-            <div>
-              <p className="font-semibold">YOUR TITLE</p>
-              <div className="w-full h-2 bg-white/20 rounded overflow-hidden">
-                <div className="h-full w-[75%] bg-orange-400" />
+          </div>
+
+          <div className="bg-player relative bg-white flex justify-between px-3 pt-10 pb-40 rounded-t-lg">
+            <div className="absolute left-1/2 bottom-0 -translate-x-1/2">
+              <div className="w-40 h-40">
+                <Image
+                  src={playerImg}
+                  alt={name}
+                  width={2000}
+                  height={2000}
+                  className="w-full h-full"
+                />
               </div>
             </div>
           </div>
         </div>
+
+        <PlayerCardFooter
+          name={name}
+          position={position}
+          age={age}
+          value={value}
+          height={height}
+          weight={weight}
+          ims={ims}
+          colorCard={colorCard}
+        />
       </div>
     </Link>
   );

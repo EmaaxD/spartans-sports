@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image";
+
 // Tipos para clubes y jugadores
 export interface Player {
   name: string;
@@ -5,6 +7,11 @@ export interface Player {
   value: number;
   age: number;
   presentationVideo: string;
+  colorCard: string;
+  playerImg: StaticImageData | string; // Puede ser una imagen estática o una URL
+  height: string | number; // Altura del jugador
+  weight: string | number; // Altura y peso del jugador
+  ims: string; // Información adicional del jugador
 }
 
 export interface Club {

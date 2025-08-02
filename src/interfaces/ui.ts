@@ -76,3 +76,20 @@ export interface MainSelectDataOptionProps {
 }
 
 export interface PlayerCardProps extends PlayerWithCategory {}
+
+export interface BadgetInfoProps {
+  colorCard: string;
+  label: string;
+  value: string | number;
+}
+
+export interface PlayerCardFooterProps {
+  name: string;
+  position: string;
+  age: number;
+  value: string | number;
+  height: string | number;
+  weight: string | number;
+  ims: string;
+  colorCard: string;
+}

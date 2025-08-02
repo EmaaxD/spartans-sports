@@ -68,6 +68,7 @@
   "pívot": "Pivot",
   "escort": "Escolta",
   "player": "Jugador",
+  "players": "Jugadores",
   "opening": "Apertura",
   "secondLine": "Segunda Línea",
   "thirdLine": "Tercera Línea",
@@ -83,5 +84,9 @@
   "swimmer": "Nadador",
   "position": "Posición",
   "age": "Edad",
-  "value": "Valor"
+  "value": "Valor",
+  "selectCategory": "Seleccionar una categoría",
+  "sponsors": "Patrocinadores",
+  "height": "Altura",
+  "weight": "Peso"
 }

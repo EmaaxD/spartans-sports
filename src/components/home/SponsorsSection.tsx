@@ -4,6 +4,7 @@ import SponsorOne from "@src/assets/img/sponsors/nasdaq-light.svg";
 import SponsorTwo from "@src/assets/img/sponsors/box-light.svg";
 import SponsorThree from "@src/assets/img/sponsors/eventbrite-light.svg";
 import SponsorFour from "@src/assets/img/sponsors/netapp-light.svg";
+import { useI18n } from "@src/hooks";
 
 const sponsors = [
   {
@@ -69,6 +70,8 @@ const sponsors = [
 ];
 
 export const SponsorsSection = () => {
+  const { t } = useI18n();
+
   return (
     <>
       <section
@@ -76,10 +79,10 @@ export const SponsorsSection = () => {
         className="flex flex-col justify-center items-center gap-4 mt-10 md:mt-20"
       >
         <h4
-          className="text-white text-2xl lg:text-3xl font-bold"
+          className="text-white text-2xl lg:text-3xl font-bold capitalize"
           data-aos="zoom-in"
         >
-          Patrocinadores
+          {t("sponsors")}
         </h4>
 
         <div className="flex flex-row justify-center items-center flex-wrap gap-4 px-7 sm:px-14 md:px-28 lg:px-36">

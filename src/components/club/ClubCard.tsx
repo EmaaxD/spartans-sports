@@ -26,7 +26,7 @@ export const ClubCard: React.FC<ClubCardProps> = ({
   return (
     <Link href={`/clubs/${_id}`} className="no-underline">
       <div className="flex flex-col">
-        <div className="bg-white/20 shadow-lg rounded-lg">
+        <div className="bg-white/15 shadow-lg rounded-lg">
           <div className="relative w-full h-48">
             <Image
               src={logo || ClubImage}
@@ -50,17 +50,17 @@ export const ClubCard: React.FC<ClubCardProps> = ({
 
             <div className="flex justify-between items-center flex-wrap gap-3">
               <div className="flex flex-col items-center text-xs text-gray-200">
-                <BsCalendarDate className="inline" size={20} />
+                <BsCalendarDate className="inline text-red-600" size={20} />
                 <span>{t("founded")}</span>
                 <span className="font-semibold">{established}</span>
               </div>
               <div className="flex flex-col items-center text-xs text-gray-200">
-                <FaUsers className="inline" size={20} />
+                <FaUsers className="inline text-red-600" size={20} />
                 <span>{t("members")}</span>
                 <span className="font-semibold">150</span>
               </div>
               <div className="flex flex-col items-center text-xs text-gray-200">
-                <MdCategory className="inline" size={20} />
+                <MdCategory className="inline text-red-600" size={20} />
                 <span>{t("category")}</span>
                 <span className="font-semibold">{category}</span>
               </div>

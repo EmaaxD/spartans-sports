@@ -4,6 +4,7 @@ import { HeaderClubsScreenProps } from "@src/interfaces";
 
 import { MainSelect, SearchInputEffect } from "@src/components/UI";
 import { clubCategories } from "@src/utils/const";
+import { useI18n } from "@src/hooks";
 
 export const HeaderClub: React.FC<HeaderClubsScreenProps> = ({
   title,
@@ -12,6 +13,8 @@ export const HeaderClub: React.FC<HeaderClubsScreenProps> = ({
   selectCategory,
   search,
 }) => {
+  const { t } = useI18n();
+
   const categoryMemo = useMemo(() => {
     return clubCategories.map((category) => ({
       label: category.name,
@@ -66,8 +69,8 @@ export const HeaderClub: React.FC<HeaderClubsScreenProps> = ({
             >
               <MainSelect
                 name="category"
-                label="Categoria"
-                optionDisabled="Selecciona una categoria"
+                label={t("category")}
+                optionDisabled={t("selectCategory")}
                 options={categoryMemo}
                 value={selectCategory}
                 onHandleChangeValue={(value) => {}}

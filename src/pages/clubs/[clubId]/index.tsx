@@ -7,7 +7,7 @@ import { BsCalendarDate } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 
-import { useAllPlayers } from "@src/hooks";
+import { useAllPlayers, useI18n } from "@src/hooks";
 
 import { MainContainer } from "@src/components/containers";
 import { EbookDetailsSkeleton } from "@src/components/loadings";
@@ -23,6 +23,8 @@ const SelectedEbookScreen = () => {
   // get the id from the url params with nextjs
   const router = useRouter();
   const { ebookId } = router.query;
+
+  const { t } = useI18n();
 
   useEffect(() => {
     // set loading state to false after 1000ms
@@ -96,17 +98,17 @@ const SelectedEbookScreen = () => {
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <BsCalendarDate className="text-gray-500" size={20} />
-                <span className="text-gray-400">Fundado:</span>
+                <span className="text-gray-400">{t("founded")}:</span>
                 <span className="text-gray-200 font-semibold">2020</span>
               </div>
               <div className="flex items-center gap-2">
                 <FaUsers className="text-gray-500" size={20} />
-                <span className="text-gray-400">Miembros:</span>
+                <span className="text-gray-400">{t("members")}:</span>
                 <span className="text-gray-200 font-semibold">100</span>
               </div>
               <div className="flex items-center gap-2">
                 <IoLocationSharp className="text-gray-500" size={20} />
-                <span className="text-gray-400">Ubicación:</span>
+                <span className="text-gray-400">{t("location")}:</span>
                 <span className="text-gray-200 font-semibold">
                   Ciudad, País
                 </span>
@@ -114,7 +116,9 @@ const SelectedEbookScreen = () => {
             </div>
 
             <div className="flex flex-col gap-5 mt-10">
-              <h2 className="text-xl font-bold text-gray-200">Jugadores</h2>
+              <h2 className="text-xl font-bold text-gray-200">
+                {t("players")}
+              </h2>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
                 {allPlayersWithCategory.slice(0, 10).map((team, index) => (

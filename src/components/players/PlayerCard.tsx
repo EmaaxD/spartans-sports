@@ -5,6 +5,8 @@ import { useI18n } from "@src/hooks";
 import { BadgetInfo } from "./BadgetInfo";
 import { PlayerCardFooter } from "./PlayerCardFooter";
 
+import SpartansCoinImg from "@src/assets/img/logos/spartanCoin.png";
+
 export const PlayerCard: React.FC<PlayerCardProps> = ({
   age,
   category,
@@ -51,8 +53,8 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
           </div>
 
           <div className="bg-player relative bg-white flex justify-between px-3 pt-10 pb-40 rounded-t-lg">
-            <div className="absolute left-1/2 bottom-0 -translate-x-1/2">
-              <div className="w-40 h-40">
+            <div className="absolute left-1/2 bottom-0 -translate-x-1/2 z-30">
+              <div className="relative w-32">
                 <Image
                   src={playerImg}
                   alt={name}
@@ -61,6 +63,16 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
                   className="w-full h-full"
                 />
               </div>
+            </div>
+
+            <div className="absolute w-12 h-12 bottom-1 left-1">
+              <Image
+                src={SpartansCoinImg}
+                alt="Spartans Coin"
+                width={50}
+                height={50}
+                className="w-full h-full inline-block"
+              />
             </div>
           </div>
         </div>

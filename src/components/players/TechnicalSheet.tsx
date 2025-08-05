@@ -29,7 +29,8 @@ export const FichaTecnicaDeportiva = () => {
       <div className="absolute bottom-1/3 left-1/4 w-1 h-1 bg-yellow-500 rounded-full opacity-80 animate-bounce"></div>
       <div className="absolute top-2/3 right-1/4 w-1.5 h-1.5 bg-yellow-400 rounded-full opacity-50 animate-pulse"></div>
 
-      <div className="absolute w-96 -right-20 top-[35rem] z-10">
+      {/* Imagen de Test de Salto */}
+      <div className="absolute w-96 -right-32 md:-right-20 top-[70rem] md:top-[35rem] z-10">
         <Image
           src={TestJumpImg}
           className="w-full opacity-45"

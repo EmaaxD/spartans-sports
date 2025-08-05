@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+import { clubsContext } from "@src/context/clubs";
 
 import {
   AllClubsContainer,
@@ -16,10 +18,12 @@ import {
 } from "@src/components/home";
 import { ClubCard } from "@src/components/club";
 
-import { clubes, joinUsData } from "@src/utils/const";
+import { joinUsData } from "@src/utils/const";
 
 export default function Home() {
   const [loadingEbooks, setLoadingEbooks] = useState(true);
+
+  const { clubs, handleSelectedClub } = useContext(clubsContext);
 
   const { t } = useTranslation("common");
 
@@ -45,9 +49,9 @@ export default function Home() {
             <TopClubs />
           </ClubsHomeContainer>
 
-          {clubes &&
-            clubes.length > 0 &&
-            clubes.slice(0, 7).map((club, index) => (
+          {clubs &&
+            clubs.length > 0 &&
+            clubs.slice(0, 7).map((club, index) => (
               <ClubsHomeContainer
                 key={index}
                 idSection="clubsSection"
@@ -61,7 +65,16 @@ export default function Home() {
                         data-aos="zoom-in"
                         data-aos-delay={`${index + 1 * 2}00`}
                       >
-                        <ClubCard {...team} category={club.category} />
+                        <ClubCard
+                          {...team}
+                          category={club.category}
+                          onHandleSelectedClub={() =>
+                            handleSelectedClub({
+                              ...team,
+                              category: club.category,
+                            })
+                          }
+                        />
                       </div>
                     ))}
                   </CarouselContainer>
@@ -73,7 +86,16 @@ export default function Home() {
                         data-aos="zoom-in"
                         data-aos-delay={`${index + 1 * 2}00`}
                       >
-                        <ClubCard {...team} category={club.category} />
+                        <ClubCard
+                          {...team}
+                          category={club.category}
+                          onHandleSelectedClub={() =>
+                            handleSelectedClub({
+                              ...team,
+                              category: club.category,
+                            })
+                          }
+                        />
                       </div>
                     ))}
                   </AllClubsContainer>

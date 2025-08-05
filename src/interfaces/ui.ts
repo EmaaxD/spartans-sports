@@ -1,6 +1,6 @@
 import { StaticImageData } from "next/image";
 import { PropsWithChildren, ReactNode } from "react";
-import { PlayerWithCategory } from "./clubs";
+import { Club, PlayerWithCategory } from "./clubs";
 
 export interface SportsLayoutProps {
   layoutId: string;
@@ -33,6 +33,7 @@ export interface ClubCardProps {
   established: string;
   presentationVideo: string;
   category: string;
+  onHandleSelectedClub: () => void;
 }
 
 export interface JoinUsCardProps {

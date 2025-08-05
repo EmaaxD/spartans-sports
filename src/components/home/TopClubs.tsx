@@ -1,15 +1,26 @@
+import { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+import { clubsContext } from "@src/context/clubs";
+
 import { CarouselContainer } from "../containers";
+
 import { top10Clubs } from "@src/utils/const";
 
 export const TopClubs: React.FC = () => {
+  const { handleGetClub } = useContext(clubsContext);
+
   if (top10Clubs.length < 4)
     return (
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {top10Clubs.map((show) => (
-          <div key={show.clubId} className="relative w-full h-64 flex-shrink-0">
+          <Link
+            key={show.clubId}
+            href={`/clubs/${show.clubId}`}
+            className="relative w-full h-64 flex-shrink-0 outline-none"
+            onClick={() => handleGetClub(show.clubId)}
+          >
             <div className="relative w-full h-full">
               <Image
                 src={show.club.logo || ""}
@@ -25,7 +36,7 @@ export const TopClubs: React.FC = () => {
             <div className="w-full absolute bottom-0 left-0 text-white font-bold bg-gradient-to-t from-black/70 to-transparent py-3 px-2">
               {show.club.name}
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     );
@@ -37,6 +48,7 @@ export const TopClubs: React.FC = () => {
           key={show.clubId}
           href={`/clubs/${show.clubId}`}
           className="relative w-full h-64 flex-shrink-0"
+          onClick={() => handleGetClub(show.clubId)}
         >
           <div className="relative w-full h-full">
             <Image

@@ -5,11 +5,11 @@ import { FaUsers } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
 
 import { ClubCardProps } from "@src/interfaces";
+import { useI18n } from "@src/hooks";
 
 import { LazyProdVideo } from "../UI";
 
 import ClubImage from "@src/assets/img/Encabezado-GoClub-Mobile.png";
-import { useI18n } from "@src/hooks";
 
 export const ClubCard: React.FC<ClubCardProps> = ({
   _id,
@@ -20,11 +20,16 @@ export const ClubCard: React.FC<ClubCardProps> = ({
   established,
   presentationVideo,
   category,
+  onHandleSelectedClub,
 }) => {
   const { t } = useI18n();
 
   return (
-    <Link href={`/clubs/${_id}`} className="no-underline">
+    <Link
+      href={`/clubs/${_id}`}
+      className="no-underline"
+      onClick={onHandleSelectedClub}
+    >
       <div className="flex flex-col">
         <div className="bg-white/15 shadow-lg rounded-lg">
           <div className="relative w-full h-48">

@@ -84,9 +84,9 @@ export const MainHeader = () => {
                     ))}
                   </ul>
 
-                  <UserLogin />
-
                   <LanguageSelector />
+
+                  <UserLogin />
                 </nav>
               </div>
 

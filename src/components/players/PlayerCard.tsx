@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+
 import { PlayerCardProps } from "@src/interfaces";
-import { useI18n } from "@src/hooks";
-import { BadgetInfo } from "./BadgetInfo";
+
 import { PlayerCardFooter } from "./PlayerCardFooter";
 
 import SpartansCoinImg from "@src/assets/img/logos/spartanCoin.png";
@@ -23,8 +23,6 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   weight,
   ims,
 }) => {
-  const { t } = useI18n();
-
   return (
     <Link href={`/players/${clubId}`} className="no-underline">
       <div className="relative flex flex-col">

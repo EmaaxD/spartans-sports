@@ -796,7 +796,7 @@ export const NAME_DB = "spartans-sport";
 
 export const top10Clubs = [
   {
-    clubId: "1",
+    clubId: "4",
     club: {
       name: "Club Atlético Halcones Rojos",
       logo: "https://spartans-sport-bucket.s3.sa-east-1.amazonaws.com/upload/footbollCardFour.png",
@@ -804,7 +804,7 @@ export const top10Clubs = [
     rank: 1,
   },
   {
-    clubId: "2",
+    clubId: "24",
     club: {
       name: "Academia Atlética Estrella Plateada",
       logo: AthleticsCardThree,
@@ -812,7 +812,7 @@ export const top10Clubs = [
     rank: 2,
   },
   {
-    clubId: "3",
+    clubId: "5",
     club: {
       name: "Dragones Dorados Basketball Club",
       logo: BascketBallBg,
@@ -820,7 +820,7 @@ export const top10Clubs = [
     rank: 3,
   },
   {
-    clubId: "4",
+    clubId: "7",
     club: {
       name: "Águilas Plateadas Club",
       logo: BascketBallBgThree,
@@ -828,7 +828,7 @@ export const top10Clubs = [
     rank: 4,
   },
   {
-    clubId: "5",
+    clubId: "10",
     club: {
       name: "Academia Tenis Estrella",
       logo: TenisBgTwo,
@@ -836,7 +836,7 @@ export const top10Clubs = [
     rank: 5,
   },
   {
-    clubId: "6",
+    clubId: "11",
     club: {
       name: "Club Tenis Olimpo",
       logo: TenisBgThree,
@@ -844,7 +844,7 @@ export const top10Clubs = [
     rank: 6,
   },
   {
-    clubId: "7",
+    clubId: "14",
     club: {
       name: "Lobos del Sur Rugby Club",
       logo: RugbyBgTwo,
@@ -852,7 +852,7 @@ export const top10Clubs = [
     rank: 7,
   },
   {
-    clubId: "8",
+    clubId: "18",
     club: {
       name: "Club Leones de Acero",
       logo: HockeyCardThree,
@@ -860,7 +860,7 @@ export const top10Clubs = [
     rank: 8,
   },
   {
-    clubId: "9",
+    clubId: "20",
     club: {
       name: "Tigres Azules Volleyball Academy",
       logo: VolleyCardTwo,
@@ -868,7 +868,7 @@ export const top10Clubs = [
     rank: 9,
   },
   {
-    clubId: "10",
+    clubId: "26",
     club: {
       name: "Waves Masters Academy",
       logo: SwimmingCardTwo,

@@ -25,6 +25,10 @@ export interface Club {
   players: Player[];
 }
 
+export interface SelectedClubProps extends Club {
+  category: string;
+}
+
 export interface Category {
   category: string;
   clubes: Club[];

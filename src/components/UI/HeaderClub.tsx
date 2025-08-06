@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
 import { HeaderClubsScreenProps } from "@src/interfaces";
+import { useI18n } from "@src/hooks";
 
 import { MainSelect, SearchInputEffect } from "@src/components/UI";
 import { clubCategories } from "@src/utils/const";
-import { useI18n } from "@src/hooks";
 
 export const HeaderClub: React.FC<HeaderClubsScreenProps> = ({
   title,
@@ -17,7 +17,7 @@ export const HeaderClub: React.FC<HeaderClubsScreenProps> = ({
 
   const categoryMemo = useMemo(() => {
     return clubCategories.map((category) => ({
-      label: category.name,
+      label: t(category.name),
       value: category.id,
     }));
   }, []);

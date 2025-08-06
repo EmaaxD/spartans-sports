@@ -747,47 +747,47 @@ export const joinUsData = [
 export const clubCategories = [
   {
     id: "1",
-    name: "Fútbol",
+    name: "soccer",
     color: cardColors.Fútbol,
   },
   {
     id: "2",
-    name: "Baloncesto",
+    name: "basketball",
     color: cardColors.Baloncesto, // azul oscuro
   },
   {
     id: "3",
-    name: "Tenis",
+    name: "tennis",
     color: cardColors.Tenis, // verde pelota de tenis
   },
   {
     id: "4",
-    name: "Voleibol",
+    name: "volleyball",
     color: cardColors.Voleibol, // púrpura vibrante
   },
   {
     id: "5",
-    name: "Natación",
+    name: "swimming",
     color: cardColors.Natación, // azul agua clara
   },
   {
     id: "6",
-    name: "Atletismo",
+    name: "athletics",
     color: cardColors.Atletismo, // rojo fuerte, energía y velocidad
   },
   {
     id: "7",
-    name: "Rugby",
+    name: "rugby",
     color: cardColors.Rugby, // marrón tierra, robustez
   },
   {
     id: "8",
-    name: "Hockey",
+    name: "hockey",
     color: cardColors.Hockey, // gris oscuro, hielo/pista
   },
   {
     id: "9",
-    name: "Beisbol",
+    name: "beisbol",
     color: cardColors.Beisbol, // fucsia, llamativo y juvenil
   },
 ];
@@ -874,6 +874,229 @@ export const top10Clubs = [
       logo: SwimmingCardTwo,
     },
     rank: 10,
+  },
+];
+
+export const top100Players = [
+  {
+    playerId: "1",
+    player: {
+      name: "Juan Pérez",
+      club: "Club Deportivo Leones Dorados",
+      clubLogo: FootBollBg,
+      logo: PlayerFutbol,
+      value: 500,
+    },
+    rank: 1,
+  },
+  {
+    playerId: "2",
+    player: {
+      name: "Carlos López",
+      club: "Club Atlético Águilas Azules",
+      clubLogo: FootBollTwoBg,
+      logo: PlayerFutbol,
+      value: 300,
+    },
+    rank: 2,
+  },
+  {
+    playerId: "3",
+    player: {
+      name: "Miguel Fernández",
+      club: "Club Deportivo Leones Dorados",
+      clubLogo: FootBollBg,
+      logo: PlayerFutbol,
+      value: 400,
+    },
+    rank: 3,
+  },
+  {
+    playerId: "4",
+    player: {
+      name: "Santiago García",
+      club: "Club Atlético Águilas Azules",
+      clubLogo: FootBollTwoBg,
+      logo: PlayerFutbol,
+      value: 450,
+    },
+    rank: 4,
+  },
+  {
+    playerId: "5",
+    player: {
+      name: "Lucas Martínez",
+      club: "Club Deportivo Leones Dorados",
+      clubLogo: FootBollBg,
+      logo: PlayerFutbol,
+      value: 550,
+    },
+    rank: 5,
+  },
+  {
+    playerId: "6",
+    player: {
+      name: "Andrés Torres",
+      club: "Club Atlético Águilas Azules",
+      clubLogo: FootBollTwoBg,
+      logo: PlayerFutbol,
+      value: 350,
+    },
+    rank: 6,
+  },
+  {
+    playerId: "7",
+    player: {
+      name: "Ana Gómez",
+      club: "Dragones Dorados Basketball Club",
+      clubLogo: BascketBallBg,
+      logo: PlayerFutbol,
+      value: 600,
+    },
+    rank: 7,
+  },
+  {
+    playerId: "8",
+    player: {
+      name: "Luis Martínez",
+      club: "Águilas Plateadas Club",
+      clubLogo: BascketBallBgThree,
+      logo: PlayerFutbol,
+      value: 700,
+    },
+    rank: 8,
+  },
+  {
+    playerId: "9",
+    player: {
+      name: "María Fernández",
+      club: "Academia Tenis Estrella",
+      clubLogo: TenisBgTwo,
+      logo: PlayerFutbol,
+      value: 800,
+    },
+    rank: 9,
+  },
+  {
+    playerId: "10",
+    player: {
+      name: "Carlos Sánchez",
+      club: "Club Tenis Olimpo",
+      clubLogo: TenisBgThree,
+      logo: PlayerFutbol,
+      value: 900,
+    },
+    rank: 10,
+  },
+  {
+    playerId: "11",
+    player: {
+      name: "Pedro Ramírez",
+      club: "Lobos del Sur Rugby Club",
+      clubLogo: RugbyBgTwo,
+      logo: PlayerFutbol,
+      value: 1000,
+    },
+    rank: 11,
+  },
+  {
+    playerId: "12",
+    player: {
+      name: "Lucía Torres",
+      club: "Club Leones de Acero",
+      clubLogo: HockeyCardThree,
+      logo: PlayerFutbol,
+      value: 1100,
+    },
+    rank: 12,
+  },
+  {
+    playerId: "13",
+    player: {
+      name: "Javier López",
+      club: "Tigres Azules Volleyball Academy",
+      clubLogo: VolleyCardTwo,
+      logo: PlayerFutbol,
+      value: 1200,
+    },
+    rank: 13,
+  },
+  {
+    playerId: "14",
+    player: {
+      name: "Sofía Martínez",
+      club: "Waves Masters Academy",
+      clubLogo: SwimmingCardTwo,
+      logo: PlayerFutbol,
+      value: 1300,
+    },
+    rank: 14,
+  },
+  {
+    playerId: "15",
+    player: {
+      name: "Diego Pérez",
+      club: "Club Deportivo Leones Dorados",
+      clubLogo: FootBollBg,
+      logo: PlayerFutbol,
+      value: 1400,
+    },
+    rank: 15,
+  },
+  {
+    playerId: "16",
+    player: {
+      name: "Laura González",
+      club: "Club Atlético Águilas Azules",
+      clubLogo: FootBollTwoBg,
+      logo: PlayerFutbol,
+      value: 1500,
+    },
+    rank: 16,
+  },
+  {
+    playerId: "17",
+    player: {
+      name: "Fernando Ruiz",
+      club: "Dragones Dorados Basketball Club",
+      clubLogo: BascketBallBg,
+      logo: PlayerFutbol,
+      value: 1600,
+    },
+    rank: 17,
+  },
+  {
+    playerId: "18",
+    player: {
+      name: "Isabel Martínez",
+      club: "Águilas Plateadas Club",
+      clubLogo: BascketBallBgThree,
+      logo: PlayerFutbol,
+      value: 1700,
+    },
+    rank: 18,
+  },
+  {
+    playerId: "19",
+    player: {
+      name: "Roberto Sánchez",
+      club: "Academia Tenis Estrella",
+      clubLogo: TenisBgTwo,
+      logo: PlayerFutbol,
+      value: 1800,
+    },
+    rank: 19,
+  },
+  {
+    playerId: "20",
+    player: {
+      name: "Patricia López",
+      club: "Club Tenis Olimpo",
+      clubLogo: TenisBgThree,
+      logo: PlayerFutbol,
+      value: 1900,
+    },
+    rank: 20,
   },
 ];
 
@@ -2750,4 +2973,10 @@ export const clubes = [
       },
     ],
   },
+];
+
+export const templateCategories = [
+  { value: "player", label: "player" },
+  { value: "club", label: "club" },
+  { value: "danceAcademy", label: "danceAcademy" },
 ];

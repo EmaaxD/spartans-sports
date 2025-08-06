@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { GoSearch } from "react-icons/go";
 
-import { useState } from "react";
+import { useI18n } from "@src/hooks";
 
 interface SearchInputEffectProps {
   search: string;
@@ -12,6 +13,8 @@ export const SearchInputEffect: React.FC<SearchInputEffectProps> = ({
   handleSearch,
 }) => {
   const [active, setActive] = useState(true);
+
+  const { t } = useI18n();
 
   return (
     <>
@@ -28,7 +31,7 @@ export const SearchInputEffect: React.FC<SearchInputEffectProps> = ({
           </div>
           <input
             className="search_input"
-            placeholder="Buscar cursos..."
+            placeholder={t("searchTxt")}
             type="text"
             value={search}
             onChange={({ target }) => handleSearch(target.value)}

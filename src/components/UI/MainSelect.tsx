@@ -1,4 +1,5 @@
 import { Select } from "@headlessui/react";
+import { useI18n } from "@src/hooks";
 import { MainSelectDataOptionProps } from "@src/interfaces";
 
 interface MainSelectProps {
@@ -18,6 +19,8 @@ export const MainSelect: React.FC<MainSelectProps> = ({
   value,
   onHandleChangeValue,
 }) => {
+  const { t } = useI18n();
+
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     onHandleChangeValue(e.target.value);
   };
@@ -45,7 +48,7 @@ export const MainSelect: React.FC<MainSelectProps> = ({
               value={option.value}
               className="text-black capitalize"
             >
-              {option.label}
+              {t(option.label)}
             </option>
           ))}
       </Select>

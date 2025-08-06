@@ -271,3 +271,8 @@ header {
     transform: scale(1.01);
   }
 }
+
+.custom_dropzone {
+  min-width: 100% !important;
+  max-width: 100% !important;
+}

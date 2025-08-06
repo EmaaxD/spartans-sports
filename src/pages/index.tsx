@@ -15,6 +15,7 @@ import {
   MainBanner,
   SponsorsSection,
   TopClubs,
+  TopPlayers,
 } from "@src/components/home";
 import { ClubCard } from "@src/components/club";
 
@@ -47,6 +48,13 @@ export default function Home() {
             titleSection={t("greeting")}
           >
             <TopClubs />
+          </ClubsHomeContainer>
+
+          <ClubsHomeContainer
+            idSection="topPlayersSection"
+            titleSection={t("top100Players")}
+          >
+            <TopPlayers />
           </ClubsHomeContainer>
 
           {clubs &&

@@ -1,4 +1,5 @@
 import { Category, Club, SelectedClubProps } from "./clubs";
+import { TypeFormProps } from "./ui";
 
 export interface UiProviderProps {
   openLoginDialog: boolean;
@@ -22,4 +23,9 @@ export interface ClubsProviderProps {
   selectedClub: SelectedClubProps | null;
   handleSelectedClub: (club: SelectedClubProps | null) => void;
   handleGetClub: (clubId: string) => void;
+}
+
+export interface UploadFormProviderProps {
+  typeForm: TypeFormProps;
+  handleSetTypeForm: (typeForm: TypeFormProps) => void;
 }

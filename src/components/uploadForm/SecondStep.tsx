@@ -1,22 +1,46 @@
-import { useState } from "react";
-import { FiUpload } from "react-icons/fi";
-
-import { useI18n } from "@src/hooks";
+import { useContext } from "react";
 import { FileUploader } from "react-drag-drop-files";
+import { FiUpload, FiAlertCircle } from "react-icons/fi";
+
+import { useI18n, useFileUpload } from "@src/hooks";
+import { uploadFormContext } from "@src/context/uploadForm";
+
+import { ProcessedDataView } from "./ProcessedDataView";
 
 const fileTypes = ["XLSX", "CSV"];
 
 export const SecondStep = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const { typeForm } = useContext(uploadFormContext);
 
   const { t } = useI18n();
+  const {
+    file,
+    isProcessing,
+    processedData,
+    termsAccepted,
+    error,
+    setFile,
+    setTermsAccepted,
+    processFile,
+    clearData,
+  } = useFileUpload();
 
-  const handleFileChange = (file: File | File[]) => {
-    if (Array.isArray(file)) {
-      setFile(file[0] || null);
-    } else {
-      setFile(file);
-    }
+  const handleFileChange = (uploadedFile: File | File[]) => {
+    const fileToSet = Array.isArray(uploadedFile)
+      ? uploadedFile[0]
+      : uploadedFile;
+    setFile(fileToSet || null);
+  };
+
+  const handleSaveData = (data: any[]) => {
+    // Aquí puedes implementar la lógica para guardar los datos en tu base de datos
+    console.log("Guardando datos:", data);
+    // Ejemplo: enviar a API
+    // await saveDataToAPI(data, selectedTemplateType);
+  };
+
+  const handleUpload = async () => {
+    await processFile();
   };
 
   return (
@@ -37,11 +61,31 @@ export const SecondStep = () => {
           hoverTitle={t("dropFileHere")}
           maxSize={10}
         />
-        {/* input type check for term and condition */}
+
+        {/* Mostrar errores */}
+        {error && (
+          <div className="flex items-center gap-2 p-3 bg-red-500/20 border border-red-500 rounded-lg">
+            <FiAlertCircle className="text-red-400 flex-shrink-0" />
+            <span className="text-red-400 text-sm">{error}</span>
+          </div>
+        )}
+
+        {/* Mostrar resultado del procesamiento */}
+        {processedData && typeForm && (
+          <ProcessedDataView
+            data={processedData}
+            templateType={typeForm}
+            onSaveData={handleSaveData}
+          />
+        )}
+
+        {/* Términos y condiciones */}
         <div className="flex items-center gap-2 mt-3">
           <input
             type="checkbox"
             id="terms"
+            checked={termsAccepted}
+            onChange={(e) => setTermsAccepted(e.target.checked)}
             className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
           />
           <label htmlFor="terms" className="text-white">
@@ -49,10 +93,25 @@ export const SecondStep = () => {
           </label>
         </div>
 
-        <button className="w-fit bg-red-600 text-white flex items-center gap-1 px-4 py-2 rounded-lg hover:bg-red-700 transition-colors mt-5">
+        {/* Botón de subida */}
+        <button
+          onClick={handleUpload}
+          disabled={!file || !typeForm || !termsAccepted || isProcessing}
+          className="w-fit bg-red-600 text-white flex items-center gap-1 px-4 py-2 rounded-lg hover:bg-red-700 transition-colors mt-5 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           <FiUpload />
-          {t("uploadBtn")}
+          {isProcessing ? "Procesando..." : t("uploadBtn")}
         </button>
+
+        {/* Botón para limpiar datos */}
+        {processedData && (
+          <button
+            onClick={clearData}
+            className="w-fit bg-gray-600 text-white flex items-center gap-1 px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+          >
+            Limpiar y subir otro archivo
+          </button>
+        )}
       </div>
     </>
   );

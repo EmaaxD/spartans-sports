@@ -94,3 +94,5 @@ export interface PlayerCardFooterProps {
   ims: string;
   colorCard: string;
 }
+
+export type TypeFormProps = "player" | "club" | "danceAcademy" | null;

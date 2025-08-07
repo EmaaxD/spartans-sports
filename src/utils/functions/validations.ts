@@ -59,3 +59,19 @@ export const formatPrice = (
 export function randomId(): string {
   return Math.random().toString(36).substr(2, 9);
 }
+
+export const cleanString = (value: any): string => {
+  if (value === null || value === undefined) return "";
+  return value.toString().trim();
+};
+
+export const parseNumber = (value: any): number => {
+  if (value === null || value === undefined || value === "") return 0;
+  const num = parseFloat(value.toString().replace(",", "."));
+  return isNaN(num) ? 0 : num;
+};
+
+export const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+};

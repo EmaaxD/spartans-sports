@@ -21,6 +21,7 @@ import { AnimationAosContainer } from "@src/components/containers";
 import FaviconLogo from "@src/assets/img/logos/logo-icon-color.png";
 import { SyncLanguage } from "@src/components/HOC";
 import { ClubsProvider } from "@src/context/clubs";
+import { UploadFormProvider } from "@src/context/uploadForm";
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
@@ -34,16 +35,18 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <AuthProvider>
           <UiProvider>
             <ClubsProvider>
-              <AnimationAosContainer>
-                <SkeletonTheme baseColor="#d7d4d4" highlightColor="#cbcbcb">
-                  <SyncLanguage />
+              <UploadFormProvider>
+                <AnimationAosContainer>
+                  <SkeletonTheme baseColor="#d7d4d4" highlightColor="#cbcbcb">
+                    <SyncLanguage />
 
-                  <MainLayout>
-                    <Toaster />
-                    <Component {...pageProps} />
-                  </MainLayout>
-                </SkeletonTheme>
-              </AnimationAosContainer>
+                    <MainLayout>
+                      <Toaster />
+                      <Component {...pageProps} />
+                    </MainLayout>
+                  </SkeletonTheme>
+                </AnimationAosContainer>
+              </UploadFormProvider>
             </ClubsProvider>
           </UiProvider>
         </AuthProvider>

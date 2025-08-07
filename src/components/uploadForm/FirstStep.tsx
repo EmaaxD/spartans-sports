@@ -1,19 +1,27 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { MdDownload } from "react-icons/md";
 
-import { useI18n } from "@src/hooks";
+import { useI18n, useTemplates } from "@src/hooks";
+import { uploadFormContext } from "@src/context/uploadForm";
 
 import { MainSelect } from "../UI";
 
 import { templateCategories } from "@src/utils/const";
 
 export const FirstStep = () => {
-  const [selectedOption, setSelectedOption] = useState("");
+  const { handleSetTypeForm } = useContext(uploadFormContext);
 
   const { t } = useI18n();
+  const {
+    selectedTemplate,
+    isDownloading,
+    setSelectedTemplate,
+    handleDownload,
+  } = useTemplates();
 
   const handleChange = (value: string) => {
-    setSelectedOption(value);
+    setSelectedTemplate(value);
+    handleSetTypeForm(value as any);
   };
 
   return (
@@ -28,22 +36,22 @@ export const FirstStep = () => {
             label={t("labelSelectOption")}
             name="options"
             optionDisabled={t("labelSelectOption")}
-            value={selectedOption}
+            value={selectedTemplate}
             options={templateCategories}
             onHandleChangeValue={handleChange}
           />
         </div>
 
-        {selectedOption && (
+        {selectedTemplate && (
           <div className="w-fit">
-            <a
-              href={`/templates/${selectedOption}.xlsx`}
-              download={`${selectedOption}.xlsx`}
-              className="flex flex-row items-center gap-2 text-white bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+            <button
+              onClick={handleDownload}
+              disabled={isDownloading}
+              className="flex flex-row items-center gap-2 text-white bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <MdDownload size={20} />
-              {t("download")}
-            </a>
+              {isDownloading ? t("downloading") : t("download")}
+            </button>
           </div>
         )}
       </div>

@@ -1,4 +1,7 @@
 import * as XLSX from "xlsx";
+// Nota: Para listas desplegables usaremos ExcelJS en la plantilla de jugadores
+// porque la librería xlsx (SheetJS community) no escribe validaciones de datos de forma fiable.
+// Se hace import dinámico para evitar problemas en SSR de Next.js.
 
 // Interfaces para las plantillas
 export interface PlayerTemplate {
@@ -19,6 +22,17 @@ export interface PlayerTemplate {
   cintura: string;
   piernaDominante: string;
   piernaDirectora: string;
+  dorsiflexionTobilloIzq: string;
+  dorsiflexionTobilloDer: string;
+  manoDer: string;
+  manoIzq: string;
+  indiceQ: string;
+  pieDer: string;
+  pieIzq: string;
+  sentadillaProfunda: string;
+  capacidadPulmonarTotal: string;
+  coordinacion: string;
+  capacidadPulmunarResidual: string;
   posicion: string;
   sexo: string;
   clase: string;
@@ -50,44 +64,11 @@ export interface DanceAcademyTemplate {
 }
 
 // Función para generar plantilla de jugadores
-export const generatePlayerTemplate = (): Uint8Array => {
-  // Crear múltiples filas vacías para facilitar el llenado masivo
-  const emptyRow: PlayerTemplate = {
-    nombre: "",
-    apellido: "",
-    edad: 0,
-    peso: 0,
-    altura: 0,
-    alturaTorso: 0,
-    envergaduraBrazos: 0,
-    imc: 0,
-    tmb: 0,
-    biotipo: "",
-    dominancia: "",
-    ojoDirector: "",
-    hombro: "",
-    brazoDirector: "",
-    cintura: "",
-    piernaDominante: "",
-    piernaDirectora: "",
-    posicion: "",
-    sexo: "",
-    clase: "",
-    fechaNacimiento: "",
-    localidad: "",
-    escuelaClub: "",
-    contacto: "",
-    deporte: "",
-  };
+export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
+  const ExcelJS = await import("exceljs");
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Jugadores");
 
-  // Generar 50 filas vacías para más capacidad
-  const data: PlayerTemplate[] = Array(1)
-    .fill(null)
-    .map(() => ({ ...emptyRow }));
-
-  const worksheet = XLSX.utils.json_to_sheet(data);
-
-  // Agregar comentarios/validaciones a los headers
   const headers = [
     "nombre",
     "apellido",
@@ -106,6 +87,8 @@ export const generatePlayerTemplate = (): Uint8Array => {
     "cintura",
     "piernaDominante",
     "piernaDirectora",
+    "dorsiflexionTobilloIzq",
+    "dorsiflexionTobilloDer",
     "posicion",
     "sexo",
     "clase",
@@ -114,63 +97,159 @@ export const generatePlayerTemplate = (): Uint8Array => {
     "escuelaClub",
     "contacto",
     "deporte",
+    "manoDer",
+    "manoIzq",
+    "indiceQ",
+    "pieDer",
+    "pieIzq",
+    "sentadillaProfunda",
+    "capacidadPulmonarTotal",
+    "coordinacion",
+    "capacidadPulmunarResidual",
   ];
+  worksheet.addRow(headers);
 
-  // Ajustar el ancho de las columnas
-  const colWidths = [
-    { wch: 15 }, // nombre
-    { wch: 15 }, // apellido
-    { wch: 8 }, // edad
-    { wch: 10 }, // peso (kg)
-    { wch: 10 }, // altura (cm)
-    { wch: 12 }, // alturaTorso (cm)
-    { wch: 18 }, // envergaduraBrazos (cm)
-    { wch: 8 }, // imc
-    { wch: 10 }, // tmb (calorías)
-    { wch: 12 }, // biotipo
-    { wch: 12 }, // dominancia
-    { wch: 12 }, // ojoDirector
-    { wch: 10 }, // hombro
-    { wch: 14 }, // brazoDirector
-    { wch: 10 }, // cintura
-    { wch: 14 }, // piernaDominante
-    { wch: 14 }, // piernaDirectora
-    { wch: 15 }, // posicion
-    { wch: 10 }, // sexo (M/F)
-    { wch: 10 }, // clase
-    { wch: 15 }, // fechaNacimiento (DD/MM/YYYY)
-    { wch: 15 }, // localidad
-    { wch: 20 }, // escuelaClub
-    { wch: 20 }, // contacto (email/teléfono)
-    { wch: 15 }, // deporte
-  ];
-  worksheet["!cols"] = colWidths;
+  // 50 filas vacías
+  for (let i = 0; i < 50; i++) worksheet.addRow([]);
 
-  // Agregar validaciones de datos (listas desplegables)
-  const dataValidations: any[] = [];
-  const totalRows = data.length + 1; // +1 para incluir header
-
-  // Validaciones SOLO para campos de dominancia (columnas K-Q, índices 10-16)
-  const dominanceColumns = ["K", "L", "M", "N", "O", "P", "Q"]; // dominancia, ojoDirector, hombro, brazoDirector, cintura, piernaDominante, piernaDirectora
-
-  dominanceColumns.forEach((col) => {
-    for (let row = 2; row <= totalRows; row++) {
-      dataValidations.push({
-        sqref: `${col}${row}`,
+  // Validaciones (columnas K-Q)
+  const selectCols = ["K", "L", "M", "N", "O", "P", "Q"]; // laterality
+  const optionList = ["Izq", "Der"]; // sin punto
+  const formula = `"${optionList.join(",")}"`;
+  const dorsiflexionCols = ["R", "S"]; // nuevas columnas
+  const dorsiflexionOptions = ["A", "B", "C", "D"];
+  const dorsiflexionFormula = `"${dorsiflexionOptions.join(",")}"`;
+  selectCols.forEach((col) => {
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${col}${row}`);
+      cell.dataValidation = {
         type: "list",
         allowBlank: false,
-        formula1: "Izq.,Der.",
-      });
+        formulae: [formula],
+        showErrorMessage: true,
+        errorTitle: "Valor inválido",
+        error: 'Seleccione "Izq" o "Der"',
+        showInputMessage: true,
+        promptTitle: "Opciones",
+        prompt: "Use la flecha o Alt+↓ para ver el listado", // guía de uso
+      } as any;
     }
   });
 
-  // Agregar las validaciones al worksheet
-  worksheet["!dataValidations"] = dataValidations;
+  dorsiflexionCols.forEach((col) => {
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${col}${row}`);
+      cell.dataValidation = {
+        type: "list",
+        allowBlank: true,
+        formulae: [dorsiflexionFormula],
+        showErrorMessage: true,
+        errorTitle: "Valor inválido",
+        error: "Seleccione A, B, C o D",
+        showInputMessage: true,
+        promptTitle: "Dorsiflexión",
+        prompt: "Clasifique A-D",
+      } as any;
+    }
+  });
 
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Jugadores");
+  // sentadillaProfunda dropdown (A-D) - compute column letter dynamically
+  const sentadillaIndex = headers.indexOf("sentadillaProfunda") + 1;
+  const indexToCol = (n: number) => {
+    let s = "";
+    while (n > 0) {
+      const m = (n - 1) % 26;
+      s = String.fromCharCode(65 + m) + s;
+      n = Math.floor((n - 1) / 26);
+    }
+    return s;
+  };
+  const sentadillaCol = indexToCol(sentadillaIndex);
+  for (let row = 2; row <= 51; row++) {
+    const cell = worksheet.getCell(`${sentadillaCol}${row}`);
+    cell.dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formulae: [dorsiflexionFormula],
+      showErrorMessage: true,
+      errorTitle: "Valor inválido",
+      error: "Seleccione A, B, C o D",
+      showInputMessage: true,
+      promptTitle: "Sentadilla Profunda",
+      prompt: "Clasifique A-D",
+    } as any;
+  }
 
-  return XLSX.write(workbook, { type: "array", bookType: "xlsx" });
+  // capacidadPulmonarTotal dropdown (A-D)
+  const capacidadIndex = headers.indexOf("capacidadPulmonarTotal") + 1;
+  if (capacidadIndex > 0) {
+    const capacidadCol = indexToCol(capacidadIndex);
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${capacidadCol}${row}`);
+      cell.dataValidation = {
+        type: "list",
+        allowBlank: true,
+        formulae: [dorsiflexionFormula],
+        showErrorMessage: true,
+        errorTitle: "Valor inválido",
+        error: "Seleccione A, B, C o D",
+        showInputMessage: true,
+        promptTitle: "Capacidad Pulmonar",
+        prompt: "Clasifique A-D",
+      } as any;
+    }
+  }
+
+  // coordinacion dropdown (A-D)
+  const coordinacionIndex = headers.indexOf("coordinacion") + 1;
+  if (coordinacionIndex > 0) {
+    const coordinacionCol = indexToCol(coordinacionIndex);
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${coordinacionCol}${row}`);
+      cell.dataValidation = {
+        type: "list",
+        allowBlank: true,
+        formulae: [dorsiflexionFormula],
+        showErrorMessage: true,
+        errorTitle: "Valor inválido",
+        error: "Seleccione A, B, C o D",
+        showInputMessage: true,
+        promptTitle: "Coordinación",
+        prompt: "Clasifique A-D",
+      } as any;
+    }
+  }
+
+  // capacidadPulmunarResidual dropdown (A-D) - corrección
+  const capResidIndex = headers.indexOf("capacidadPulmunarResidual") + 1;
+  if (capResidIndex > 0) {
+    const capResidCol = indexToCol(capResidIndex);
+    const letters = ["A", "B", "C", "D"]; // reducido a A-D
+    const lettersFormula = `"${letters.join(",")}"`;
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${capResidCol}${row}`);
+      cell.dataValidation = {
+        type: "list",
+        allowBlank: true,
+        formulae: [lettersFormula],
+        showErrorMessage: true,
+        errorTitle: "Valor inválido",
+        error: "Seleccione A, B, C o D",
+        showInputMessage: true,
+        promptTitle: "Capacidad Pulm. Residual",
+        prompt: "Seleccione A-D",
+      } as any;
+    }
+  }
+
+  // Anchos columnas
+  headers.forEach((h, i) => {
+    const col = worksheet.getColumn(i + 1);
+    col.width = Math.max(h.length + 2, 14);
+  });
+
+  const buffer = (await workbook.xlsx.writeBuffer()) as ArrayBuffer;
+  return new Uint8Array(buffer);
 };
 
 // Función para generar plantilla de clubes
@@ -246,10 +325,12 @@ export const generateDanceAcademyTemplate = (): Uint8Array => {
 };
 
 // Función principal para generar plantillas
-export const generateTemplate = (templateType: string): Uint8Array | null => {
+export const generateTemplate = async (
+  templateType: string
+): Promise<Uint8Array | null> => {
   switch (templateType) {
     case "player":
-      return generatePlayerTemplate();
+      return await generatePlayerTemplate();
     case "club":
       return generateClubTemplate();
     case "danceAcademy":
@@ -260,25 +341,30 @@ export const generateTemplate = (templateType: string): Uint8Array | null => {
 };
 
 // Función para descargar el archivo
-export const downloadTemplate = (templateType: string, fileName?: string) => {
-  const templateData = generateTemplate(templateType);
-
+export const downloadTemplate = async (
+  templateType: string,
+  fileName?: string
+) => {
+  const templateData = await generateTemplate(templateType);
   if (!templateData) {
     console.error("Tipo de plantilla no válido");
     return;
   }
-
-  const blob = new Blob([templateData], {
+  // Asegurar ArrayBuffer estándar para Blob
+  const ab = templateData.buffer.slice(
+    templateData.byteOffset,
+    templateData.byteOffset + templateData.byteLength
+  ) as ArrayBuffer;
+  const blob = new Blob([ab as ArrayBuffer], {
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
-
   const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = fileName || `${templateType}-template.xlsx`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName || `${templateType}-template.xlsx`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
   URL.revokeObjectURL(url);
 };
 
@@ -319,6 +405,17 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       cintura: "Der.",
       piernaDominante: "Der.",
       piernaDirectora: "Der.",
+      dorsiflexionTobilloIzq: "",
+      dorsiflexionTobilloDer: "",
+      manoDer: "",
+      manoIzq: "",
+      indiceQ: "",
+      pieDer: "",
+      pieIzq: "",
+      sentadillaProfunda: "",
+      capacidadPulmonarTotal: "",
+      coordinacion: "",
+      capacidadPulmunarResidual: "",
       posicion: "Delantero",
       sexo: "M",
       clase: "2002",
@@ -346,6 +443,17 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       cintura: "Izq.",
       piernaDominante: "Izq.",
       piernaDirectora: "Izq.",
+      dorsiflexionTobilloIzq: "",
+      dorsiflexionTobilloDer: "",
+      manoDer: "",
+      manoIzq: "",
+      indiceQ: "",
+      pieDer: "",
+      pieIzq: "",
+      sentadillaProfunda: "",
+      capacidadPulmonarTotal: "",
+      coordinacion: "",
+      capacidadPulmunarResidual: "",
       posicion: "Base",
       sexo: "F",
       clase: "2005",
@@ -385,6 +493,12 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
     { wch: 20 }, // escuelaClub
     { wch: 25 }, // contacto
     { wch: 15 }, // deporte
+    { wch: 12 }, // manoDer
+    { wch: 12 }, // manoIzq
+    { wch: 10 }, // indiceQ
+    { wch: 12 }, // pieDer
+    { wch: 12 }, // pieIzq
+    { wch: 18 }, // sentadillaProfunda
   ];
   worksheet["!cols"] = colWidths;
 

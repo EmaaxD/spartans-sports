@@ -3,12 +3,11 @@ const fs = require("fs");
 const path = require("path");
 const XLSX = require("xlsx");
 
-// Función para generar plantilla de jugadores
+// Función para generar plantilla de jugadores (con listas desplegables en campos de dominancia)
 async function generatePlayerTemplate() {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("Jugadores");
 
-  // Encabezados
   const headers = [
     "nombre",
     "apellido",
@@ -27,6 +26,8 @@ async function generatePlayerTemplate() {
     "cintura",
     "piernaDominante",
     "piernaDirectora",
+    "dorsiflexionTobilloIzq",
+    "dorsiflexionTobilloDer",
     "posicion",
     "sexo",
     "clase",
@@ -35,38 +36,135 @@ async function generatePlayerTemplate() {
     "escuelaClub",
     "contacto",
     "deporte",
+    "manoDer",
+    "manoIzq",
+    "indiceQ",
+    "pieDer",
+    "pieIzq",
+    "sentadillaProfunda",
+    "capacidadPulmonarTotal",
+    "coordinacion",
+    "capacidadPulmunarResidual",
   ];
   worksheet.addRow(headers);
 
-  // Fila vacía para cargar datos
-  worksheet.addRow([]);
+  // Agregar 50 filas vacías para carga masiva
+  for (let i = 0; i < 50; i++) {
+    worksheet.addRow([]);
+  }
 
-  // Lista de opciones
-  const optionList = ["Izq", "Der"];
-  const selectCols = ["K", "L", "M", "N", "O", "P", "Q"];
+  // Columnas con lista desplegable (dominancia y lateridad)
+  const selectColsLaterality = ["K", "L", "M", "N", "O", "P", "Q"]; // laterality existing
+  const optionListLaterality = ["Izq", "Der"]; // Opciones visibles
+  const listFormulaLaterality = `"${optionListLaterality.join(",")}"`;
 
-  selectCols.forEach((col) => {
-    // Fila 2 (porque la 1 es encabezado)
-    const cell = worksheet.getCell(`${col}2`);
+  // New dorsiflexion columns (after piernaDirectora): now columns R and S (because we inserted 2 headers before posicion)
+  // Recompute: A nombre ... Q piernaDirectora, R dorsiflexionTobilloIzq, S dorsiflexionTobilloDer, T posicion, U sexo ...
+  const dorsiflexionCols = ["R", "S"]; // dorsiflexionTobilloIzq, dorsiflexionTobilloDer
+  const dorsiflexionOptions = ["A", "B", "C", "D"];
+  const dorsiflexionFormula = `"${dorsiflexionOptions.join(",")}"`;
+  // Nueva columna sentadillaProfunda (columna AG después de pieIzq AF)
+  const sentadillaCol = "AG";
+  // Nueva columna capacidadPulmonarTotal (columna AH)
+  const capacidadPulmonarCol = "AH";
+  // Nueva columna coordinacion (columna AI)
+  const coordinacionCol = "AI";
+  // Nueva columna capacidadPulmunarResidual (columna AJ)
+  const capacidadPulmunarResidualCol = "AJ";
+
+  // Aplicar validación a cada celda de esas columnas (filas 2 a 51)
+  selectColsLaterality.forEach((col) => {
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${col}${row}`);
+      cell.dataValidation = {
+        type: "list",
+        allowBlank: false,
+        formulae: [listFormulaLaterality],
+        showErrorMessage: true,
+        errorTitle: "Valor inválido",
+        error: 'Debe seleccionar "Izq" o "Der"',
+      };
+    }
+  });
+
+  // Apply dorsiflexion validations
+  dorsiflexionCols.forEach((col, idx) => {
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${col}${row}`);
+      cell.dataValidation = {
+        type: "list",
+        allowBlank: true,
+        formulae: [dorsiflexionFormula],
+        showErrorMessage: true,
+        errorTitle: "Valor inválido",
+        error: "Seleccione A, B, C o D",
+      };
+    }
+  });
+
+  // Validación para sentadillaProfunda (A-D) en columna AG
+  for (let row = 2; row <= 51; row++) {
+    const cell = worksheet.getCell(`${sentadillaCol}${row}`);
     cell.dataValidation = {
       type: "list",
-      allowBlank: false,
-      formulae: [`"${optionList.join(",")}"`],
+      allowBlank: true,
+      formulae: [dorsiflexionFormula],
       showErrorMessage: true,
       errorTitle: "Valor inválido",
-      error: `Debe seleccionar "Izq" o "Der"`,
+      error: "Seleccione A, B, C o D",
     };
-  });
+  }
 
-  // Ajustar ancho de columnas
+  // Validación para capacidadPulmonarTotal (A-D) en columna AH
+  for (let row = 2; row <= 51; row++) {
+    const cell = worksheet.getCell(`${capacidadPulmonarCol}${row}`);
+    cell.dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formulae: [dorsiflexionFormula],
+      showErrorMessage: true,
+      errorTitle: "Valor inválido",
+      error: "Seleccione A, B, C o D",
+    };
+  }
+
+  // Validación para coordinacion (A-D) en columna AI
+  for (let row = 2; row <= 51; row++) {
+    const cell = worksheet.getCell(`${coordinacionCol}${row}`);
+    cell.dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formulae: [dorsiflexionFormula],
+      showErrorMessage: true,
+      errorTitle: "Valor inválido",
+      error: "Seleccione A, B, C o D",
+    };
+  }
+
+  // Validación para capacidadPulmunarResidual (A-D) en columna AJ (corrección)
+  const letrasAZ = ["A", "B", "C", "D"]; // reducido a A-D
+  const formulaAZ = `"${letrasAZ.join(",")}"`;
+  for (let row = 2; row <= 51; row++) {
+    const cell = worksheet.getCell(`${capacidadPulmunarResidualCol}${row}`);
+    cell.dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formulae: [formulaAZ],
+      showErrorMessage: true,
+      errorTitle: "Valor inválido",
+      error: "Seleccione A, B, C o D",
+    };
+  }
+
+  // Ajustar ancho de columnas (un poco más amplio para textos largos)
   headers.forEach((_, idx) => {
-    worksheet.getColumn(idx + 1).width = 15;
+    const col = worksheet.getColumn(idx + 1);
+    col.width = Math.max(headers[idx].length + 2, 15);
   });
 
-  // Guardar archivo
-  const filePath = path.join(__dirname, "player.xlsx");
-  await workbook.xlsx.writeFile(filePath);
-  console.log(`✅ Archivo creado en: ${filePath}`);
+  // Devolver buffer en lugar de escribir directamente aquí
+  const arrayBuffer = await workbook.xlsx.writeBuffer();
+  return Buffer.from(arrayBuffer);
 }
 
 // Función para generar plantilla de clubes
@@ -141,10 +239,10 @@ const generateDanceAcademyTemplate = () => {
   return XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
 };
 
-const generateTemplate = (templateType: any) => {
+const generateTemplate = async (templateType: string) => {
   switch (templateType) {
     case "player":
-      return generatePlayerTemplate();
+      return await generatePlayerTemplate();
     case "club":
       return generateClubTemplate();
     case "danceAcademy":
@@ -162,19 +260,20 @@ if (!fs.existsSync(publicTemplatesDir)) {
   fs.mkdirSync(publicTemplatesDir, { recursive: true });
 }
 
-// Generar cada plantilla
-templateTypes.forEach((templateType) => {
-  try {
-    const templateData = generateTemplate(templateType);
-    if (templateData) {
-      const filePath = path.join(publicTemplatesDir, `${templateType}.xlsx`);
-      fs.writeFileSync(filePath, templateData);
-      console.log(`✅ Generated: ${templateType}.xlsx`);
+// Ejecutar generación (manejo async para player)
+(async () => {
+  for (const templateType of templateTypes) {
+    try {
+      const templateData = await generateTemplate(templateType);
+      if (templateData) {
+        const filePath = path.join(publicTemplatesDir, `${templateType}.xlsx`);
+        fs.writeFileSync(filePath, templateData);
+        console.log(`✅ Generated: ${templateType}.xlsx`);
+      }
+    } catch (error) {
+      console.error(`❌ Error generating ${templateType}:`, error);
     }
-  } catch (error) {
-    console.error(`❌ Error generating ${templateType}:`, error);
   }
-});
-
-console.log("\n🎉 All templates generated successfully!");
-console.log(`📁 Location: ${publicTemplatesDir}`);
+  console.log("\n🎉 All templates generated successfully!");
+  console.log(`📁 Location: ${publicTemplatesDir}`);
+})();

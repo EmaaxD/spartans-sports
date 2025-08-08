@@ -3,21 +3,19 @@ import { FileUploader } from "react-drag-drop-files";
 import { FiUpload, FiAlertCircle } from "react-icons/fi";
 
 import { useI18n, useFileUpload } from "@src/hooks";
-import { uploadFormContext } from "@src/context/uploadForm";
 
 import { ProcessedDataView } from "./ProcessedDataView";
 
 const fileTypes = ["XLSX", "CSV"];
 
 export const SecondStep = () => {
-  const { typeForm } = useContext(uploadFormContext);
-
   const { t } = useI18n();
   const {
     file,
     isProcessing,
     processedData,
     termsAccepted,
+    selectedTemplateType,
     error,
     setFile,
     setTermsAccepted,
@@ -71,10 +69,10 @@ export const SecondStep = () => {
         )}
 
         {/* Mostrar resultado del procesamiento */}
-        {processedData && typeForm && (
+        {processedData && selectedTemplateType && (
           <ProcessedDataView
             data={processedData}
-            templateType={typeForm}
+            templateType={selectedTemplateType}
             onSaveData={handleSaveData}
           />
         )}
@@ -96,7 +94,9 @@ export const SecondStep = () => {
         {/* Botón de subida */}
         <button
           onClick={handleUpload}
-          disabled={!file || !typeForm || !termsAccepted || isProcessing}
+          disabled={
+            !file || !selectedTemplateType || !termsAccepted || isProcessing
+          }
           className="w-fit bg-red-600 text-white flex items-center gap-1 px-4 py-2 rounded-lg hover:bg-red-700 transition-colors mt-5 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <FiUpload />

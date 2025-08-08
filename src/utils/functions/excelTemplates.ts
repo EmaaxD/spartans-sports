@@ -7,6 +7,18 @@ export interface PlayerTemplate {
   edad: number;
   peso: number;
   altura: number;
+  alturaTorso: number;
+  envergaduraBrazos: number;
+  imc: number;
+  tmb: number;
+  biotipo: string;
+  dominancia: string;
+  ojoDirector: string;
+  hombro: string;
+  brazoDirector: string;
+  cintura: string;
+  piernaDominante: string;
+  piernaDirectora: string;
   posicion: string;
   sexo: string;
   clase: string;
@@ -46,6 +58,18 @@ export const generatePlayerTemplate = (): Uint8Array => {
     edad: 0,
     peso: 0,
     altura: 0,
+    alturaTorso: 0,
+    envergaduraBrazos: 0,
+    imc: 0,
+    tmb: 0,
+    biotipo: "",
+    dominancia: "",
+    ojoDirector: "",
+    hombro: "",
+    brazoDirector: "",
+    cintura: "",
+    piernaDominante: "",
+    piernaDirectora: "",
     posicion: "",
     sexo: "",
     clase: "",
@@ -56,7 +80,7 @@ export const generatePlayerTemplate = (): Uint8Array => {
     deporte: "",
   };
 
-  // Generar 1 filas vacías para más capacidad
+  // Generar 50 filas vacías para más capacidad
   const data: PlayerTemplate[] = Array(1)
     .fill(null)
     .map(() => ({ ...emptyRow }));
@@ -70,6 +94,18 @@ export const generatePlayerTemplate = (): Uint8Array => {
     "edad",
     "peso",
     "altura",
+    "alturaTorso",
+    "envergaduraBrazos",
+    "imc",
+    "tmb",
+    "biotipo",
+    "dominancia",
+    "ojoDirector",
+    "hombro",
+    "brazoDirector",
+    "cintura",
+    "piernaDominante",
+    "piernaDirectora",
     "posicion",
     "sexo",
     "clase",
@@ -87,6 +123,18 @@ export const generatePlayerTemplate = (): Uint8Array => {
     { wch: 8 }, // edad
     { wch: 10 }, // peso (kg)
     { wch: 10 }, // altura (cm)
+    { wch: 12 }, // alturaTorso (cm)
+    { wch: 18 }, // envergaduraBrazos (cm)
+    { wch: 8 }, // imc
+    { wch: 10 }, // tmb (calorías)
+    { wch: 12 }, // biotipo
+    { wch: 12 }, // dominancia
+    { wch: 12 }, // ojoDirector
+    { wch: 10 }, // hombro
+    { wch: 14 }, // brazoDirector
+    { wch: 10 }, // cintura
+    { wch: 14 }, // piernaDominante
+    { wch: 14 }, // piernaDirectora
     { wch: 15 }, // posicion
     { wch: 10 }, // sexo (M/F)
     { wch: 10 }, // clase
@@ -97,6 +145,27 @@ export const generatePlayerTemplate = (): Uint8Array => {
     { wch: 15 }, // deporte
   ];
   worksheet["!cols"] = colWidths;
+
+  // Agregar validaciones de datos (listas desplegables)
+  const dataValidations: any[] = [];
+  const totalRows = data.length + 1; // +1 para incluir header
+
+  // Validaciones SOLO para campos de dominancia (columnas K-Q, índices 10-16)
+  const dominanceColumns = ["K", "L", "M", "N", "O", "P", "Q"]; // dominancia, ojoDirector, hombro, brazoDirector, cintura, piernaDominante, piernaDirectora
+
+  dominanceColumns.forEach((col) => {
+    for (let row = 2; row <= totalRows; row++) {
+      dataValidations.push({
+        sqref: `${col}${row}`,
+        type: "list",
+        allowBlank: false,
+        formula1: "Izq.,Der.",
+      });
+    }
+  });
+
+  // Agregar las validaciones al worksheet
+  worksheet["!dataValidations"] = dataValidations;
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Jugadores");
@@ -238,6 +307,18 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       edad: 22,
       peso: 75,
       altura: 180,
+      alturaTorso: 85,
+      envergaduraBrazos: 185,
+      imc: 23.1,
+      tmb: 1850,
+      biotipo: "Mesomorfo",
+      dominancia: "Der.",
+      ojoDirector: "Der.",
+      hombro: "Der.",
+      brazoDirector: "Der.",
+      cintura: "Der.",
+      piernaDominante: "Der.",
+      piernaDirectora: "Der.",
       posicion: "Delantero",
       sexo: "M",
       clase: "2002",
@@ -253,6 +334,18 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       edad: 19,
       peso: 58,
       altura: 165,
+      alturaTorso: 78,
+      envergaduraBrazos: 168,
+      imc: 21.3,
+      tmb: 1450,
+      biotipo: "Ectomorfo",
+      dominancia: "Izq.",
+      ojoDirector: "Izq.",
+      hombro: "Izq.",
+      brazoDirector: "Izq.",
+      cintura: "Izq.",
+      piernaDominante: "Izq.",
+      piernaDirectora: "Izq.",
       posicion: "Base",
       sexo: "F",
       clase: "2005",
@@ -267,19 +360,31 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
   const worksheet = XLSX.utils.json_to_sheet(exampleData);
 
   const colWidths = [
-    { wch: 15 },
-    { wch: 15 },
-    { wch: 8 },
-    { wch: 10 },
-    { wch: 10 },
-    { wch: 15 },
-    { wch: 10 },
-    { wch: 10 },
-    { wch: 15 },
-    { wch: 15 },
-    { wch: 20 },
-    { wch: 25 },
-    { wch: 15 },
+    { wch: 15 }, // nombre
+    { wch: 15 }, // apellido
+    { wch: 8 }, // edad
+    { wch: 10 }, // peso
+    { wch: 10 }, // altura
+    { wch: 12 }, // alturaTorso
+    { wch: 18 }, // envergaduraBrazos
+    { wch: 8 }, // imc
+    { wch: 10 }, // tmb
+    { wch: 12 }, // biotipo
+    { wch: 12 }, // dominancia
+    { wch: 12 }, // ojoDirector
+    { wch: 10 }, // hombro
+    { wch: 14 }, // brazoDirector
+    { wch: 10 }, // cintura
+    { wch: 14 }, // piernaDominante
+    { wch: 14 }, // piernaDirectora
+    { wch: 15 }, // posicion
+    { wch: 10 }, // sexo
+    { wch: 10 }, // clase
+    { wch: 15 }, // fechaNacimiento
+    { wch: 15 }, // localidad
+    { wch: 20 }, // escuelaClub
+    { wch: 25 }, // contacto
+    { wch: 15 }, // deporte
   ];
   worksheet["!cols"] = colWidths;
 

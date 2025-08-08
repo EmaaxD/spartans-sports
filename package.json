@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.6",
     "aos": "^2.3.4",
+    "exceljs": "^4.4.0",
     "formidable": "^3.5.4",
     "formik": "^2.4.6",
     "framer-motion": "^12.23.11",

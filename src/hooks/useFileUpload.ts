@@ -47,7 +47,12 @@ export const useFileUpload = (): UseFileUploadReturn => {
       return;
     }
 
-    if (!selectedTemplateType) {
+    // Normalizar template type (evitar string 'null' u otros valores)
+    const t = String(selectedTemplateType ?? "").toLowerCase();
+    const safeTemplateType =
+      t === "player" ? "player" : t === "club" ? "club" : t === "danceacademy" ? "danceAcademy" : null;
+
+    if (!safeTemplateType) {
       setError("Debe seleccionar el tipo de plantilla");
       return;
     }
@@ -72,10 +77,7 @@ export const useFileUpload = (): UseFileUploadReturn => {
       }
 
       // Procesar el archivo Excel
-      const result = await processExcelFile(
-        fileToProcess,
-        selectedTemplateType
-      );
+  const result = await processExcelFile(fileToProcess, safeTemplateType);
 
       setProcessedData(result);
 
@@ -106,7 +108,8 @@ export const useFileUpload = (): UseFileUploadReturn => {
   }, []);
 
   useEffect(() => {
-    if (typeForm && typeForm.trim() !== "") {
+    // typeForm proviene del contexto (puede ser null); al restaurar desde LS nunca debería ser cadena 'null', pero se previene por si quedó guardada manualmente
+    if (typeForm) {
       setSelectedTemplateType(typeForm as TypeFormProps);
     }
   }, [typeForm]);

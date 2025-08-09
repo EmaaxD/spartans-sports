@@ -26,6 +26,8 @@ export interface ClubsProviderProps {
 }
 
 export interface UploadFormProviderProps {
+  stepForm: number;
   typeForm: TypeFormProps;
   handleSetTypeForm: (typeForm: TypeFormProps) => void;
+  handleSetStepForm: (step: number) => void;
 }

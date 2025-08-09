@@ -1,6 +1,20 @@
 import * as XLSX from "xlsx";
 import { cleanString, isValidEmail, parseNumber } from "./validations";
 
+// Extrae todos los datos crudos de la primera hoja del archivo Excel
+export const extractRawExcelData = async (file: File): Promise<any[][]> => {
+  const arrayBuffer = await file.arrayBuffer();
+  const workbook = XLSX.read(arrayBuffer, { type: "array" });
+  const firstSheetName = workbook.SheetNames[0];
+  const worksheet = workbook.Sheets[firstSheetName];
+  const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+    header: 1,
+    raw: false,
+    defval: "",
+  }) as any[][];
+  return jsonData;
+};
+
 // Interfaces para los datos procesados
 export interface ProcessedPlayerData {
   nombre: string;
@@ -13,13 +27,24 @@ export interface ProcessedPlayerData {
   imc: number;
   tmb: number;
   biotipo: string;
-  dominancia: string;
+  lateralidad: string;
   ojoDirector: string;
   hombro: string;
   brazoDirector: string;
   cintura: string;
   piernaDominante: string;
   piernaDirectora: string;
+  dorsiflexionTobilloIzq: string;
+  dorsiflexionTobilloDer: string;
+  manoDer: string;
+  manoIzq: string;
+  indiceQ: string;
+  pieDer: string;
+  pieIzq: string;
+  sentadillaProfunda: string;
+  capacidadPulmonarTotal: string;
+  coordinacion: string;
+  capacidadPulmunarResidual: string;
   posicion: string;
   sexo: string;
   clase: string;
@@ -70,7 +95,7 @@ export interface ProcessingError {
 // Función principal para procesar archivos
 export const processExcelFile = async (
   file: File,
-  templateType: "player" | "club" | "danceAcademy"
+  templateType: "player" | "club" | "danceAcademy" | string
 ): Promise<ProcessingResult<any>> => {
   try {
     const arrayBuffer = await file.arrayBuffer();
@@ -93,8 +118,16 @@ export const processExcelFile = async (
       );
     }
 
+    // Normalizar templateType (tolerar mayúsculas, espacios, traducciones simples)
+    const rawType = (templateType || "").toString().trim().toLowerCase();
+    let normalizedType: "player" | "club" | "danceAcademy" | null = null;
+    if (rawType === "player") normalizedType = "player";
+    else if (rawType === "club") normalizedType = "club";
+    else if (rawType === "danceacademy" || rawType === "dance_academy")
+      normalizedType = "danceAcademy";
+
     // Procesar según el tipo de plantilla
-    switch (templateType) {
+    switch (normalizedType) {
       case "player":
         return processPlayerData(jsonData);
       case "club":
@@ -102,7 +135,9 @@ export const processExcelFile = async (
       case "danceAcademy":
         return processDanceAcademyData(jsonData);
       default:
-        throw new Error("Tipo de plantilla no válido");
+        throw new Error(
+          `Tipo de plantilla no válido (recibido: "${templateType}"). Valores permitidos: player | club | danceAcademy`
+        );
     }
   } catch (error) {
     console.error("Error processing file:", error);
@@ -132,13 +167,15 @@ const processPlayerData = (
     "imc",
     "tmb",
     "biotipo",
-    "dominancia",
+    "lateralidad",
     "ojoDirector",
     "hombro",
     "brazoDirector",
     "cintura",
     "piernaDominante",
     "piernaDirectora",
+    "dorsiflexionTobilloIzq",
+    "dorsiflexionTobilloDer",
     "posicion",
     "sexo",
     "clase",
@@ -147,6 +184,15 @@ const processPlayerData = (
     "escuelaClub",
     "contacto",
     "deporte",
+    "manoDer",
+    "manoIzq",
+    "indiceQ",
+    "pieDer",
+    "pieIzq",
+    "sentadillaProfunda",
+    "capacidadPulmonarTotal",
+    "coordinacion",
+    "capacidadPulmunarResidual",
   ];
 
   // Validar headers
@@ -184,6 +230,12 @@ const processPlayerData = (
       return; // Saltar filas vacías
     }
 
+    // Mapeo correcto según headers de la planilla:
+    // 0 nombre,1 apellido,2 edad,3 peso,4 altura,5 alturaTorso,6 envergaduraBrazos,7 imc,8 tmb,9 biotipo,
+    // 10 lateralidad,11 ojoDirector,12 hombro,13 brazoDirector,14 cintura,15 piernaDominante,16 piernaDirectora,
+    // 17 dorsiflexionTobilloIzq,18 dorsiflexionTobilloDer,19 posicion,20 sexo,21 clase,22 fechaNacimiento,
+    // 23 localidad,24 escuelaClub,25 contacto,26 deporte,27 manoDer,28 manoIzq,29 indiceQ,30 pieDer,31 pieIzq,
+    // 32 sentadillaProfunda,33 capacidadPulmonarTotal,34 coordinacion,35 capacidadPulmunarResidual
     const playerData: ProcessedPlayerData = {
       nombre: cleanString(row[0]),
       apellido: cleanString(row[1]),
@@ -195,21 +247,32 @@ const processPlayerData = (
       imc: parseNumber(row[7]) || 0,
       tmb: parseNumber(row[8]) || 0,
       biotipo: cleanString(row[9]),
-      dominancia: cleanString(row[10]),
+      lateralidad: cleanString(row[10]),
       ojoDirector: cleanString(row[11]),
       hombro: cleanString(row[12]),
       brazoDirector: cleanString(row[13]),
       cintura: cleanString(row[14]),
       piernaDominante: cleanString(row[15]),
       piernaDirectora: cleanString(row[16]),
-      posicion: cleanString(row[17]),
-      sexo: cleanString(row[18]),
-      clase: cleanString(row[19]),
-      fechaNacimiento: cleanString(row[20]),
-      localidad: cleanString(row[21]),
-      escuelaClub: cleanString(row[22]),
-      contacto: cleanString(row[23]),
-      deporte: cleanString(row[24]),
+      dorsiflexionTobilloIzq: cleanString(row[17]),
+      dorsiflexionTobilloDer: cleanString(row[18]),
+      posicion: cleanString(row[19]),
+      sexo: cleanString(row[20]),
+      clase: cleanString(row[21]),
+      fechaNacimiento: cleanString(row[22]),
+      localidad: cleanString(row[23]),
+      escuelaClub: cleanString(row[24]),
+      contacto: cleanString(row[25]),
+      deporte: cleanString(row[26]),
+      manoDer: cleanString(row[27]),
+      manoIzq: cleanString(row[28]),
+      indiceQ: cleanString(row[29]),
+      pieDer: cleanString(row[30]),
+      pieIzq: cleanString(row[31]),
+      sentadillaProfunda: cleanString(row[32]),
+      capacidadPulmonarTotal: cleanString(row[33]),
+      coordinacion: cleanString(row[34]),
+      capacidadPulmunarResidual: cleanString(row[35]),
       rowNumber,
     };
 
@@ -430,7 +493,16 @@ const validatePlayerData = (
       value: data.biotipo,
       message: "El biotipo es requerido",
     });
-  } else if (!["Ectomorfo", "Mesomorfo", "Endomorfo", "ectomorfo", "mesomorfo", "endomorfo"].includes(data.biotipo)) {
+  } else if (
+    ![
+      "Ectomorfo",
+      "Mesomorfo",
+      "Endomorfo",
+      "ectomorfo",
+      "mesomorfo",
+      "endomorfo",
+    ].includes(data.biotipo)
+  ) {
     errors.push({
       row: rowNumber,
       field: "biotipo",
@@ -439,22 +511,64 @@ const validatePlayerData = (
     });
   }
 
-  // Validar dominancia
-  if (!data.dominancia.trim()) {
+  // Validar lateralidad (cruzado / homogenio)
+  if (!data.lateralidad.trim()) {
     errors.push({
       row: rowNumber,
-      field: "dominancia",
-      value: data.dominancia,
-      message: "La dominancia es requerida",
+      field: "lateralidad",
+      value: data.lateralidad,
+      message: "La lateralidad es requerida (cruzado u homogenio)",
     });
-  } else if (!["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(data.dominancia)) {
+  } else if (!["cruzado", "homogenio", "Cruzado", "Homogenio"].includes(data.lateralidad)) {
     errors.push({
       row: rowNumber,
-      field: "dominancia",
-      value: data.dominancia,
-      message: "La dominancia debe ser: Izq. o Der.",
+      field: "lateralidad",
+      value: data.lateralidad,
+      message: "La lateralidad debe ser 'cruzado' u 'homogenio'",
     });
   }
+
+  // Validaciones A-D (permiten vacío): dorsiflexiones, sentadilla, capacidad pulmonar total, coordinación, capacidad residual
+  const ADFields: Array<{ key: keyof ProcessedPlayerData; label: string }> = [
+    { key: "dorsiflexionTobilloIzq", label: "dorsiflexionTobilloIzq" },
+    { key: "dorsiflexionTobilloDer", label: "dorsiflexionTobilloDer" },
+    { key: "sentadillaProfunda", label: "sentadillaProfunda" },
+    { key: "capacidadPulmonarTotal", label: "capacidadPulmonarTotal" },
+    { key: "coordinacion", label: "coordinacion" },
+    { key: "capacidadPulmunarResidual", label: "capacidadPulmunarResidual" },
+  ];
+  const ADAllowed = ["A", "B", "C", "D", "a", "b", "c", "d", ""]; // vacío permitido
+  ADFields.forEach(f => {
+    const val = (data[f.key] as unknown as string || "").trim();
+    if (val && !ADAllowed.includes(val)) {
+      errors.push({
+        row: rowNumber,
+        field: f.label,
+        value: val,
+        message: "El valor debe ser A, B, C o D",
+      });
+    }
+  });
+
+  // Validaciones manoDer / manoIzq / indiceQ / pieDer / pieIzq (opcionales): no reglas estrictas excepto longitud razonable
+  const optionalFreeText: Array<{ key: keyof ProcessedPlayerData; label: string }> = [
+    { key: "manoDer", label: "manoDer" },
+    { key: "manoIzq", label: "manoIzq" },
+    { key: "indiceQ", label: "indiceQ" },
+    { key: "pieDer", label: "pieDer" },
+    { key: "pieIzq", label: "pieIzq" },
+  ];
+  optionalFreeText.forEach(f => {
+    const v = (data[f.key] as unknown as string || "").trim();
+    if (v && v.length > 30) {
+      errors.push({
+        row: rowNumber,
+        field: f.label,
+        value: v,
+        message: "El texto no debe superar 30 caracteres",
+      });
+    }
+  });
 
   // Validar ojo director
   if (!data.ojoDirector.trim()) {
@@ -464,7 +578,11 @@ const validatePlayerData = (
       value: data.ojoDirector,
       message: "El ojo director es requerido",
     });
-  } else if (!["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(data.ojoDirector)) {
+  } else if (
+    !["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(
+      data.ojoDirector
+    )
+  ) {
     errors.push({
       row: rowNumber,
       field: "ojoDirector",
@@ -481,7 +599,11 @@ const validatePlayerData = (
       value: data.hombro,
       message: "El hombro es requerido",
     });
-  } else if (!["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(data.hombro)) {
+  } else if (
+    !["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(
+      data.hombro
+    )
+  ) {
     errors.push({
       row: rowNumber,
       field: "hombro",
@@ -498,7 +620,11 @@ const validatePlayerData = (
       value: data.brazoDirector,
       message: "El brazo director es requerido",
     });
-  } else if (!["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(data.brazoDirector)) {
+  } else if (
+    !["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(
+      data.brazoDirector
+    )
+  ) {
     errors.push({
       row: rowNumber,
       field: "brazoDirector",
@@ -515,7 +641,11 @@ const validatePlayerData = (
       value: data.cintura,
       message: "La cintura es requerida",
     });
-  } else if (!["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(data.cintura)) {
+  } else if (
+    !["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(
+      data.cintura
+    )
+  ) {
     errors.push({
       row: rowNumber,
       field: "cintura",
@@ -532,7 +662,11 @@ const validatePlayerData = (
       value: data.piernaDominante,
       message: "La pierna dominante es requerida",
     });
-  } else if (!["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(data.piernaDominante)) {
+  } else if (
+    !["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(
+      data.piernaDominante
+    )
+  ) {
     errors.push({
       row: rowNumber,
       field: "piernaDominante",
@@ -549,7 +683,11 @@ const validatePlayerData = (
       value: data.piernaDirectora,
       message: "La pierna directora es requerida",
     });
-  } else if (!["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(data.piernaDirectora)) {
+  } else if (
+    !["Izq.", "Der.", "izq.", "der.", "Izq", "Der", "izq", "der"].includes(
+      data.piernaDirectora
+    )
+  ) {
     errors.push({
       row: rowNumber,
       field: "piernaDirectora",
@@ -558,20 +696,13 @@ const validatePlayerData = (
     });
   }
 
-  // Validar posición
+  // Validar posición (solo requerido, sin mínimo de caracteres)
   if (!data.posicion.trim()) {
     errors.push({
       row: rowNumber,
       field: "posicion",
       value: data.posicion,
       message: "La posición es requerida",
-    });
-  } else if (data.posicion.length < 2) {
-    errors.push({
-      row: rowNumber,
-      field: "posicion",
-      value: data.posicion,
-      message: "La posición debe tener al menos 2 caracteres",
     });
   }
 
@@ -670,7 +801,8 @@ const validatePlayerData = (
       row: rowNumber,
       field: "escuelaClub",
       value: data.escuelaClub,
-      message: "El nombre de la escuela o club debe tener al menos 3 caracteres",
+      message:
+        "El nombre de la escuela o club debe tener al menos 3 caracteres",
     });
   }
 
@@ -693,12 +825,12 @@ const validatePlayerData = (
 
   if (data.contacto && data.contacto.trim()) {
     // El contacto puede ser teléfono, email, o ambos separados por " / "
-    const contactParts = data.contacto.split('/').map(part => part.trim());
-    
+    const contactParts = data.contacto.split("/").map((part) => part.trim());
+
     let hasValidContact = false;
-    
+
     for (const part of contactParts) {
-      if (part.includes('@')) {
+      if (part.includes("@")) {
         // Es un email
         if (isValidEmail(part)) {
           hasValidContact = true;
@@ -710,13 +842,14 @@ const validatePlayerData = (
         }
       }
     }
-    
+
     if (!hasValidContact) {
       errors.push({
         row: rowNumber,
         field: "contacto",
         value: data.contacto,
-        message: "El contacto debe ser un email válido, un teléfono válido, o ambos separados por ' / '. Ej: juan@email.com / +54 11 1234-5678",
+        message:
+          "El contacto debe ser un email válido, un teléfono válido, o ambos separados por ' / '. Ej: juan@email.com / +54 11 1234-5678",
       });
     }
   }
@@ -797,72 +930,81 @@ export const processCSVFile = async (file: File): Promise<File> => {
 // Función para validar números de teléfono
 const isValidPhoneNumber = (phone: string): boolean => {
   // Limpiar el número de espacios, guiones, paréntesis y otros caracteres
-  const cleanPhone = phone.replace(/[\s\-\(\)\+]/g, '');
-  
+  const cleanPhone = phone.replace(/[\s\-\(\)\+]/g, "");
+
   // Si empieza con 54 (código de Argentina), quitarlo para validar el resto
-  const phoneWithoutCountry = cleanPhone.startsWith('54') ? cleanPhone.slice(2) : cleanPhone;
-  
+  const phoneWithoutCountry = cleanPhone.startsWith("54")
+    ? cleanPhone.slice(2)
+    : cleanPhone;
+
   // Patrones válidos para números argentinos
   const patterns = [
-    /^\d{10}$/,                // 10 dígitos (ej: 1123456789)
-    /^\d{8}$/,                 // 8 dígitos (número local sin código de área)
-    /^11\d{8}$/,               // Buenos Aires (11 + 8 dígitos)
-    /^2\d{9}$/,                // Provincia Buenos Aires (2xx + 7-8 dígitos)
-    /^3\d{9}$/,                // Córdoba, Santa Fe, etc. (3xx + 7-8 dígitos)
-    /^4\d{9}$/,                // Salta, Tucumán, etc. (4xx + 7-8 dígitos)
-    /^2\d{7}$/,                // Algunos números locales (8 dígitos total)
-    /^3\d{7}$/,                // Algunos números locales (8 dígitos total)
-    /^4\d{7}$/                 // Algunos números locales (8 dígitos total)
+    /^\d{10}$/, // 10 dígitos (ej: 1123456789)
+    /^\d{8}$/, // 8 dígitos (número local sin código de área)
+    /^11\d{8}$/, // Buenos Aires (11 + 8 dígitos)
+    /^2\d{9}$/, // Provincia Buenos Aires (2xx + 7-8 dígitos)
+    /^3\d{9}$/, // Córdoba, Santa Fe, etc. (3xx + 7-8 dígitos)
+    /^4\d{9}$/, // Salta, Tucumán, etc. (4xx + 7-8 dígitos)
+    /^2\d{7}$/, // Algunos números locales (8 dígitos total)
+    /^3\d{7}$/, // Algunos números locales (8 dígitos total)
+    /^4\d{7}$/, // Algunos números locales (8 dígitos total)
   ];
-  
-  return patterns.some(pattern => pattern.test(phoneWithoutCountry));
+
+  return patterns.some((pattern) => pattern.test(phoneWithoutCountry));
 };
 
-// Función para validar fechas en formato DD/MM/YYYY
+// Función para validar fechas en formato DD/MM/AAAA o DD/MM/AA
 const isValidDate = (dateString: string): boolean => {
-  // Verificar formato DD/MM/YYYY
-  const dateRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+  // Acepta 2 o 4 dígitos de año
+  const dateRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/;
   const match = dateString.match(dateRegex);
-  
   if (!match) return false;
-  
+
   const day = parseInt(match[1], 10);
   const month = parseInt(match[2], 10);
-  const year = parseInt(match[3], 10);
-  
-  // Verificar rangos básicos
+  let year = parseInt(match[3], 10);
+
+  // Expandir año de 2 dígitos: si AA => se asume 2000-2099 salvo que sea mayor al año actual % 100, en cuyo caso 1900-1999
+  if (match[3].length === 2) {
+    const currentYear = new Date().getFullYear();
+    const currentYY = currentYear % 100;
+    year = year <= currentYY ? 2000 + year : 1900 + year;
+  }
+
+  const currentYearFull = new Date().getFullYear();
   if (month < 1 || month > 12) return false;
   if (day < 1 || day > 31) return false;
-  if (year < 1900 || year > new Date().getFullYear()) return false;
-  
-  // Crear fecha y verificar que es válida
+  if (year < 1900 || year > currentYearFull) return false;
+
   const date = new Date(year, month - 1, day);
-  
-  return date.getFullYear() === year &&
-         date.getMonth() === month - 1 &&
-         date.getDate() === day;
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+  );
 };
 
-// Función para calcular la edad a partir de una fecha de nacimiento DD/MM/YYYY
+// Función para calcular la edad a partir de una fecha DD/MM/AAAA o DD/MM/AA
 const calculateAge = (birthDateString: string): number => {
-  const dateRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+  const dateRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/;
   const match = birthDateString.match(dateRegex);
-  
   if (!match) return 0;
-  
+
   const day = parseInt(match[1], 10);
   const month = parseInt(match[2], 10);
-  const year = parseInt(match[3], 10);
-  
+  let year = parseInt(match[3], 10);
+  if (match[3].length === 2) {
+    const currentYear = new Date().getFullYear();
+    const currentYY = currentYear % 100;
+    year = year <= currentYY ? 2000 + year : 1900 + year;
+  }
+
   const birthDate = new Date(year, month - 1, day);
   const today = new Date();
-  
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
-  
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
-  
   return age;
 };

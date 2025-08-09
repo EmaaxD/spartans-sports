@@ -19,7 +19,7 @@ async function generatePlayerTemplate() {
     "imc",
     "tmb",
     "biotipo",
-    "dominancia",
+    "lateralidad",
     "ojoDirector",
     "hombro",
     "brazoDirector",
@@ -53,7 +53,7 @@ async function generatePlayerTemplate() {
     worksheet.addRow([]);
   }
 
-  // Columnas con lista desplegable (dominancia y lateridad)
+  // Columnas con lista desplegable (lateralidad y lateridad de segmentos)
   const selectColsLaterality = ["K", "L", "M", "N", "O", "P", "Q"]; // laterality existing
   const optionListLaterality = ["Izq", "Der"]; // Opciones visibles
   const listFormulaLaterality = `"${optionListLaterality.join(",")}"`;
@@ -72,17 +72,22 @@ async function generatePlayerTemplate() {
   // Nueva columna capacidadPulmunarResidual (columna AJ)
   const capacidadPulmunarResidualCol = "AJ";
 
-  // Aplicar validación a cada celda de esas columnas (filas 2 a 51)
+  // Aplicar validación diferenciada: columna K (lateralidad) usa cruzado/homogenio; L-Q usan Izq/Der
   selectColsLaterality.forEach((col) => {
+    const formula = col === "K" ? '"cruzado,homogenio"' : '"Izq,Der"';
+    const errorMsg =
+      col === "K"
+        ? 'Debe seleccionar "cruzado" u "homogenio"'
+        : 'Debe seleccionar "Izq" o "Der"';
     for (let row = 2; row <= 51; row++) {
       const cell = worksheet.getCell(`${col}${row}`);
       cell.dataValidation = {
         type: "list",
         allowBlank: false,
-        formulae: [listFormulaLaterality],
+        formulae: [formula],
         showErrorMessage: true,
         errorTitle: "Valor inválido",
-        error: 'Debe seleccionar "Izq" o "Der"',
+        error: errorMsg,
       };
     }
   });

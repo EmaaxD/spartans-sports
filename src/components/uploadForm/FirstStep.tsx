@@ -20,13 +20,14 @@ export const FirstStep = () => {
   } = useTemplates();
 
   const handleChange = (value: string) => {
-    setSelectedTemplate(value);
-    handleSetTypeForm(value as any);
+    const v = value && value !== 'null' ? value : '';
+    setSelectedTemplate(v);
+    handleSetTypeForm(v as any);
   };
 
   return (
     <>
-      <div className="flex flex-col gap-3 flex-1 border-r border-dashed border-white/50">
+      <div className="flex flex-col gap-3 flex-1">
         <h2 className="text-white text-2xl font-bold" data-aos="zoom-in">
           {t("firstStepUploadForm")}
         </h2>

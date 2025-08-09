@@ -15,7 +15,7 @@ export interface PlayerTemplate {
   imc: number;
   tmb: number;
   biotipo: string;
-  dominancia: string;
+  lateralidad: string;
   ojoDirector: string;
   hombro: string;
   brazoDirector: string;
@@ -69,6 +69,7 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("Jugadores");
 
+  // Headers alineados con expectedHeaders en excelProcessor.ts
   const headers = [
     "nombre",
     "apellido",
@@ -80,7 +81,7 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
     "imc",
     "tmb",
     "biotipo",
-    "dominancia",
+    "lateralidad",
     "ojoDirector",
     "hombro",
     "brazoDirector",
@@ -113,13 +114,19 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
   for (let i = 0; i < 50; i++) worksheet.addRow([]);
 
   // Validaciones (columnas K-Q)
-  const selectCols = ["K", "L", "M", "N", "O", "P", "Q"]; // laterality
-  const optionList = ["Izq", "Der"]; // sin punto
-  const formula = `"${optionList.join(",")}"`;
+  const selectCols = ["K", "L", "M", "N", "O", "P", "Q"]; // K = lateralidad, resto segmentos
   const dorsiflexionCols = ["R", "S"]; // nuevas columnas
   const dorsiflexionOptions = ["A", "B", "C", "D"];
   const dorsiflexionFormula = `"${dorsiflexionOptions.join(",")}"`;
   selectCols.forEach((col) => {
+    const formula = col === "K" ? '"cruzado,homogenio"' : '"Izq,Der"';
+    const errorMsg =
+      col === "K"
+        ? 'Seleccione "cruzado" u "homogenio"'
+        : 'Seleccione "Izq" o "Der"';
+    const promptTitle = col === "K" ? "Lateralidad" : "Segmento";
+    const prompt =
+      col === "K" ? "Elija cruzado u homogenio" : "Elija Izq o Der";
     for (let row = 2; row <= 51; row++) {
       const cell = worksheet.getCell(`${col}${row}`);
       cell.dataValidation = {
@@ -128,10 +135,10 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
         formulae: [formula],
         showErrorMessage: true,
         errorTitle: "Valor inválido",
-        error: 'Seleccione "Izq" o "Der"',
+        error: errorMsg,
         showInputMessage: true,
-        promptTitle: "Opciones",
-        prompt: "Use la flecha o Alt+↓ para ver el listado", // guía de uso
+        promptTitle,
+        prompt,
       } as any;
     }
   });
@@ -398,7 +405,7 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       imc: 23.1,
       tmb: 1850,
       biotipo: "Mesomorfo",
-      dominancia: "Der.",
+      lateralidad: "homogenio",
       ojoDirector: "Der.",
       hombro: "Der.",
       brazoDirector: "Der.",
@@ -436,7 +443,7 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       imc: 21.3,
       tmb: 1450,
       biotipo: "Ectomorfo",
-      dominancia: "Izq.",
+      lateralidad: "cruzado",
       ojoDirector: "Izq.",
       hombro: "Izq.",
       brazoDirector: "Izq.",

@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
-import { downloadTemplate } from '@src/utils/functions';
+import { useState, useCallback, useContext } from "react";
+import { downloadTemplate } from "@src/utils/functions";
+import { uploadFormContext } from "@src/context/uploadForm";
 
 export interface UseTemplatesReturn {
   selectedTemplate: string;
@@ -10,23 +11,37 @@ export interface UseTemplatesReturn {
 }
 
 export const useTemplates = (): UseTemplatesReturn => {
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('');
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
-  const downloadTemplateByType = useCallback(async (templateType: string, fileName?: string) => {
-    try {
-      setIsDownloading(true);
-      downloadTemplate(templateType, fileName || `${templateType}-template.xlsx`);
-    } catch (error) {
-      console.error('Error downloading template:', error);
-    } finally {
-      setIsDownloading(false);
-    }
-  }, []);
+  const { handleSetStepForm } = useContext(uploadFormContext);
 
-  const handleDownload = useCallback(() => {
+  const downloadTemplateByType = useCallback(
+    async (templateType: string, fileName?: string) => {
+      try {
+        setIsDownloading(true);
+        downloadTemplate(
+          templateType,
+          fileName || `${templateType}-template.xlsx`
+        );
+
+        return true;
+      } catch (error) {
+        console.error("Error downloading template:", error);
+      } finally {
+        setIsDownloading(false);
+      }
+    },
+    []
+  );
+
+  const handleDownload = useCallback(async () => {
     if (selectedTemplate) {
-      downloadTemplateByType(selectedTemplate);
+      const resp = await downloadTemplateByType(selectedTemplate);
+
+      if (resp) {
+        handleSetStepForm(2);
+      }
     }
   }, [selectedTemplate, downloadTemplateByType]);
 

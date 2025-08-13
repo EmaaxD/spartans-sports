@@ -1,5 +1,6 @@
 import { Category, Club, SelectedClubProps } from "./clubs";
-import { TypeFormProps } from "./ui";
+import { PlayerDataProps } from "./req";
+import { TopPlayerCardProps, TypeFormProps } from "./ui";
 
 export interface UiProviderProps {
   openLoginDialog: boolean;
@@ -30,4 +31,13 @@ export interface UploadFormProviderProps {
   typeForm: TypeFormProps;
   handleSetTypeForm: (typeForm: TypeFormProps) => void;
   handleSetStepForm: (step: number) => void;
+  handleUploadForm: (dataForm: any) => Promise<boolean>;
+}
+
+export interface PlayersProviderProps {
+  players: PlayerDataProps[];
+  loading: boolean;
+  selectedPlayer: TopPlayerCardProps | null;
+  top100PlayersMemo: TopPlayerCardProps[];
+  handleSelectedPlayer: (playerId: string | null) => void;
 }

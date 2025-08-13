@@ -1,5 +1,8 @@
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+
+import { playersContext } from "@src/context/players";
 
 import { CarouselContainer } from "../containers";
 
@@ -7,10 +10,55 @@ import { top100Players } from "@src/utils/const";
 
 import ClubCoverImg from "@src/assets/img/playerFutbol.png";
 import SpartansCoinImg from "@src/assets/img/logos/spartanCoin.png";
-import { useEffect, useRef, useState } from "react";
-import { limitCaracterString } from "@src/utils/functions";
+import {
+  formatPrice,
+  getPlayerRank,
+  limitCaracterString,
+} from "@src/utils/functions";
+import { TopPlayerCardProps } from "@src/interfaces";
 
-const PlayerContent = ({ show }: any) => {
+const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
+  _id,
+  altura,
+  alturaTorso,
+  apellido,
+  biotipo,
+  brazoDirector,
+  capacidadPulmonarTotal,
+  capacidadPulmunarResidual,
+  cintura,
+  clase,
+  contacto,
+  coordinacion,
+  deporte,
+  dorsiflexionTobilloDer,
+  dorsiflexionTobilloIzq,
+  edad,
+  envergaduraBrazos,
+  escuelaClub,
+  fechaNacimiento,
+  hombro,
+  imc,
+  indiceQ,
+  lateralidad,
+  localidad,
+  manoDer,
+  manoIzq,
+  nombre,
+  ojoDirector,
+  peso,
+  pieDer,
+  pieIzq,
+  piernaDirectora,
+  piernaDominante,
+  playerValue,
+  posicion,
+  rank,
+  rowNumber,
+  sentadillaProfunda,
+  sexo,
+  tmb,
+}) => {
   const [showVideo, setShowVideo] = useState(false);
 
   const ref = useRef<HTMLDivElement | null>(null);
@@ -25,8 +73,8 @@ const PlayerContent = ({ show }: any) => {
 
   return (
     <Link
-      key={show.playerId}
-      href={`/players/${show.playerId}`}
+      key={_id}
+      href={`/players/${_id}`}
       className="relative w-full bg-slate-800 h-64 flex-shrink-0 outline-none rounded-lg overflow-hidden"
     >
       <div ref={ref}>
@@ -56,8 +104,8 @@ const PlayerContent = ({ show }: any) => {
       </div>
 
       <div className="absolute top-2 right-3">
-        <span className="bg-gradient-to-r from-orange-400 via-yellow-500 to-red-500 bg-clip-text text-transparent font-bold text-2xl animate-pulse drop-shadow-lg shadow-orange-500/50">
-          $ US {show.player.value || "Unknown Club"}
+        <span className="bg-gradient-to-r from-orange-400 via-yellow-500 to-red-500 bg-clip-text text-transparent font-extrabold text-base drop-shadow-lg shadow-orange-500/50">
+          $ US {formatPrice(playerValue) || "Unknown Club"}
         </span>
       </div>
 
@@ -72,35 +120,40 @@ const PlayerContent = ({ show }: any) => {
       </div>
 
       <div className="absolute top-2 left-2 bg-black/50 text-white font-bold text-3xl rounded-full w-10 h-10 flex items-center justify-center">
-        {show.rank}
+        {rank}
       </div>
 
       <div className="w-full absolute bottom-0 left-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col gap-0 py-3 px-2">
-        <span className="text-white font-bold text-lg">
-          {limitCaracterString(show.player.name, 15)}
+        <span className="text-white font-bold text-lg capitalize">
+          {limitCaracterString(nombre, 15)}
         </span>
-        <span className="text-gray-400 font-bold text-sm">
-          Club: {limitCaracterString(show.player.club, 16)}
-        </span>
+
+        {escuelaClub && escuelaClub.length > 0 && (
+          <span className="text-gray-400 font-bold text-sm">
+            Club: {limitCaracterString(escuelaClub, 16)}
+          </span>
+        )}
       </div>
     </Link>
   );
 };
 
 export const TopPlayers = () => {
-  if (top100Players.length < 4)
+  const { top100PlayersMemo } = useContext(playersContext);
+
+  if (top100PlayersMemo.length < 4)
     return (
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 overflow-hidden">
-        {top100Players.map((show) => (
-          <PlayerContent key={show.playerId} show={show} />
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 overflow-hidden">
+        {top100PlayersMemo.map((player) => (
+          <TopPlayerCard key={player._id} {...player} />
         ))}
       </div>
     );
 
   return (
     <CarouselContainer>
-      {top100Players.map((show) => (
-        <PlayerContent key={show.playerId} show={show} />
+      {top100PlayersMemo.map((player) => (
+        <TopPlayerCard key={player._id} {...player} />
       ))}
     </CarouselContainer>
   );

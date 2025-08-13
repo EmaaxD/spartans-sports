@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 import { FiEye, FiDownload, FiUsers, FiCheck, FiX } from "react-icons/fi";
 import {
   ProcessingResult,
-  ProcessedPlayerData,
-  ProcessedClubData,
-  ProcessedDanceAcademyData,
   formatPrice,
   classifyIndiceQ,
 } from "@src/utils/functions";
@@ -20,7 +17,7 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
   templateType,
   onSaveData,
 }) => {
-  const [showPreview, setShowPreview] = useState(false);
+  const [showPreview, setShowPreview] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [playerValue, setPlayerValue] = useState<number>(0);
 
@@ -29,7 +26,6 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = data.data.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(data.data.length / itemsPerPage);
 
   // Cuando haya datos de jugadores, setear un valor inicial basado en la primera fila visible
   useEffect(() => {
@@ -146,8 +142,13 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
   };
 
   const handleSave = () => {
+    const dataPlayer = {
+      ...data.data[0],
+      playerValue,
+    };
+
     if (onSaveData) {
-      onSaveData(data.data);
+      onSaveData(dataPlayer);
     }
   };
 
@@ -257,38 +258,6 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
               </tbody>
             </table>
           </div>
-
-          {/* Paginación */}
-          {totalPages > 1 && (
-            <div className="bg-gray-700 px-4 py-3 border-t border-gray-600 flex items-center justify-between">
-              <div className="text-sm text-gray-300">
-                Mostrando {startIndex + 1} a{" "}
-                {Math.min(endIndex, data.data.length)} de {data.data.length}{" "}
-                registros
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                  disabled={currentPage === 1}
-                  className="px-3 py-1 bg-gray-600 hover:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded text-sm"
-                >
-                  Anterior
-                </button>
-                <span className="px-3 py-1 text-gray-300 text-sm">
-                  {currentPage} / {totalPages}
-                </span>
-                <button
-                  onClick={() =>
-                    setCurrentPage(Math.min(totalPages, currentPage + 1))
-                  }
-                  disabled={currentPage === totalPages}
-                  className="px-3 py-1 bg-gray-600 hover:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded text-sm"
-                >
-                  Siguiente
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       )}
 

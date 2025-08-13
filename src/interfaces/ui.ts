@@ -1,6 +1,7 @@
 import { StaticImageData } from "next/image";
 import { PropsWithChildren, ReactNode } from "react";
 import { Club, PlayerWithCategory } from "./clubs";
+import { PlayerDataProps } from "./req";
 
 export interface SportsLayoutProps {
   layoutId: string;
@@ -96,3 +97,7 @@ export interface PlayerCardFooterProps {
 }
 
 export type TypeFormProps = "player" | "club" | "danceAcademy" | null;
+
+export interface TopPlayerCardProps extends PlayerDataProps {
+  rank: number;
+}

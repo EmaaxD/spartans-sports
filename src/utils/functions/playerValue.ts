@@ -77,3 +77,74 @@ export const classifyIndiceQ = (rawIndiceQ: string | number): QClassificationRes
     valorRangoStr: `${formatNumber(range.valorMin)} – ${formatNumber(range.valorMax)}`,
   };
 };
+
+// Determina la posición Top 100 (1=mejor, 100=peor) usando RANGES y el valor del jugador en pesos
+export const getPlayerRank = (playerValue: number | string): number => {
+  // Normalizar posibles formatos "90.000" / "90,000.50" / "90000"
+  const parseVal = (v: number | string): number => {
+    if (typeof v === "number") return isFinite(v) ? v : 0;
+    const onlyDigits = v
+      .toString()
+      .trim()
+      .replace(/[\s]/g, "")
+      .replace(/[^0-9.,-]/g, "");
+    let normalized = onlyDigits;
+    if (onlyDigits.includes(".") && onlyDigits.includes(",")) {
+      // asume es-AR: puntos como miles, coma como decimal
+      normalized = onlyDigits.replace(/\./g, "").replace(",", ".");
+    } else if (onlyDigits.includes(",") && !onlyDigits.includes(".")) {
+      normalized = onlyDigits.replace(",", ".");
+    } else {
+      normalized = onlyDigits.replace(/\./g, "");
+    }
+    const n = parseFloat(normalized);
+    return isNaN(n) ? 0 : n;
+  };
+
+  const value = Math.max(0, parseVal(playerValue));
+
+  // Preparar límites globales desde RANGES
+  const globalMin = Math.min(...RANGES.map((r) => r.valorMin));
+  const globalMax = Math.max(...RANGES.map((r) => r.valorMax));
+  const clamped = Math.max(globalMin, Math.min(globalMax, value));
+
+  // Calcular "ancho" de cada rango en pesos y asignar porciones del Top 100 proporcionalmente
+  const rangesDesc = [...RANGES].sort((a, b) => b.valorMax - a.valorMax);
+  const widths = rangesDesc.map((r) => Math.max(1, r.valorMax - r.valorMin));
+  const totalWidth = widths.reduce((acc, w) => acc + w, 0);
+
+  let allocated = 0;
+  const positionsPerRange = widths.map((w, i) => {
+    if (i === widths.length - 1) return 100 - allocated; // el último completa 100
+    const p = Math.round((w / totalWidth) * 100);
+    allocated += p;
+    return p;
+  });
+
+  // Construir bloques con offsets de posición
+  let start = 1;
+  const blocks = rangesDesc.map((r, i) => {
+    const count = positionsPerRange[i];
+    const block = { ...r, start, count };
+    start += count;
+    return block;
+  });
+
+  // Encontrar bloque por valor
+  const block =
+    blocks.find((b) => clamped >= b.valorMin && clamped <= b.valorMax) ||
+    blocks[blocks.length - 1];
+
+  // Posición relativa dentro del bloque (valor más alto => mejores posiciones)
+  const width = Math.max(1, block.valorMax - block.valorMin);
+  const rel = (block.valorMax - clamped) / width; // 0 en el techo del rango
+  const idxInBlock = Math.min(
+    block.count - 1,
+    Math.max(0, Math.floor(rel * block.count))
+  );
+
+  const position = block.start + idxInBlock;
+  return Math.max(1, Math.min(100, position));
+};
+
+

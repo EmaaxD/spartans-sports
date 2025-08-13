@@ -22,6 +22,7 @@ import FaviconLogo from "@src/assets/img/logos/logo-icon-color.png";
 import { SyncLanguage } from "@src/components/HOC";
 import { ClubsProvider } from "@src/context/clubs";
 import { UploadFormProvider } from "@src/context/uploadForm";
+import { PlayersProvider } from "@src/context/players";
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
@@ -35,18 +36,20 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <AuthProvider>
           <UiProvider>
             <ClubsProvider>
-              <UploadFormProvider>
-                <AnimationAosContainer>
-                  <SkeletonTheme baseColor="#d7d4d4" highlightColor="#cbcbcb">
-                    <SyncLanguage />
+              <PlayersProvider>
+                <UploadFormProvider>
+                  <AnimationAosContainer>
+                    <SkeletonTheme baseColor="#d7d4d4" highlightColor="#cbcbcb">
+                      <SyncLanguage />
 
-                    <MainLayout>
-                      <Toaster />
-                      <Component {...pageProps} />
-                    </MainLayout>
-                  </SkeletonTheme>
-                </AnimationAosContainer>
-              </UploadFormProvider>
+                      <MainLayout>
+                        <Toaster />
+                        <Component {...pageProps} />
+                      </MainLayout>
+                    </SkeletonTheme>
+                  </AnimationAosContainer>
+                </UploadFormProvider>
+              </PlayersProvider>
             </ClubsProvider>
           </UiProvider>
         </AuthProvider>

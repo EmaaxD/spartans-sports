@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { clubsContext } from "@src/context/clubs";
+import { playersContext } from "@src/context/players";
 
 import {
   AllClubsContainer,
@@ -25,6 +26,7 @@ export default function Home() {
   const [loadingEbooks, setLoadingEbooks] = useState(true);
 
   const { clubs, handleSelectedClub } = useContext(clubsContext);
+  const { players } = useContext(playersContext);
 
   const { t } = useTranslation("common");
 
@@ -50,12 +52,14 @@ export default function Home() {
             <TopClubs />
           </ClubsHomeContainer>
 
-          <ClubsHomeContainer
-            idSection="topPlayersSection"
-            titleSection={t("top100Players")}
-          >
-            <TopPlayers />
-          </ClubsHomeContainer>
+          {players && players.length > 0 && (
+            <ClubsHomeContainer
+              idSection="topPlayersSection"
+              titleSection={t("top100Players")}
+            >
+              <TopPlayers />
+            </ClubsHomeContainer>
+          )}
 
           {clubs &&
             clubs.length > 0 &&

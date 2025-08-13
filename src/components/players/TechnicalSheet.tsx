@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import Image from "next/image";
 import {
   FaUser,
@@ -11,10 +12,18 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 
-import TestJumpImg from "../../assets/img/testJump.png";
+import { playersContext } from "@src/context/players";
+
 import { PlayerPhoto } from "./PlayerPhoto";
 
+import TestJumpImg from "../../assets/img/testJump.png";
+import { formatIsoToDDMMYYYY } from "@src/utils/functions";
+
 export const FichaTecnicaDeportiva = () => {
+  const { selectedPlayer } = useContext(playersContext);
+
+  if (!selectedPlayer) return null;
+
   return (
     <div className="relative max-w-5xl mx-auto px-6 py-10 rounded-2xl bg-[#0a0a0f] text-sm text-white font-orbitron shadow-2xl shadow-yellow-500/30 space-y-8 overflow-hidden crypto-border">
       {/* Efectos de brillos dorados flotantes */}
@@ -46,7 +55,9 @@ export const FichaTecnicaDeportiva = () => {
         <h1 className="text-3xl font-extrabold text-lime-400 flex justify-center items-center gap-3 drop-shadow-[0_0_10px_rgba(163,230,53,0.8)]">
           Ficha Técnica Deportiva
         </h1>
-        <p className="text-xs text-lime-300 mt-1">Fecha: 31/08/2024</p>
+        <p className="text-xs text-lime-300 mt-1">
+          Fecha: {formatIsoToDDMMYYYY(selectedPlayer.createdAt)}
+        </p>
         {/* Línea decorativa dorada */}
         <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-yellow-400 to-transparent mx-auto mt-2"></div>
       </header>
@@ -58,12 +69,16 @@ export const FichaTecnicaDeportiva = () => {
             <FaUser /> Datos del Atleta
           </h2>
           <ul className="mt-2 space-y-1 text-cyan-100">
-            <li>Apellido: Romero</li>
-            <li>Nombre: Eugenia Judith</li>
-            <li>Clase: 2010</li>
-            <li>Sexo: F</li>
-            <li>Fecha de Nac: 12/7</li>
-            <li>Localidad: Perico</li>
+            <li className="capitalize">Apellido: {selectedPlayer.apellido}</li>
+            <li className="capitalize">Nombre: {selectedPlayer.nombre}</li>
+            <li className="capitalize">Clase: {selectedPlayer.clase}</li>
+            <li className="capitalize">Sexo: {selectedPlayer.sexo}</li>
+            <li className="capitalize">
+              Fecha de Nac: {selectedPlayer.fechaNacimiento}
+            </li>
+            <li className="capitalize">
+              Localidad: {selectedPlayer.localidad}
+            </li>
           </ul>
         </section>
 
@@ -76,9 +91,11 @@ export const FichaTecnicaDeportiva = () => {
             <FaFutbol /> Datos Deportivos
           </h2>
           <ul className="mt-2 space-y-1 text-pink-100">
-            <li>Deporte: Fútbol</li>
-            <li>Posición: Delantera</li>
-            <li>Club / Escuela: Los Pampas</li>
+            <li className="capitalize">Deporte: {selectedPlayer.deporte}</li>
+            <li className="capitalize">Posición: {selectedPlayer.posicion}</li>
+            <li className="capitalize">
+              Club / Escuela: {selectedPlayer.escuelaClub}
+            </li>
           </ul>
         </section>
       </div>
@@ -90,14 +107,13 @@ export const FichaTecnicaDeportiva = () => {
             <FaRulerVertical /> Talla y Características
           </h3>
           <ul className="mt-2 space-y-1 text-purple-100">
-            <li>Altura: 1.55 m</li>
-            <li>Peso: 49 kg</li>
-            <li>Torso: 31</li>
-            <li>Envergadura: 1.55 m</li>
-            <li>Largura pierna: 15.5 cm</li>
-            <li>IMC: -</li>
-            <li>TBM: -</li>
-            <li>Biotipo: -</li>
+            <li>Altura: {selectedPlayer.altura} cm</li>
+            <li>Peso: {selectedPlayer.peso} kg</li>
+            <li>Torso: {selectedPlayer.alturaTorso}</li>
+            <li>Envergadura: {selectedPlayer.envergaduraBrazos} m</li>
+            <li>IMC: {selectedPlayer.imc}</li>
+            <li>TBM: {selectedPlayer.tmb}</li>
+            <li>Biotipo: {selectedPlayer.biotipo}</li>
           </ul>
         </section>
 
@@ -106,12 +122,12 @@ export const FichaTecnicaDeportiva = () => {
             <FaBalanceScale /> Lateralidades
           </h3>
           <ul className="mt-2 space-y-1 text-sky-100">
-            <li>Dominancia: Izquierda</li>
-            <li>Ojo Director: Izquierdo</li>
-            <li>Mano dominante: Izquierda</li>
-            <li>Cintura: Izquierda</li>
-            <li>Pierna dominante: Izquierda</li>
-            <li>Pierna de dirección: Izquierda</li>
+            <li>Dominancia: {selectedPlayer.piernaDominante}</li>
+            <li>Ojo Director: {selectedPlayer.ojoDirector}</li>
+            <li>Hombro: {selectedPlayer.hombro}</li>
+            <li>Braz. Direc: {selectedPlayer.brazoDirector}</li>
+            <li>Pierna dominante: {selectedPlayer.piernaDominante}</li>
+            <li>Pierna de dirección: {selectedPlayer.piernaDirectora}</li>
           </ul>
         </section>
       </div>
@@ -123,8 +139,8 @@ export const FichaTecnicaDeportiva = () => {
             <FaRunning /> Dorsiflexión de Tobillos
           </h3>
           <ul className="mt-2 space-y-1 text-pink-100">
-            <li>Izquierda: A</li>
-            <li>Derecha: A</li>
+            <li>Izquierda: {selectedPlayer.dorsiflexionTobilloIzq}</li>
+            <li>Derecha: {selectedPlayer.dorsiflexionTobilloDer}</li>
           </ul>
         </section>
 
@@ -133,14 +149,11 @@ export const FichaTecnicaDeportiva = () => {
             <FaDumbbell /> Fuerzas
           </h3>
           <ul className="mt-2 space-y-1 text-yellow-100">
-            <li>Mano derecha: -</li>
-            <li>Mano izquierda: -</li>
-            <li>Vuelo SQJ: -</li>
-            <li>Fuerza Reactiva: 63,5</li>
-            <li>Altura de vuelo: -</li>
-            <li>Indice Q: -</li>
-            <li>Pie Der: -</li>
-            <li>Pie Izq: -</li>
+            <li>Mano derecha: {selectedPlayer.manoDer}</li>
+            <li>Mano izquierda: {selectedPlayer.manoIzq}</li>
+            <li>Indice Q: {selectedPlayer.indiceQ}</li>
+            <li>Pie Der: {selectedPlayer.pieDer}</li>
+            <li>Pie Izq: {selectedPlayer.pieIzq}</li>
           </ul>
         </section>
       </div>
@@ -151,14 +164,18 @@ export const FichaTecnicaDeportiva = () => {
           <h3 className="text-pink-300 font-semibold flex items-center gap-2">
             <FaHeartbeat /> Sentadilla Profunda
           </h3>
-          <p className="text-pink-100">Resultado: B</p>
+          <p className="text-pink-100">
+            Resultado: {selectedPlayer.sentadillaProfunda}
+          </p>
         </section>
 
         <section>
           <h3 className="text-rose-300 font-semibold flex items-center gap-2">
             <FaLungs /> Capacidad Pulmonar Total
           </h3>
-          <p className="text-rose-100">Resultado: B</p>
+          <p className="text-rose-100">
+            Resultado: {selectedPlayer.capacidadPulmonarTotal}
+          </p>
         </section>
       </div>
 
@@ -166,22 +183,14 @@ export const FichaTecnicaDeportiva = () => {
       <div className="grid md:grid-cols-3 gap-6 z-10 relative">
         <section>
           <h3 className="text-teal-300 font-semibold">🎯 Coordinación</h3>
-          <p>Resultado: B</p>
+          <p>Resultado: {selectedPlayer.coordinacion}</p>
         </section>
-
-        <section>
-          <h3 className="text-teal-300 font-semibold">🔗 Cadena Posterior</h3>
-          <p>Resultado: B</p>
-        </section>
-      </div>
-
-      {/* Capacidad Pulmonar Residual */}
-      <div className="grid md:grid-cols-3 gap-6 z-10 relative">
+        {/* Capacidad Pulmonar Residual */}
         <section>
           <h3 className="text-teal-300 font-semibold">
             🫁 Capacidad Pulmonar Residual
           </h3>
-          <p>—</p>
+          <p>{selectedPlayer.capacidadPulmunarResidual}</p>
         </section>
       </div>
 

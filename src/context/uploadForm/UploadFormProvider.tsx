@@ -5,9 +5,14 @@ import React, {
   useEffect,
 } from "react";
 
-import { TypeFormProps, UploadFormProviderProps } from "@src/interfaces";
+import {
+  CreatePlayerResp,
+  TypeFormProps,
+  UploadFormProviderProps,
+} from "@src/interfaces";
 
 import { initialState, uploadFormReducer } from "./uploadFormReducer";
+import toast from "react-hot-toast";
 
 export const uploadFormContext = createContext({} as UploadFormProviderProps);
 
@@ -49,6 +54,40 @@ export const UploadFormProvider: React.FC<PropsWithChildren> = ({
     }
   };
 
+  const handleUploadForm = async (dataForm: any): Promise<boolean> => {
+    try {
+      let respPromise = false;
+
+      if (state.typeForm === "player") {
+        const resp = await fetch("/api/createPlayer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...dataForm,
+            createdAt: new Date().toISOString(),
+          }),
+        });
+        const player: CreatePlayerResp = await resp.json();
+
+        if (player.status === "success") {
+          // Handle successful player creation
+          console.log("player", player);
+
+          respPromise = true;
+
+          toast.success("Jugador creado correctamente");
+        }
+      }
+
+      return respPromise;
+    } catch (error) {
+      console.log("Error handling upload form:", error);
+      return false; // Indicar fallo en la promesa
+    }
+  };
+
   useEffect(() => {
     handleVerifyStep();
   }, []);
@@ -59,6 +98,7 @@ export const UploadFormProvider: React.FC<PropsWithChildren> = ({
         ...state,
         handleSetTypeForm,
         handleSetStepForm,
+        handleUploadForm,
       }}
     >
       {children}

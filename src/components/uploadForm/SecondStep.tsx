@@ -1,5 +1,7 @@
 import { useContext } from "react";
 import { FileUploader } from "react-drag-drop-files";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import { FiUpload, FiAlertCircle } from "react-icons/fi";
 
 import { useI18n, useFileUpload } from "@src/hooks";
@@ -12,7 +14,8 @@ import { templateCategories } from "@src/utils/const";
 const fileTypes = ["XLSX", "CSV"];
 
 export const SecondStep = () => {
-  const { typeForm, handleSetTypeForm } = useContext(uploadFormContext);
+  const { typeForm, handleSetTypeForm, handleUploadForm } =
+    useContext(uploadFormContext);
 
   const { t } = useI18n();
   const {
@@ -28,6 +31,8 @@ export const SecondStep = () => {
     clearData,
   } = useFileUpload();
 
+  const { push } = useRouter();
+
   const handleFileChange = (uploadedFile: File | File[]) => {
     const fileToSet = Array.isArray(uploadedFile)
       ? uploadedFile[0]
@@ -35,11 +40,19 @@ export const SecondStep = () => {
     setFile(fileToSet || null);
   };
 
-  const handleSaveData = (data: any[]) => {
-    // Aquí puedes implementar la lógica para guardar los datos en tu base de datos
-    console.log("Guardando datos:", data);
-    // Ejemplo: enviar a API
-    // await saveDataToAPI(data, selectedTemplateType);
+  const handleSaveData = async (data: any) => {
+    try {
+      const resp = await handleUploadForm(data);
+
+      if (resp) {
+        //empty all field
+        clearData();
+
+        push("/profile");
+      }
+    } catch (error) {
+      toast.error("Error al guardar los datos");
+    }
   };
 
   const handleUpload = async () => {

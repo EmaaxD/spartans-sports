@@ -48,7 +48,7 @@ export const SecondStep = () => {
         //empty all field
         clearData();
 
-        push("/profile");
+        push("/");
       }
     } catch (error) {
       toast.error("Error al guardar los datos");

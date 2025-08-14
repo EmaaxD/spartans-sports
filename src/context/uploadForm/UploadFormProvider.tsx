@@ -3,7 +3,9 @@ import React, {
   useReducer,
   PropsWithChildren,
   useEffect,
+  useContext,
 } from "react";
+import toast from "react-hot-toast";
 
 import {
   CreatePlayerResp,
@@ -12,7 +14,7 @@ import {
 } from "@src/interfaces";
 
 import { initialState, uploadFormReducer } from "./uploadFormReducer";
-import toast from "react-hot-toast";
+import { playersContext } from "../players";
 
 export const uploadFormContext = createContext({} as UploadFormProviderProps);
 
@@ -20,6 +22,8 @@ export const UploadFormProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(uploadFormReducer, initialState);
+
+  const { handleAddPlayer } = useContext(playersContext);
 
   const handleSetTypeForm = (typeForm: TypeFormProps) => {
     dispatch({ type: "SET_TYPE_FORM", payload: typeForm });
@@ -72,10 +76,9 @@ export const UploadFormProvider: React.FC<PropsWithChildren> = ({
         const player: CreatePlayerResp = await resp.json();
 
         if (player.status === "success") {
-          // Handle successful player creation
-          console.log("player", player);
-
           respPromise = true;
+
+          handleAddPlayer(player.data);
 
           toast.success("Jugador creado correctamente");
         }

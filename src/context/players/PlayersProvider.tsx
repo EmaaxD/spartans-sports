@@ -42,6 +42,10 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  const handleAddPlayer = (player: PlayerDataProps) => {
+    dispatch({ type: "ADD_PLAYER", payload: player });
+  };
+
   useEffect(() => {
     if (state.players.length === 0) {
       handleGetPlayers();
@@ -51,10 +55,12 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const top100PlayersMemo = useMemo(() => {
     if (state.players.length === 0) return [];
 
-    return state.players.map((player) => ({
+    const withRank = state.players.map((player) => ({
       ...player,
       rank: getPlayerRank(player.playerValue),
     }));
+
+    return withRank.sort((a, b) => a.rank - b.rank).slice(0, 100);
   }, [state.players]);
 
   return (
@@ -63,6 +69,7 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
         ...state,
         top100PlayersMemo,
         handleSelectedPlayer,
+        handleAddPlayer,
       }}
     >
       {children}

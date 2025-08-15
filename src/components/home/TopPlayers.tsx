@@ -2,20 +2,21 @@ import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+import { TopPlayerCardProps } from "@src/interfaces";
+
 import { playersContext } from "@src/context/players";
 
 import { CarouselContainer } from "../containers";
 
-import { top100Players } from "@src/utils/const";
+import { formatPrice, limitCaracterString } from "@src/utils/functions";
 
-import ClubCoverImg from "@src/assets/img/playerFutbol.png";
+import PlayerOneImg from "@src/assets/img/playerFutbol.png";
+import PlayerTwoImg from "@src/assets/img/playerTwo.png";
+import PlayerThreeImg from "@src/assets/img/playerThree.png";
+import PlayerFourImg from "@src/assets/img/playerFour.png";
 import SpartansCoinImg from "@src/assets/img/logos/spartanCoin.png";
-import {
-  formatPrice,
-  getPlayerRank,
-  limitCaracterString,
-} from "@src/utils/functions";
-import { TopPlayerCardProps } from "@src/interfaces";
+
+const images = [PlayerOneImg, PlayerTwoImg, PlayerThreeImg, PlayerFourImg];
 
 const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
   _id,
@@ -63,6 +64,11 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
 
   const ref = useRef<HTMLDivElement | null>(null);
 
+  const selectedImg = useMemo(() => {
+    const idx = Math.floor(Math.random() * images.length);
+    return images[idx];
+  }, []);
+
   useEffect(() => {
     const obs = new window.IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) setShowVideo(true);
@@ -94,7 +100,7 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
       <div className="relative w-full h-full rounded-lg flex justify-center items-center shadow-lg overflow-hidden">
         <div className="flex flex-col w-44">
           <Image
-            src={ClubCoverImg}
+            src={selectedImg}
             alt="Player Cover"
             className="h-full w-full rounded-lg"
             width={2400}

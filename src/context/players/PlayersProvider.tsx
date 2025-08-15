@@ -60,7 +60,24 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
       rank: getPlayerRank(player.playerValue),
     }));
 
-    return withRank.sort((a, b) => a.rank - b.rank).slice(0, 100);
+    // Ordenar por rank ascendente; si empatan, priorizar mayor playerValue
+    const sorted = withRank.sort((a, b) => {
+      if (a.rank !== b.rank) return a.rank - b.rank;
+      const av = a.playerValue ?? 0;
+      const bv = b.playerValue ?? 0;
+      return bv - av;
+    });
+
+    // Asegurar que no se repitan ranks: si igual o menor al anterior, incrementar
+    let lastAssigned = 0;
+    for (const p of sorted) {
+      if (p.rank <= lastAssigned) {
+        p.rank = lastAssigned + 1;
+      }
+      lastAssigned = p.rank;
+    }
+
+    return sorted.slice(0, 100);
   }, [state.players]);
 
   return (

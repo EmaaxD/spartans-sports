@@ -81,7 +81,7 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
     "sexo",
     "clase",
     "fechaNacimiento",
-    "alturaTorso",
+  "alturaTorso",
     "envergaduraBrazos",
     "alturaDeVuelo(m)",
     "tiempoDeContacto(s)",
@@ -642,7 +642,7 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       edad: 22,
       peso: 75,
       altura: 180,
-      alturaTorso: 85,
+  alturaTorso: 85,
       envergaduraBrazos: 185,
       alturaDeVuelo: 42,
       tiempoDeContacto: 21,
@@ -681,7 +681,7 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       edad: 19,
       peso: 58,
       altura: 165,
-      alturaTorso: 78,
+  alturaTorso: 78,
       envergaduraBrazos: 168,
       alturaDeVuelo: 36,
       tiempoDeContacto: 23,
@@ -724,7 +724,7 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
     { wch: 8 }, // edad
     { wch: 10 }, // peso
     { wch: 10 }, // altura
-    { wch: 12 }, // alturaTorso
+  { wch: 12 }, // alturaTorso
     { wch: 18 }, // envergaduraBrazos
     { wch: 14 }, // alturaDeVuelo (m)
     { wch: 16 }, // tiempoDeContacto (s)

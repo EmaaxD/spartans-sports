@@ -152,7 +152,7 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
       const first = paginatedData[0] as any;
       const q = first?.indiceQ ?? "";
       const cls = classifyIndiceQ(q);
-      setPlayerValue(cls.valorMin);
+      setPlayerValue(cls.valorMin === 0 ? cls.valorMax : cls.valorMin);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [templateType, startIndex, endIndex, data.data.length]);

@@ -3,6 +3,7 @@ import { FileUploader } from "react-drag-drop-files";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { FiUpload, FiAlertCircle } from "react-icons/fi";
+import { IoIosArrowBack } from "react-icons/io";
 
 import { useI18n, useFileUpload } from "@src/hooks";
 
@@ -14,7 +15,7 @@ import { templateCategories } from "@src/utils/const";
 const fileTypes = ["XLSX", "CSV"];
 
 export const SecondStep = () => {
-  const { typeForm, handleSetTypeForm, handleUploadForm } =
+  const { typeForm, handleSetTypeForm, handleUploadForm, handleSetStepForm } =
     useContext(uploadFormContext);
 
   const { t } = useI18n();
@@ -68,6 +69,14 @@ export const SecondStep = () => {
   return (
     <>
       <div className="flex flex-col gap-3 flex-1">
+        <button
+          className="bg-transparent flex items-center gap-1 text-gray-200 hover:text-white transition-colors outline-none"
+          onClick={() => handleSetStepForm(1)}
+        >
+          <IoIosArrowBack />
+          <span className="text-sm">{t("backToStep")}</span>
+        </button>
+
         <h2 className="text-white text-2xl font-bold" data-aos="zoom-in">
           {t("secondStepUploadForm")}
         </h2>

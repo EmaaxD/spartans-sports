@@ -38,6 +38,7 @@ export const UploadFormProvider: React.FC<PropsWithChildren> = ({
     } else if (step === 1) {
       // Al volver al paso 1 no forzar a 'null' en storage
       // (opcional: podríamos limpiar) => mantener selección previa
+      localStorage.removeItem("typeForm");
     }
 
     dispatch({ type: "SET_STEP_FORM", payload: step });

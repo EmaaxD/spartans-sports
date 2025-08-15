@@ -77,6 +77,9 @@ export const FichaTecnicaDeportiva = () => {
               Fecha de Nac: {selectedPlayer.fechaNacimiento}
             </li>
             <li className="capitalize">
+              Provincia: {selectedPlayer.provincia}
+            </li>
+            <li className="capitalize">
               Localidad: {selectedPlayer.localidad}
             </li>
           </ul>
@@ -152,8 +155,6 @@ export const FichaTecnicaDeportiva = () => {
             <li>Mano derecha: {selectedPlayer.manoDer}</li>
             <li>Mano izquierda: {selectedPlayer.manoIzq}</li>
             <li>Indice Q: {selectedPlayer.indiceQ}</li>
-            <li>Pie Der: {selectedPlayer.pieDer}</li>
-            <li>Pie Izq: {selectedPlayer.pieIzq}</li>
           </ul>
         </section>
       </div>

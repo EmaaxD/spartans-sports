@@ -41,8 +41,7 @@ export interface ProcessedPlayerData {
   manoDer: string;
   manoIzq: string;
   indiceQ: string;
-  pieDer: string;
-  pieIzq: string;
+  provincia: string;
   sentadillaProfunda: string;
   capacidadPulmonarTotal: string;
   coordinacion: string;
@@ -185,15 +184,14 @@ const processPlayerData = (
     "piernaDirectora",
     "dorsiflexionTobilloIzq",
     "dorsiflexionTobilloDer",
-    "posicion",
-    "localidad",
+  "posicion",
+  "localidad",
+  "provincia",
     "escuelaClub",
     "contacto",
     "deporte",
-  "manoDer",
-  "manoIzq",
-    "pieDer",
-    "pieIzq",
+    "manoDer",
+    "manoIzq",
     "sentadillaProfunda",
     "capacidadPulmonarTotal",
     "coordinacion",
@@ -235,13 +233,13 @@ const processPlayerData = (
       return; // Saltar filas vacías
     }
 
-  // Mapeo correcto según headers de la planilla (reordenados):
-  // 0 nombre,1 apellido,2 edad,3 peso,4 altura,5 sexo,6 clase,7 fechaNacimiento,
-  // 8 alturaTorso,9 envergaduraBrazos,10 alturaDeVuelo(m),11 tiempoDeContacto(s),12 imc,13 tmb,14 indiceQ,15 biotipo,
-  // 16 lateralidad,17 ojoDirector,18 hombro,19 brazoDirector,20 cintura,21 piernaDominante,22 piernaDirectora,
-  // 23 dorsiflexionTobilloIzq,24 dorsiflexionTobilloDer,25 posicion,26 localidad,27 escuelaClub,28 contacto,
-  // 29 deporte,30 manoDer,31 manoIzq,32 pieDer,33 pieIzq,34 sentadillaProfunda,
-  // 35 capacidadPulmonarTotal,36 coordinacion,37 capacidadPulmunarResidual
+    // Mapeo correcto según headers de la planilla (reordenados):
+    // 0 nombre,1 apellido,2 edad,3 peso,4 altura,5 sexo,6 clase,7 fechaNacimiento,
+    // 8 alturaTorso,9 envergaduraBrazos,10 alturaDeVuelo(m),11 tiempoDeContacto(s),12 imc,13 tmb,14 indiceQ,15 biotipo,
+    // 16 lateralidad,17 ojoDirector,18 hombro,19 brazoDirector,20 cintura,21 piernaDominante,22 piernaDirectora,
+  // 23 dorsiflexionTobilloIzq,24 dorsiflexionTobilloDer,25 posicion,26 localidad,27 provincia,28 escuelaClub,29 contacto,
+  // 30 deporte,31 manoDer,32 manoIzq,33 sentadillaProfunda,
+  // 34 capacidadPulmonarTotal,35 coordinacion,36 capacidadPulmunarResidual
     const playerData: ProcessedPlayerData = {
       nombre: cleanString(row[0]),
       apellido: cleanString(row[1]),
@@ -257,30 +255,29 @@ const processPlayerData = (
       tiempoDeContacto: parseNumber(row[11]) || 0,
       imc: parseNumber(row[12]) || 0,
       tmb: parseNumber(row[13]) || 0,
-  indiceQ: cleanString(row[14]),
-  biotipo: cleanString(row[15]),
-  lateralidad: cleanString(row[16]),
-  ojoDirector: cleanString(row[17]),
-  hombro: cleanString(row[18]),
-  brazoDirector: cleanString(row[19]),
-  cintura: cleanString(row[20]),
-  piernaDominante: cleanString(row[21]),
-  piernaDirectora: cleanString(row[22]),
-  dorsiflexionTobilloIzq: cleanString(row[23]),
-  dorsiflexionTobilloDer: cleanString(row[24]),
+      indiceQ: cleanString(row[14]),
+      biotipo: cleanString(row[15]),
+      lateralidad: cleanString(row[16]),
+      ojoDirector: cleanString(row[17]),
+      hombro: cleanString(row[18]),
+      brazoDirector: cleanString(row[19]),
+      cintura: cleanString(row[20]),
+      piernaDominante: cleanString(row[21]),
+      piernaDirectora: cleanString(row[22]),
+      dorsiflexionTobilloIzq: cleanString(row[23]),
+      dorsiflexionTobilloDer: cleanString(row[24]),
   posicion: cleanString(row[25]),
   localidad: cleanString(row[26]),
-  escuelaClub: cleanString(row[27]),
-  contacto: cleanString(row[28]),
-  deporte: cleanString(row[29]),
-  manoDer: cleanString(row[30]),
-  manoIzq: cleanString(row[31]),
-  pieDer: cleanString(row[32]),
-  pieIzq: cleanString(row[33]),
-  sentadillaProfunda: cleanString(row[34]),
-  capacidadPulmonarTotal: cleanString(row[35]),
-  coordinacion: cleanString(row[36]),
-  capacidadPulmunarResidual: cleanString(row[37]),
+  provincia: cleanString(row[27]),
+  escuelaClub: cleanString(row[28]),
+  contacto: cleanString(row[29]),
+  deporte: cleanString(row[30]),
+  manoDer: cleanString(row[31]),
+  manoIzq: cleanString(row[32]),
+  sentadillaProfunda: cleanString(row[33]),
+  capacidadPulmonarTotal: cleanString(row[34]),
+  coordinacion: cleanString(row[35]),
+  capacidadPulmunarResidual: cleanString(row[36]),
       rowNumber,
     };
 
@@ -527,7 +524,9 @@ const validatePlayerData = (
       value: data.lateralidad,
       message: "La lateralidad es requerida (cruzado u homogenio)",
     });
-  } else if (!["cruzado", "homogenio", "Cruzado", "Homogenio"].includes(data.lateralidad)) {
+  } else if (
+    !["cruzado", "homogenio", "Cruzado", "Homogenio"].includes(data.lateralidad)
+  ) {
     errors.push({
       row: rowNumber,
       field: "lateralidad",
@@ -546,8 +545,8 @@ const validatePlayerData = (
     { key: "capacidadPulmunarResidual", label: "capacidadPulmunarResidual" },
   ];
   const ADAllowed = ["A", "B", "C", "D", "a", "b", "c", "d", ""]; // vacío permitido
-  ADFields.forEach(f => {
-    const val = (data[f.key] as unknown as string || "").trim();
+  ADFields.forEach((f) => {
+    const val = ((data[f.key] as unknown as string) || "").trim();
     if (val && !ADAllowed.includes(val)) {
       errors.push({
         row: rowNumber,
@@ -558,16 +557,17 @@ const validatePlayerData = (
     }
   });
 
-  // Validaciones manoDer / manoIzq / indiceQ / pieDer / pieIzq (opcionales): no reglas estrictas excepto longitud razonable
-  const optionalFreeText: Array<{ key: keyof ProcessedPlayerData; label: string }> = [
+  // Validaciones manoDer / manoIzq / indiceQ (opcionales): no reglas estrictas excepto longitud razonable
+  const optionalFreeText: Array<{
+    key: keyof ProcessedPlayerData;
+    label: string;
+  }> = [
     { key: "manoDer", label: "manoDer" },
     { key: "manoIzq", label: "manoIzq" },
     { key: "indiceQ", label: "indiceQ" },
-    { key: "pieDer", label: "pieDer" },
-    { key: "pieIzq", label: "pieIzq" },
   ];
-  optionalFreeText.forEach(f => {
-    const v = (data[f.key] as unknown as string || "").trim();
+  optionalFreeText.forEach((f) => {
+    const v = ((data[f.key] as unknown as string) || "").trim();
     if (v && v.length > 30) {
       errors.push({
         row: rowNumber,
@@ -1011,7 +1011,10 @@ const calculateAge = (birthDateString: string): number => {
   const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
     age--;
   }
   return age;

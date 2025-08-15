@@ -29,8 +29,6 @@ export interface PlayerTemplate {
   manoDer: string;
   manoIzq: string;
   indiceQ: string;
-  pieDer: string;
-  pieIzq: string;
   sentadillaProfunda: string;
   capacidadPulmonarTotal: string;
   coordinacion: string;
@@ -40,6 +38,7 @@ export interface PlayerTemplate {
   clase: string;
   fechaNacimiento: string;
   localidad: string;
+  provincia: string;
   escuelaClub: string;
   contacto: string;
   deporte: string;
@@ -102,13 +101,12 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
     "dorsiflexionTobilloDer",
     "posicion",
     "localidad",
+  "provincia",
     "escuelaClub",
     "contacto",
   "deporte",
   "manoDer",
   "manoIzq",
-    "pieDer",
-    "pieIzq",
     "sentadillaProfunda",
     "capacidadPulmonarTotal",
     "coordinacion",
@@ -661,10 +659,8 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       piernaDirectora: "Der.",
       dorsiflexionTobilloIzq: "",
       dorsiflexionTobilloDer: "",
-      manoDer: "",
-      manoIzq: "",
-      pieDer: "",
-      pieIzq: "",
+  manoDer: "",
+  manoIzq: "",
       sentadillaProfunda: "",
       capacidadPulmonarTotal: "",
       coordinacion: "",
@@ -674,6 +670,7 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       clase: "2002",
       fechaNacimiento: "15/03/2002",
       localidad: "Buenos Aires",
+  provincia: "Buenos Aires",
       escuelaClub: "Club Atlético River Plate",
       contacto: "juan.perez@email.com / +54 11 1234-5678",
       deporte: "Fútbol",
@@ -701,10 +698,8 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       piernaDirectora: "Izq.",
       dorsiflexionTobilloIzq: "",
       dorsiflexionTobilloDer: "",
-      manoDer: "",
-      manoIzq: "",
-      pieDer: "",
-      pieIzq: "",
+  manoDer: "",
+  manoIzq: "",
       sentadillaProfunda: "",
       capacidadPulmonarTotal: "",
       coordinacion: "",
@@ -714,6 +709,7 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       clase: "2005",
       fechaNacimiento: "22/08/2005",
       localidad: "Córdoba",
+  provincia: "Córdoba",
       escuelaClub: "Instituto Atlético Central Córdoba",
       contacto: "maria.garcia@email.com / +54 351 9876-5432",
       deporte: "Básquet",
@@ -746,15 +742,14 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
     { wch: 10 }, // sexo
     { wch: 10 }, // clase
     { wch: 15 }, // fechaNacimiento
-    { wch: 15 }, // localidad
+  { wch: 15 }, // localidad
+  { wch: 15 }, // provincia
     { wch: 20 }, // escuelaClub
     { wch: 25 }, // contacto
     { wch: 15 }, // deporte
     { wch: 12 }, // manoDer
-    { wch: 12 }, // manoIzq
-    { wch: 10 }, // indiceQ
-    { wch: 12 }, // pieDer
-    { wch: 12 }, // pieIzq
+  { wch: 12 }, // manoIzq
+  { wch: 10 }, // indiceQ
     { wch: 18 }, // sentadillaProfunda
   ];
   worksheet["!cols"] = colWidths;

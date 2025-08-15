@@ -158,5 +158,9 @@
   "totalLungCapacity": "Capacidad Pulmonar Total",
   "coordination": "Coordinación",
   "residualLungCapacity": "Capacidad Pulmonar Residual",
-  "cleanUploadedFile": "Limpiar Archivo Subido"
+  "cleanUploadedFile": "Limpiar Archivo Subido",
+  "province": "Provincia",
+  "flightHeight": "Altura de Vuelo",
+  "contactTime": "Tiempo de Contacto",
+  "backToStep": "Volver al Paso 1"
 }

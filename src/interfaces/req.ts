@@ -26,6 +26,7 @@ export interface PlayerDataProps {
   imc: number;
   indiceQ: string;
   lateralidad: string;
+  provincia: string;
   localidad: string;
   manoDer: string;
   manoIzq: string;

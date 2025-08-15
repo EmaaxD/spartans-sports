@@ -5,6 +5,7 @@ import {
   formatPrice,
   classifyIndiceQ,
 } from "@src/utils/functions";
+import { useI18n } from "@src/hooks";
 
 interface ProcessedDataViewProps {
   data: ProcessingResult<any>;
@@ -21,67 +22,61 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [playerValue, setPlayerValue] = useState<number>(0);
 
+  const { t } = useI18n();
+
   const itemsPerPage = 10;
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = data.data.slice(startIndex, endIndex);
 
-  // Cuando haya datos de jugadores, setear un valor inicial basado en la primera fila visible
-  useEffect(() => {
-    if (templateType === "player" && paginatedData.length > 0) {
-      const first = paginatedData[0] as any;
-      const q = first?.indiceQ ?? "";
-      const cls = classifyIndiceQ(q);
-      setPlayerValue(cls.valorMin);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [templateType, startIndex, endIndex, data.data.length]);
-
   const getColumnConfig = () => {
     switch (templateType) {
       case "player":
         return [
-          { key: "nombre", label: "Nombre" },
-          { key: "apellido", label: "Apellido" },
-          { key: "edad", label: "Edad" },
-          { key: "peso", label: "Peso" },
-          { key: "altura", label: "Altura" },
-          { key: "alturaTorso", label: "Altura Torso" },
-          { key: "envergaduraBrazos", label: "Envergadura Brazos" },
-          { key: "imc", label: "IMC" },
-          { key: "tmb", label: "TMB" },
-          { key: "biotipo", label: "Biotipo" },
-          { key: "lateralidad", label: "Lateralidad" },
-          { key: "ojoDirector", label: "Ojo Director" },
-          { key: "hombro", label: "Hombro" },
-          { key: "brazoDirector", label: "Brazo Director" },
-          { key: "cintura", label: "Cintura" },
-          { key: "piernaDominante", label: "Pierna Dominante" },
-          { key: "piernaDirectora", label: "Pierna Directora" },
-          { key: "dorsiflexionTobilloIzq", label: "Dorsiflexión Tobillo Izq." },
-          { key: "dorsiflexionTobilloDer", label: "Dorsiflexión Tobillo Der." },
-          { key: "posicion", label: "Posición" },
-          { key: "sexo", label: "Sexo" },
-          { key: "clase", label: "Clase" },
-          { key: "fechaNacimiento", label: "Fecha Nacimiento" },
-          { key: "localidad", label: "Localidad" },
-          { key: "escuelaClub", label: "Escuela/Club" },
-          { key: "contacto", label: "Contacto" },
-          { key: "deporte", label: "Deporte" },
-          { key: "manoDer", label: "Mano Der." },
-          { key: "manoIzq", label: "Mano Izq." },
-          { key: "indiceQ", label: "Índice Q" },
-          { key: "pieDer", label: "Pie Der." },
-          { key: "pieIzq", label: "Pie Izq." },
-          { key: "sentadillaProfunda", label: "Sentadilla Profunda" },
-          { key: "capacidadPulmonarTotal", label: "Capacidad Pulmonar Total" },
-          { key: "coordinacion", label: "Coordinación" },
+          { key: "nombre", label: t("name") },
+          { key: "apellido", label: t("lastName") },
+          { key: "edad", label: t("age") },
+          { key: "peso", label: t("weight") },
+          { key: "altura", label: t("height") },
+          // Reordenado: sexo, clase y fechaNacimiento después de altura
+          { key: "sexo", label: t("sex") },
+          { key: "clase", label: t("class") },
+          { key: "fechaNacimiento", label: t("birthDate") },
+          { key: "alturaTorso", label: t("torsoHeight") },
+          { key: "envergaduraBrazos", label: t("armSpan") },
+          { key: "alturaDeVuelo", label: "Altura de Vuelo (m)" },
+          { key: "tiempoDeContacto", label: "Tiempo de Contacto (s)" },
+          { key: "imc", label: t("imc") },
+          { key: "tmb", label: t("tmb") },
+          { key: "indiceQ", label: t("indiceQ") },
+          { key: "biotipo", label: t("biotype") },
+          { key: "lateralidad", label: t("laterality") },
+          { key: "ojoDirector", label: t("dominantEye") },
+          { key: "hombro", label: t("shoulder") },
+          { key: "brazoDirector", label: t("dominantArm") },
+          { key: "cintura", label: t("waist") },
+          { key: "piernaDominante", label: t("dominantLeg") },
+          { key: "piernaDirectora", label: t("directingLeg") },
+          { key: "dorsiflexionTobilloIzq", label: t("leftAnkleDorsiflexion") },
+          { key: "dorsiflexionTobilloDer", label: t("rightAnkleDorsiflexion") },
+          { key: "posicion", label: t("position") },
+          { key: "localidad", label: t("locality") },
+          { key: "escuelaClub", label: t("schoolClub") },
+          { key: "contacto", label: t("contact") },
+          { key: "deporte", label: t("sport") },
+          { key: "manoDer", label: t("rightHand") },
+          { key: "manoIzq", label: t("leftHand") },
+          { key: "pieDer", label: t("rightFoot") },
+          { key: "pieIzq", label: t("leftFoot") },
+          { key: "sentadillaProfunda", label: t("deepSquat") },
+          { key: "capacidadPulmonarTotal", label: t("totalLungCapacity") },
+          { key: "coordinacion", label: t("coordination") },
           {
             key: "capacidadPulmunarResidual",
-            label: "Capacidad Pulm. Residual",
+            label: t("residualLungCapacity"),
           },
-          { key: "_valorJugador", label: "Valor (Spartans Coins)" },
+          { key: "_valorJugador", label: t("playerValue") },
         ];
       case "club":
         return [
@@ -152,13 +147,24 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
     }
   };
 
+  // Cuando haya datos de jugadores, setear un valor inicial basado en la primera fila visible
+  useEffect(() => {
+    if (templateType === "player" && paginatedData.length > 0) {
+      const first = paginatedData[0] as any;
+      const q = first?.indiceQ ?? "";
+      const cls = classifyIndiceQ(q);
+      setPlayerValue(cls.valorMin);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [templateType, startIndex, endIndex, data.data.length]);
+
   return (
     <div className="max-w-[45rem] bg-gray-800/50 border border-gray-600 rounded-lg p-4 mt-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <FiUsers className="text-blue-400 text-xl" />
           <div>
-            <h3 className="text-white font-semibold">Datos Procesados</h3>
+            <h3 className="text-white font-semibold">{t("processedData")}</h3>
           </div>
         </div>
 
@@ -168,7 +174,7 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
             className="flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm"
           >
             <FiEye size={16} />
-            {showPreview ? "Ocultar" : "Ver"} Preview
+            {showPreview ? t("hidden") : t("show")} Preview
           </button>
 
           {onSaveData && (
@@ -177,7 +183,7 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
               className="flex items-center gap-2 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm"
             >
               <FiCheck size={16} />
-              Guardar en Sistema
+              {t("saveToSystem")}
             </button>
           )}
         </div>
@@ -190,7 +196,7 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
             <FiCheck className="text-green-400" />
             <span className="text-green-400 font-medium">{data.validRows}</span>
           </div>
-          <p className="text-green-300 text-xs">Registros válidos</p>
+          <p className="text-green-300 text-xs">{t("validRecords")}</p>
         </div>
 
         <div className="bg-red-500/20 border border-red-500 rounded-lg p-3">
@@ -200,7 +206,7 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
               {data.errors.length}
             </span>
           </div>
-          <p className="text-red-300 text-xs">Errores encontrados</p>
+          <p className="text-red-300 text-xs">{t("errorsFound")}</p>
         </div>
       </div>
 
@@ -208,7 +214,7 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
       {data.errors.length > 0 && (
         <details className="mb-4">
           <summary className="cursor-pointer text-yellow-400 hover:text-yellow-300 font-medium">
-            ⚠️ Ver errores ({data.errors.length})
+            ⚠️ {t("seeErrors")} ({data.errors.length})
           </summary>
           <div className="mt-2 max-h-40 overflow-y-auto bg-red-500/10 border border-red-500/30 rounded-lg p-3">
             {data.errors.map((error, index) => (
@@ -216,12 +222,14 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
                 key={index}
                 className="text-red-300 text-sm py-1 border-b border-red-500/20 last:border-b-0"
               >
-                <strong>Fila {error.row}</strong> - Campo '{error.field}':{" "}
-                {error.message}
+                <strong>
+                  {t("row")} {error.row}
+                </strong>{" "}
+                - {t("field")} '{error.field}': {error.message}
                 {error.value && (
                   <span className="text-red-400">
                     {" "}
-                    (Valor: "{error.value}")
+                    ({t("value")}: "{error.value}")
                   </span>
                 )}
               </div>
@@ -234,7 +242,7 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
       {showPreview && data.data.length > 0 && (
         <div className="border border-gray-600 rounded-lg overflow-hidden">
           <div className="bg-gray-700 px-4 py-2 border-b border-gray-600">
-            <h4 className="text-white font-medium">Preview de Datos</h4>
+            <h4 className="text-white font-medium">{t("dataPreview")}</h4>
           </div>
 
           <div className="overflow-x-auto">
@@ -263,7 +271,7 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
 
       <div className="flex mt-5">
         <h3 className="text-gray-300 font-semibold text-2xl">
-          Valor del jugador: {formatPrice(playerValue)}
+          {t("playerValue")}: {formatPrice(playerValue)}
         </h3>
       </div>
     </div>

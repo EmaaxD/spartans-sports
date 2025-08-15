@@ -152,7 +152,7 @@ export const SecondStep = () => {
             onClick={clearData}
             className="w-fit bg-gray-600 text-white flex items-center gap-1 px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
           >
-            Limpiar y subir otro archivo
+            {t("cleanUploadedFile")}
           </button>
         )}
       </div>

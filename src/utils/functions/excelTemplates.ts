@@ -12,6 +12,8 @@ export interface PlayerTemplate {
   altura: number;
   alturaTorso: number;
   envergaduraBrazos: number;
+  alturaDeVuelo: number;
+  tiempoDeContacto: number;
   imc: number;
   tmb: number;
   biotipo: string;
@@ -76,10 +78,18 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
     "edad",
     "peso",
     "altura",
+    // Reordenado: agregar inmediatamente después de altura
+    "sexo",
+    "clase",
+    "fechaNacimiento",
     "alturaTorso",
     "envergaduraBrazos",
+    "alturaDeVuelo(m)",
+    "tiempoDeContacto(s)",
     "imc",
     "tmb",
+  // Mover índice Q antes de biotipo
+  "indiceQ",
     "biotipo",
     "lateralidad",
     "ojoDirector",
@@ -91,16 +101,12 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
     "dorsiflexionTobilloIzq",
     "dorsiflexionTobilloDer",
     "posicion",
-    "sexo",
-    "clase",
-    "fechaNacimiento",
     "localidad",
     "escuelaClub",
     "contacto",
-    "deporte",
-    "manoDer",
-    "manoIzq",
-    "indiceQ",
+  "deporte",
+  "manoDer",
+  "manoIzq",
     "pieDer",
     "pieIzq",
     "sentadillaProfunda",
@@ -112,56 +118,11 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
 
   // 50 filas vacías
   for (let i = 0; i < 50; i++) worksheet.addRow([]);
-
-  // Validaciones (columnas K-Q)
-  const selectCols = ["K", "L", "M", "N", "O", "P", "Q"]; // K = lateralidad, resto segmentos
-  const dorsiflexionCols = ["R", "S"]; // nuevas columnas
+  // Opciones para listas A-D utilizadas en varias columnas
   const dorsiflexionOptions = ["A", "B", "C", "D"];
   const dorsiflexionFormula = `"${dorsiflexionOptions.join(",")}"`;
-  selectCols.forEach((col) => {
-    const formula = col === "K" ? '"cruzado,homogenio"' : '"Izq,Der"';
-    const errorMsg =
-      col === "K"
-        ? 'Seleccione "cruzado" u "homogenio"'
-        : 'Seleccione "Izq" o "Der"';
-    const promptTitle = col === "K" ? "Lateralidad" : "Segmento";
-    const prompt =
-      col === "K" ? "Elija cruzado u homogenio" : "Elija Izq o Der";
-    for (let row = 2; row <= 51; row++) {
-      const cell = worksheet.getCell(`${col}${row}`);
-      cell.dataValidation = {
-        type: "list",
-        allowBlank: false,
-        formulae: [formula],
-        showErrorMessage: true,
-        errorTitle: "Valor inválido",
-        error: errorMsg,
-        showInputMessage: true,
-        promptTitle,
-        prompt,
-      } as any;
-    }
-  });
 
-  dorsiflexionCols.forEach((col) => {
-    for (let row = 2; row <= 51; row++) {
-      const cell = worksheet.getCell(`${col}${row}`);
-      cell.dataValidation = {
-        type: "list",
-        allowBlank: true,
-        formulae: [dorsiflexionFormula],
-        showErrorMessage: true,
-        errorTitle: "Valor inválido",
-        error: "Seleccione A, B, C o D",
-        showInputMessage: true,
-        promptTitle: "Dorsiflexión",
-        prompt: "Clasifique A-D",
-      } as any;
-    }
-  });
-
-  // sentadillaProfunda dropdown (A-D) - compute column letter dynamically
-  const sentadillaIndex = headers.indexOf("sentadillaProfunda") + 1;
+  // Helper: convierte índice de columna (1-based) a letra(s) de columna de Excel (A, B, ..., AA, AB, ...)
   const indexToCol = (n: number) => {
     let s = "";
     while (n > 0) {
@@ -171,6 +132,237 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
     }
     return s;
   };
+
+  // Lateralidad y segmentos (validaciones dinámicas)
+  const segmentFields: Array<{
+    key: keyof PlayerTemplate;
+    formula: string;
+    error: string;
+    promptTitle: string;
+    prompt: string;
+  }> = [
+    {
+      key: "lateralidad",
+      formula: '"cruzado,homogenio"',
+      error: 'Seleccione "cruzado" u "homogenio"',
+      promptTitle: "Lateralidad",
+      prompt: "Elija cruzado u homogenio",
+    },
+    {
+      key: "ojoDirector",
+      formula: '"Izq,Der"',
+      error: 'Seleccione "Izq" o "Der"',
+      promptTitle: "Segmento",
+      prompt: "Elija Izq o Der",
+    },
+    {
+      key: "hombro",
+      formula: '"Izq,Der"',
+      error: 'Seleccione "Izq" o "Der"',
+      promptTitle: "Segmento",
+      prompt: "Elija Izq o Der",
+    },
+    {
+      key: "brazoDirector",
+      formula: '"Izq,Der"',
+      error: 'Seleccione "Izq" o "Der"',
+      promptTitle: "Segmento",
+      prompt: "Elija Izq o Der",
+    },
+    {
+      key: "cintura",
+      formula: '"Izq,Der"',
+      error: 'Seleccione "Izq" o "Der"',
+      promptTitle: "Segmento",
+      prompt: "Elija Izq o Der",
+    },
+    {
+      key: "piernaDominante",
+      formula: '"Izq,Der"',
+      error: 'Seleccione "Izq" o "Der"',
+      promptTitle: "Segmento",
+      prompt: "Elija Izq o Der",
+    },
+    {
+      key: "piernaDirectora",
+      formula: '"Izq,Der"',
+      error: 'Seleccione "Izq" o "Der"',
+      promptTitle: "Segmento",
+      prompt: "Elija Izq o Der",
+    },
+  ];
+  segmentFields.forEach((f) => {
+    const idx = headers.indexOf(f.key as string) + 1;
+    if (idx > 0) {
+      const col = indexToCol(idx);
+      for (let row = 2; row <= 51; row++) {
+        const cell = worksheet.getCell(`${col}${row}`);
+        cell.dataValidation = {
+          type: "list",
+          allowBlank: false,
+          formulae: [f.formula],
+          showErrorMessage: true,
+          errorTitle: "Valor inválido",
+          error: f.error,
+          showInputMessage: true,
+          promptTitle: f.promptTitle,
+          prompt: f.prompt,
+        } as any;
+      }
+    }
+  });
+
+  // Dorsiflexión (A-D) - validaciones dinámicas
+  ["dorsiflexionTobilloIzq", "dorsiflexionTobilloDer"].forEach((key) => {
+    const idx = headers.indexOf(key) + 1;
+    if (idx > 0) {
+      const col = indexToCol(idx);
+      for (let row = 2; row <= 51; row++) {
+        const cell = worksheet.getCell(`${col}${row}`);
+        cell.dataValidation = {
+          type: "list",
+          allowBlank: true,
+          formulae: [dorsiflexionFormula],
+          showErrorMessage: true,
+          errorTitle: "Valor inválido",
+          error: "Seleccione A, B, C o D",
+          showInputMessage: true,
+          promptTitle: "Dorsiflexión",
+          prompt: "Clasifique A-D",
+        } as any;
+      }
+    }
+  });
+
+  // IMC automático = peso(kg) / (altura(m))^2
+  // altura está en cm en la planilla, convertir a metros con /100
+  const pesoIndex = headers.indexOf("peso") + 1;
+  const alturaIndex = headers.indexOf("altura") + 1;
+  const imcIndex = headers.indexOf("imc") + 1;
+  if (pesoIndex > 0 && alturaIndex > 0 && imcIndex > 0) {
+    const pesoCol = indexToCol(pesoIndex);
+    const alturaCol = indexToCol(alturaIndex);
+    const imcCol = indexToCol(imcIndex);
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${imcCol}${row}`);
+      cell.value = {
+        formula: `IF(AND(${pesoCol}${row}>0,${alturaCol}${row}>0), ${pesoCol}${row}/((${alturaCol}${row}/100)^2), "")`,
+      } as any;
+      (cell as any).numFmt = "0.00";
+    }
+  }
+
+  // Clase automática = YEAR(TODAY()) - edad
+  const edadIndex = headers.indexOf("edad") + 1;
+  const claseIndex = headers.indexOf("clase") + 1;
+  if (edadIndex > 0 && claseIndex > 0) {
+    const edadCol = indexToCol(edadIndex);
+    const claseCol = indexToCol(claseIndex);
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${claseCol}${row}`);
+      cell.value = {
+        formula: `IF(AND(${edadCol}${row}>0,${edadCol}${row}<100), YEAR(TODAY()) - ${edadCol}${row}, "")`,
+      } as any;
+      (cell as any).numFmt = "0000";
+    }
+  }
+
+  // TMB automático (Mifflin-St Jeor):
+  // Hombres: 10*peso + 6.25*altura - 5*edad + 5
+  // Mujeres: 10*peso + 6.25*altura - 5*edad - 161
+  const sexoIndex2 = headers.indexOf("sexo") + 1;
+  const tmbIndex = headers.indexOf("tmb") + 1;
+  if (
+    pesoIndex > 0 &&
+    alturaIndex > 0 &&
+    edadIndex > 0 &&
+    sexoIndex2 > 0 &&
+    tmbIndex > 0
+  ) {
+    const pesoCol = indexToCol(pesoIndex);
+    const alturaCol = indexToCol(alturaIndex);
+    const edadCol = indexToCol(edadIndex);
+    const sexoCol = indexToCol(sexoIndex2);
+    const tmbCol = indexToCol(tmbIndex);
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${tmbCol}${row}`);
+      cell.value = {
+        formula: `IF(AND(${pesoCol}${row}>0,${alturaCol}${row}>0,${edadCol}${row}>0,OR(UPPER(${sexoCol}${row})="M",UPPER(${sexoCol}${row})="F")),ROUND(10*${pesoCol}${row} + 6.25*${alturaCol}${row} - 5*${edadCol}${row} + IF(UPPER(${sexoCol}${row})="M",5,-161),0),"")`,
+      } as any;
+      (cell as any).numFmt = "0";
+    }
+  }
+
+  // Índice Q automático = alturaDeVuelo (m) / tiempoDeContacto (s)
+  const altVueloIndex = headers.indexOf("alturaDeVuelo(m)") + 1;
+  const tContactoIndex = headers.indexOf("tiempoDeContacto(s)") + 1;
+  const indiceQIndex = headers.indexOf("indiceQ") + 1;
+  if (altVueloIndex > 0 && tContactoIndex > 0 && indiceQIndex > 0) {
+    const aCol = indexToCol(altVueloIndex);
+    const tCol = indexToCol(tContactoIndex);
+    const qCol = indexToCol(indiceQIndex);
+    // Notas en encabezados para indicar entrada como enteros (centésimos)
+    const altHeaderCell = worksheet.getCell(`${aCol}1`);
+    (altHeaderCell as any).note =
+      "Ingrese entero (42 = 0,42 m) o decimal (0,42 m). Se normaliza automáticamente.";
+    const tHeaderCell = worksheet.getCell(`${tCol}1`);
+    (tHeaderCell as any).note =
+      "Ingrese entero (21 = 0,21 s) o decimal (0,21 s). Se normaliza automáticamente.";
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${qCol}${row}`);
+      cell.value = {
+        // Soporta enteros (centésimos) o decimales (unidades reales):
+        // aReal = IF(tiene decimales, a, a/100); tReal = IF(tiene decimales, t, t/100)
+        formula: `IF(AND(${aCol}${row}>0,${tCol}${row}>0), IF(MOD(${aCol}${row},1)<>0, ${aCol}${row}, ${aCol}${row}/100) / IF(MOD(${tCol}${row},1)<>0, ${tCol}${row}, ${tCol}${row}/100), "")`,
+      } as any;
+      (cell as any).numFmt = "0.00";
+    }
+  }
+
+  // Validación: permitir enteros o decimales en alturaDeVuelo(m) y tiempoDeContacto(s)
+  if (altVueloIndex > 0) {
+    const aCol = indexToCol(altVueloIndex);
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${aCol}${row}`);
+      cell.dataValidation = {
+        type: "decimal",
+        operator: "between",
+        allowBlank: true,
+        formulae: ["0", "1000"],
+        showErrorMessage: true,
+        errorTitle: "Valor inválido",
+        error:
+          "Ingrese un número válido. Ej: entero 42 (0,42 m) o decimal 0,42.",
+        showInputMessage: true,
+        promptTitle: "Altura de vuelo",
+        prompt:
+          "Puede ingresar entero (42 = 0,42 m) o decimal (0,42 m). Se normaliza automáticamente.",
+      } as any;
+    }
+  }
+  if (tContactoIndex > 0) {
+    const tCol = indexToCol(tContactoIndex);
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${tCol}${row}`);
+      cell.dataValidation = {
+        type: "decimal",
+        operator: "between",
+        allowBlank: true,
+        formulae: ["0", "1000"],
+        showErrorMessage: true,
+        errorTitle: "Valor inválido",
+        error:
+          "Ingrese un número válido. Ej: entero 21 (0,21 s) o decimal 0,21.",
+        showInputMessage: true,
+        promptTitle: "Tiempo de contacto",
+        prompt:
+          "Puede ingresar entero (21 = 0,21 s) o decimal (0,21 s). Se normaliza automáticamente.",
+      } as any;
+    }
+  }
+
+  // sentadillaProfunda dropdown (A-D) - compute column letter dynamically
+  const sentadillaIndex = headers.indexOf("sentadillaProfunda") + 1;
   const sentadillaCol = indexToCol(sentadillaIndex);
   for (let row = 2; row <= 51; row++) {
     const cell = worksheet.getCell(`${sentadillaCol}${row}`);
@@ -185,6 +377,27 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
       promptTitle: "Sentadilla Profunda",
       prompt: "Clasifique A-D",
     } as any;
+  }
+
+  // sexo dropdown (M/F) - dinámico por nombre
+  const sexoIndex = headers.indexOf("sexo") + 1;
+  if (sexoIndex > 0) {
+    const sexoCol = indexToCol(sexoIndex);
+    const sexoFormula = '"M,F"';
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${sexoCol}${row}`);
+      cell.dataValidation = {
+        type: "list",
+        allowBlank: true,
+        formulae: [sexoFormula],
+        showErrorMessage: true,
+        errorTitle: "Valor inválido",
+        error: 'Seleccione "M" o "F"',
+        showInputMessage: true,
+        promptTitle: "Sexo",
+        prompt: "Elija M o F",
+      } as any;
+    }
   }
 
   // capacidadPulmonarTotal dropdown (A-D)
@@ -249,11 +462,42 @@ export const generatePlayerTemplate = async (): Promise<Uint8Array> => {
     }
   }
 
+  // biotipo dropdown (Ectomorfo, Mesomorfo, Endomorfo)
+  const biotipoIndex = headers.indexOf("biotipo") + 1;
+  if (biotipoIndex > 0) {
+    const biotipoCol = indexToCol(biotipoIndex);
+    const biotipoFormula = '"Ectomorfo,Mesomorfo,Endomorfo"';
+    for (let row = 2; row <= 51; row++) {
+      const cell = worksheet.getCell(`${biotipoCol}${row}`);
+      cell.dataValidation = {
+        type: "list",
+        allowBlank: false,
+        formulae: [biotipoFormula],
+        showErrorMessage: true,
+        errorTitle: "Valor inválido",
+        error: 'Seleccione "Ectomorfo", "Mesomorfo" o "Endomorfo"',
+        showInputMessage: true,
+        promptTitle: "Biotipo",
+        prompt: "Elija una opción",
+      } as any;
+    }
+  }
+
   // Anchos columnas
   headers.forEach((h, i) => {
     const col = worksheet.getColumn(i + 1);
     col.width = Math.max(h.length + 2, 14);
   });
+
+  // Formatos por defecto
+  if (tContactoIndex > 0) {
+    const col = worksheet.getColumn(tContactoIndex);
+    (col as any).numFmt = "0.00"; // mostrar decimales si se ingresan
+  }
+  if (altVueloIndex > 0) {
+    const col = worksheet.getColumn(altVueloIndex);
+    (col as any).numFmt = "0.00"; // mostrar decimales si se ingresan
+  }
 
   const buffer = (await workbook.xlsx.writeBuffer()) as ArrayBuffer;
   return new Uint8Array(buffer);
@@ -402,9 +646,12 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       altura: 180,
       alturaTorso: 85,
       envergaduraBrazos: 185,
-      imc: 23.1,
-      tmb: 1850,
-      biotipo: "Mesomorfo",
+      alturaDeVuelo: 42,
+      tiempoDeContacto: 21,
+  imc: 23.1,
+  tmb: 1850,
+  indiceQ: "",
+  biotipo: "Mesomorfo",
       lateralidad: "homogenio",
       ojoDirector: "Der.",
       hombro: "Der.",
@@ -416,7 +663,6 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       dorsiflexionTobilloDer: "",
       manoDer: "",
       manoIzq: "",
-      indiceQ: "",
       pieDer: "",
       pieIzq: "",
       sentadillaProfunda: "",
@@ -440,9 +686,12 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       altura: 165,
       alturaTorso: 78,
       envergaduraBrazos: 168,
-      imc: 21.3,
-      tmb: 1450,
-      biotipo: "Ectomorfo",
+      alturaDeVuelo: 36,
+      tiempoDeContacto: 23,
+  imc: 21.3,
+  tmb: 1450,
+  indiceQ: "",
+  biotipo: "Ectomorfo",
       lateralidad: "cruzado",
       ojoDirector: "Izq.",
       hombro: "Izq.",
@@ -454,7 +703,6 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
       dorsiflexionTobilloDer: "",
       manoDer: "",
       manoIzq: "",
-      indiceQ: "",
       pieDer: "",
       pieIzq: "",
       sentadillaProfunda: "",
@@ -482,6 +730,8 @@ const generatePlayerExampleTemplate = (): Uint8Array => {
     { wch: 10 }, // altura
     { wch: 12 }, // alturaTorso
     { wch: 18 }, // envergaduraBrazos
+    { wch: 14 }, // alturaDeVuelo (m)
+    { wch: 16 }, // tiempoDeContacto (s)
     { wch: 8 }, // imc
     { wch: 10 }, // tmb
     { wch: 12 }, // biotipo

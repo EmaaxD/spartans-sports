@@ -5,8 +5,17 @@ import PlayerOneImg from "@src/assets/img/playerFutbol.png";
 import PlayerTwoImg from "@src/assets/img/playerTwo.png";
 import PlayerThreeImg from "@src/assets/img/playerThree.png";
 import PlayerFourImg from "@src/assets/img/playerFour.png";
+import PlayerFiveImg from "@src/assets/img/playerFive.png";
+import PlayerSixImg from "@src/assets/img/playerSix.png";
 
-const images = [PlayerOneImg, PlayerTwoImg, PlayerThreeImg, PlayerFourImg];
+const images = [
+  PlayerOneImg,
+  PlayerTwoImg,
+  PlayerThreeImg,
+  PlayerFourImg,
+  PlayerFiveImg,
+  PlayerSixImg,
+];
 
 export const PlayerPhoto = () => {
   const selectedImg = useMemo(() => {

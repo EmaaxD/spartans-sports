@@ -14,9 +14,19 @@ import PlayerOneImg from "@src/assets/img/playerFutbol.png";
 import PlayerTwoImg from "@src/assets/img/playerTwo.png";
 import PlayerThreeImg from "@src/assets/img/playerThree.png";
 import PlayerFourImg from "@src/assets/img/playerFour.png";
+import PlayerFiveImg from "@src/assets/img/playerFive.png";
+import PlayerSixImg from "@src/assets/img/playerSix.png";
+
 import SpartansCoinImg from "@src/assets/img/logos/spartanCoin.png";
 
-const images = [PlayerOneImg, PlayerTwoImg, PlayerThreeImg, PlayerFourImg];
+const images = [
+  PlayerOneImg,
+  PlayerTwoImg,
+  PlayerThreeImg,
+  PlayerFourImg,
+  PlayerFiveImg,
+  PlayerSixImg,
+];
 
 const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
   _id,

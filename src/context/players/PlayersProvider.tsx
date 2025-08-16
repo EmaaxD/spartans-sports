@@ -39,6 +39,10 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     if (player) {
       dispatch({ type: "SET_SELECTED_PLAYER", payload: player });
+    } else {
+      const playerNoFound = top100PlayersMemo[0];
+
+      dispatch({ type: "SET_SELECTED_PLAYER", payload: playerNoFound });
     }
   };
 

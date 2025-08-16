@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -5,7 +6,22 @@ import { PlayerCardProps } from "@src/interfaces";
 
 import { PlayerCardFooter } from "./PlayerCardFooter";
 
+import PlayerOneImg from "@src/assets/img/playerFutbol.png";
+import PlayerTwoImg from "@src/assets/img/playerTwo.png";
+import PlayerThreeImg from "@src/assets/img/playerThree.png";
+import PlayerFourImg from "@src/assets/img/playerFour.png";
+import PlayerFiveImg from "@src/assets/img/playerFive.png";
+import PlayerSixImg from "@src/assets/img/playerSix.png";
 import SpartansCoinImg from "@src/assets/img/logos/spartanCoin.png";
+
+const images = [
+  PlayerOneImg,
+  PlayerTwoImg,
+  PlayerThreeImg,
+  PlayerFourImg,
+  PlayerFiveImg,
+  PlayerSixImg,
+];
 
 export const PlayerCard: React.FC<PlayerCardProps> = ({
   age,
@@ -23,6 +39,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   weight,
   ims,
 }) => {
+  const selectedImg = useMemo(() => {
+    const idx = Math.floor(Math.random() * images.length);
+    return images[idx];
+  }, []);
+
   return (
     <Link href={`/players/${clubId}`} className="no-underline">
       <div className="relative flex flex-col">
@@ -54,7 +75,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
             <div className="absolute left-1/2 bottom-0 -translate-x-1/2 z-30">
               <div className="relative w-32">
                 <Image
-                  src={playerImg}
+                  src={selectedImg}
                   alt={name}
                   width={2000}
                   height={2000}

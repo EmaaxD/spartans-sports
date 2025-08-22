@@ -17,20 +17,73 @@ const RANGES: {
   valorMin: number;
   valorMax: number;
 }[] = [
-  { categoria: "Súper élite mundial", min: 3.30, max: null, valorMin: 90000, valorMax: 100000 },
-  { categoria: "Élite internacional", min: 3.0, max: 3.29, valorMin: 80000, valorMax: 90000 },
-  { categoria: "Élite competitivo PRO", min: 2.70, max: 2.99, valorMin: 65000, valorMax: 80000 },
-  { categoria: "Profesional alto", min: 2.40, max: 2.69, valorMin: 50000, valorMax: 65000 },
-  { categoria: "Semiprofesional / avanzado", min: 2.10, max: 2.39, valorMin: 35000, valorMax: 50000 },
-  { categoria: "Amateur alto / desarrollo", min: 1.80, max: 2.09, valorMin: 20000, valorMax: 35000 },
-  { categoria: "Amateur básico", min: 1.50, max: 1.79, valorMin: 10000, valorMax: 20000 },
-  { categoria: "Recreativo / formativo", min: null, max: 1.49, valorMin: 0, valorMax: 10000 },
+  {
+    categoria: "Súper élite mundial",
+    min: 3.3,
+    max: null,
+    valorMin: 90000,
+    valorMax: 100000,
+  },
+  {
+    categoria: "Élite internacional",
+    min: 3.0,
+    max: 3.29,
+    valorMin: 80000,
+    valorMax: 90000,
+  },
+  {
+    categoria: "Élite competitivo PRO",
+    min: 2.7,
+    max: 2.99,
+    valorMin: 65000,
+    valorMax: 80000,
+  },
+  {
+    categoria: "Profesional alto",
+    min: 2.4,
+    max: 2.69,
+    valorMin: 50000,
+    valorMax: 65000,
+  },
+  {
+    categoria: "Semiprofesional / avanzado",
+    min: 2.1,
+    max: 2.39,
+    valorMin: 35000,
+    valorMax: 50000,
+  },
+  {
+    categoria: "Amateur alto / desarrollo",
+    min: 1.8,
+    max: 2.09,
+    valorMin: 20000,
+    valorMax: 35000,
+  },
+  {
+    categoria: "Amateur básico",
+    min: 1.5,
+    max: 1.79,
+    valorMin: 10000,
+    valorMax: 20000,
+  },
+  {
+    categoria: "Recreativo / formativo",
+    min: null,
+    max: 1.49,
+    valorMin: 0,
+    valorMax: 10000,
+  },
 ];
 
 const formatNumber = (n: number) =>
-  n.toLocaleString("es-AR", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  n.toLocaleString("es-AR", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
 
-export const classifyIndiceQ = (rawIndiceQ: string | number): QClassificationResult => {
+export const classifyIndiceQ = (
+  rawIndiceQ: string | number
+): QClassificationResult => {
   let value: number | null = null;
   if (typeof rawIndiceQ === "number") {
     value = isFinite(rawIndiceQ) ? rawIndiceQ : null;
@@ -74,7 +127,9 @@ export const classifyIndiceQ = (rawIndiceQ: string | number): QClassificationRes
     indiceQMax: range.max,
     valorMin: range.valorMin,
     valorMax: range.valorMax,
-    valorRangoStr: `${formatNumber(range.valorMin)} – ${formatNumber(range.valorMax)}`,
+    valorRangoStr: `${formatNumber(range.valorMin)} – ${formatNumber(
+      range.valorMax
+    )}`,
   };
 };
 
@@ -146,5 +201,3 @@ export const getPlayerRank = (playerValue: number | string): number => {
   const position = block.start + idxInBlock;
   return Math.max(1, Math.min(100, position));
 };
-
-

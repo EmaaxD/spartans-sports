@@ -17,15 +17,23 @@ import PlayerFourImg from "@src/assets/img/playerFour.png";
 import PlayerFiveImg from "@src/assets/img/playerFive.png";
 import PlayerSixImg from "@src/assets/img/playerSix.png";
 
+import PlayerFemaleOneImg from "@src/assets/img/playerFemaleOne.png";
+import PlayerFemaleTwoImg from "@src/assets/img/playerFemaleTwo.png";
+import PlayerFemaleThreeImg from "@src/assets/img/playerFemaleThree.png";
+import PlayerFemaleFourImg from "@src/assets/img/playerFemaleFour.png";
+import PlayerFemaleFiveImg from "@src/assets/img/playerFemaleFive.png";
+import PlayerFemaleSixImg from "@src/assets/img/playerFemaleSix.png";
+
 import SpartansCoinImg from "@src/assets/img/logos/spartanCoin.png";
 
-const images = [
-  PlayerOneImg,
-  PlayerTwoImg,
-  PlayerThreeImg,
-  PlayerFourImg,
-  PlayerFiveImg,
-  PlayerSixImg,
+const images = [PlayerOneImg, PlayerTwoImg, PlayerThreeImg, PlayerSixImg];
+const imagesFemale = [
+  PlayerFemaleOneImg,
+  PlayerFemaleTwoImg,
+  PlayerFemaleThreeImg,
+  PlayerFemaleFourImg,
+  PlayerFemaleFiveImg,
+  PlayerFemaleSixImg,
 ];
 
 const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
@@ -75,6 +83,11 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
   const ref = useRef<HTMLDivElement | null>(null);
 
   const selectedImg = useMemo(() => {
+    if (sexo === "F") {
+      const idx = Math.floor(Math.random() * imagesFemale.length);
+      return imagesFemale[idx];
+    }
+
     const idx = Math.floor(Math.random() * images.length);
     return images[idx];
   }, []);
@@ -107,16 +120,29 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
           </video>
         )}
       </div>
-      <div className="relative w-full h-full rounded-lg flex justify-center items-center shadow-lg overflow-hidden">
-        <div className="flex flex-col w-44">
-          <Image
-            src={selectedImg}
-            alt="Player Cover"
-            className="h-full w-full rounded-lg"
-            width={2400}
-            height={2400}
-          />
-        </div>
+
+      <div className="relative w-full h-full rounded-lg flex justify-center items-end shadow-lg overflow-hidden">
+        {sexo === "M" ? (
+          <div className="flex flex-col w-44">
+            <Image
+              src={selectedImg}
+              alt="Player Cover"
+              className="h-full w-full rounded-lg"
+              width={2400}
+              height={2400}
+            />
+          </div>
+        ) : (
+          <div className="flex flex-col w-60">
+            <Image
+              src={selectedImg}
+              alt="Player Cover"
+              className="h-full w-full rounded-lg"
+              width={2400}
+              height={2400}
+            />
+          </div>
+        )}
       </div>
 
       <div className="absolute top-2 right-3">
@@ -169,6 +195,27 @@ export const TopPlayers = () => {
   return (
     <CarouselContainer>
       {top100PlayersMemo.map((player) => (
+        <TopPlayerCard key={player._id} {...player} />
+      ))}
+    </CarouselContainer>
+  );
+};
+
+export const TopPlayersFemale = () => {
+  const { top100PlayersFemaleMemo } = useContext(playersContext);
+
+  if (top100PlayersFemaleMemo.length < 4)
+    return (
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 overflow-hidden">
+        {top100PlayersFemaleMemo.map((player) => (
+          <TopPlayerCard key={player._id} {...player} />
+        ))}
+      </div>
+    );
+
+  return (
+    <CarouselContainer>
+      {top100PlayersFemaleMemo.map((player) => (
         <TopPlayerCard key={player._id} {...player} />
       ))}
     </CarouselContainer>

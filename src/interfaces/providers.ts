@@ -39,6 +39,7 @@ export interface PlayersProviderProps {
   loading: boolean;
   selectedPlayer: TopPlayerCardProps | null;
   top100PlayersMemo: TopPlayerCardProps[];
+  top100PlayersFemaleMemo: TopPlayerCardProps[];
   handleSelectedPlayer: (playerId: string | null) => void;
   handleAddPlayer: (player: PlayerDataProps) => void;
 }

@@ -17,6 +17,7 @@ import {
   SponsorsSection,
   TopClubs,
   TopPlayers,
+  TopPlayersFemale,
 } from "@src/components/home";
 import { ClubCard } from "@src/components/club";
 
@@ -26,7 +27,7 @@ export default function Home() {
   const [loadingEbooks, setLoadingEbooks] = useState(true);
 
   const { clubs, handleSelectedClub } = useContext(clubsContext);
-  const { players } = useContext(playersContext);
+  const { players, top100PlayersFemaleMemo } = useContext(playersContext);
 
   const { t } = useTranslation("common");
 
@@ -58,6 +59,15 @@ export default function Home() {
               titleSection={t("top100Players")}
             >
               <TopPlayers />
+            </ClubsHomeContainer>
+          )}
+
+          {top100PlayersFemaleMemo && top100PlayersFemaleMemo.length > 0 && (
+            <ClubsHomeContainer
+              idSection="topPlayersFemaleSection"
+              titleSection={t("top100PlayersFemale")}
+            >
+              <TopPlayersFemale />
             </ClubsHomeContainer>
           )}
 

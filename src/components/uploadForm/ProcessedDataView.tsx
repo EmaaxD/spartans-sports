@@ -106,7 +106,7 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
     const columns = getColumnConfig();
     const enriched = { ...item };
     if (templateType === "player") {
-      const qClassification = classifyIndiceQ(item.indiceQ);
+      const qClassification = classifyIndiceQ(item.indiceQ, item.sexo);
       enriched._valorJugador = qClassification.valorRangoStr;
       // Al hacer click en la fila, setear el valor del jugador con el rango mínimo
       enriched._onClick = () => setPlayerValue(qClassification.valorMin);
@@ -151,7 +151,8 @@ export const ProcessedDataView: React.FC<ProcessedDataViewProps> = ({
     if (templateType === "player" && paginatedData.length > 0) {
       const first = paginatedData[0] as any;
       const q = first?.indiceQ ?? "";
-      const cls = classifyIndiceQ(q);
+      const sexo = first?.sexo ?? "";
+      const cls = classifyIndiceQ(q, sexo);
       setPlayerValue(cls.valorMin === 0 ? cls.valorMax : cls.valorMin);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -60,7 +60,7 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     const withRank = malePlayers.map((player) => ({
       ...player,
-      rank: getPlayerRank(player.playerValue),
+      rank: getPlayerRank(player.playerValue, player.sexo),
     }));
 
     // Ordenar por rank ascendente; si empatan, priorizar mayor playerValue
@@ -90,7 +90,7 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     const withRank = femalePlayers.map((player) => ({
       ...player,
-      rank: getPlayerRank(player.playerValue),
+      rank: getPlayerRank(player.playerValue, player.sexo),
     }));
 
     // Ordenar por rank ascendente; si empatan, priorizar mayor playerValue

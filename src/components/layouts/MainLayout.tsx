@@ -40,11 +40,11 @@ export const MainLayout: React.FC<PropsWithChildren> = ({ children }) => {
 
       <TextToSpeech
         text="¿Sos deportista? ¿Querés saber cuál es tu verdadero valor en el mercado?
-        En Spartans.ar podés transformar tu talento en stablecoins.
+        En Spartans podés transformar tu talento en stablecoins.
         Porque cada jugador y cada jugadora es un activo digital.
         En nuestra plataforma vas a descubrir tu valor individual y también el de tu equipo.
         Es simple: descargá el formulario, completalo y empezá a conocer tu posición en el ranking de tu deporte.
-        Unite a Spartans.ar y convertí tu rendimiento en oportunidades reales."
+        Unete a Spartans y convertí tu rendimiento en oportunidades reales."
       />
     </>
   );

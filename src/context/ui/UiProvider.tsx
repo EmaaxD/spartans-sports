@@ -36,6 +36,9 @@ export const UiProvider: React.FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: "SET_CONTENT_FOOT_DATA", payload: content });
   };
 
+  const handleTogglePlayVoice = (value: boolean) =>
+    dispatch({ type: "TOGGLE_PLAY_VOICE", payload: value });
+
   return (
     <uiContext.Provider
       value={{
@@ -46,12 +49,14 @@ export const UiProvider: React.FC<PropsWithChildren> = ({ children }) => {
         openFootData: state.openFootData,
         titleFootData: state.titleFootData,
         contentFootData: state.contentFootData,
+        playVoice: state.playVoice,
         handleToggleHideClasses,
         handleToggleMenu,
         handleToggleOpenShoppingCart,
         handleToggleOpenFootData,
         handleSetTitleFootData,
         handleSetContentFootData,
+        handleTogglePlayVoice,
       }}
     >
       {children}

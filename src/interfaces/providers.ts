@@ -10,12 +10,14 @@ export interface UiProviderProps {
   openFootData: boolean;
   titleFootData: string;
   contentFootData: string;
+  playVoice: boolean;
   handleToggleHideClasses: () => void;
   handleToggleMenu: () => void;
   handleToggleOpenShoppingCart: () => void;
   handleToggleOpenFootData: () => void;
   handleSetTitleFootData: (title: string) => void;
   handleSetContentFootData: (content: string) => void;
+  handleTogglePlayVoice: (value: boolean) => void;
 }
 
 export interface ClubsProviderProps {

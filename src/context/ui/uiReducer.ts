@@ -6,6 +6,7 @@ interface initStateUiReducer {
   openFootData: boolean;
   titleFootData: string;
   contentFootData: string;
+  playVoice: boolean;
 }
 
 export const initState: initStateUiReducer = {
@@ -16,6 +17,7 @@ export const initState: initStateUiReducer = {
   openFootData: false,
   titleFootData: "",
   contentFootData: "",
+  playVoice: true,
 };
 
 type UiAction =
@@ -25,7 +27,8 @@ type UiAction =
   | { type: "TOGGLE_OPEN_SHOPPING_CART" }
   | { type: "TOGGLE_OPEN_FOOT_DATA" }
   | { type: "SET_TITLE_FOOT_DATA"; payload: string }
-  | { type: "SET_CONTENT_FOOT_DATA"; payload: string };
+  | { type: "SET_CONTENT_FOOT_DATA"; payload: string }
+  | { type: "TOGGLE_PLAY_VOICE"; payload: boolean };
 
 export const uiReducer = (state = initState, action: UiAction) => {
   switch (action.type) {
@@ -69,6 +72,12 @@ export const uiReducer = (state = initState, action: UiAction) => {
       return {
         ...state,
         contentFootData: action.payload,
+      };
+
+    case "TOGGLE_PLAY_VOICE":
+      return {
+        ...state,
+        playVoice: action.payload,
       };
 
     default:

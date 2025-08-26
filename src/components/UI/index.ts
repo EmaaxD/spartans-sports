@@ -9,3 +9,5 @@ export * from "./MainSelect";
 export * from "./SearchInputEffect";
 export * from "./HeaderClub";
 export * from "./LanguageSelector";
+export * from "./PlayVoiceButton";
+export * from "./TextToSpeech";

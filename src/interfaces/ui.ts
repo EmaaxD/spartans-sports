@@ -40,7 +40,7 @@ export interface ClubCardProps {
 export interface JoinUsCardProps {
   title: string;
   description: string;
-  icon: ReactNode;
+  titleBtn: string;
 }
 
 export interface MainDialogProps {

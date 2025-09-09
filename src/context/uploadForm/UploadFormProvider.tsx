@@ -62,18 +62,58 @@ export const UploadFormProvider: React.FC<PropsWithChildren> = ({
   const handleUploadForm = async (dataForm: any): Promise<boolean> => {
     try {
       let respPromise = false;
-
       if (state.typeForm === "player") {
+        // Clone payload so we can modify it (upload file and attach player_image)
+        const payload: any = { ...dataForm };
+
+        // If there's a File object (from client) and no player_image yet, upload it
+        if (!payload.player_image && payload.file) {
+          try {
+            // Only run in browser context where File is available
+            const isFile =
+              typeof File !== "undefined" && payload.file instanceof File;
+
+            if (isFile) {
+              const formData = new FormData();
+              formData.append("file", payload.file);
+
+              const uploadResp = await fetch("/api/uploadFileS3", {
+                method: "POST",
+                body: formData,
+              });
+
+              const uploadJson = await uploadResp.json();
+              const url = uploadJson?.url || uploadJson?.data?.url;
+
+              if (url) {
+                payload.player_image = url;
+              } else {
+                console.error("Upload failed or no url returned", uploadJson);
+                toast.error("Error al subir la imagen");
+                return false;
+              }
+            }
+          } catch (err) {
+            console.error("Error uploading image:", err);
+            toast.error("Error al subir la imagen");
+            return false;
+          }
+        }
+
+        // Remove raw file from payload before sending to createPlayer
+        if (payload.file) delete payload.file;
+
         const resp = await fetch("/api/createPlayer", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ...dataForm,
+            ...payload,
             createdAt: new Date().toISOString(),
           }),
         });
+
         const player: CreatePlayerResp = await resp.json();
 
         if (player.status === "success") {

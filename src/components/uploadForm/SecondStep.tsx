@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -8,6 +8,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useI18n, useFileUpload } from "@src/hooks";
 
 import { ProcessedDataView } from "./ProcessedDataView";
+import ImageUpload from "./ImageUpload";
 import { MainSelect } from "../UI";
 import { uploadFormContext } from "@src/context/uploadForm";
 import { templateCategories } from "@src/utils/const";
@@ -32,6 +33,8 @@ export const SecondStep = () => {
     clearData,
   } = useFileUpload();
 
+  const [playerImage, setPlayerImage] = useState<File | null>(null);
+
   const { push } = useRouter();
 
   const handleFileChange = (uploadedFile: File | File[]) => {
@@ -41,12 +44,35 @@ export const SecondStep = () => {
     setFile(fileToSet || null);
   };
 
+  const handleProcessedImage = async (blob: Blob | null) => {
+    if (!blob) {
+      // limpiar si no hay blob
+      setPlayerImage(null);
+      return;
+    }
+
+    // Convertir Blob en File para la imagen del jugador
+    const f = new File([blob], "processed.png", {
+      type: blob.type || "image/png",
+    });
+    setPlayerImage(f);
+  };
+
   const handleSaveData = async (data: any) => {
     try {
-      const resp = await handleUploadForm(data);
+      const payload: any = { ...data };
+
+      // Include the processed player image in the payload for the provider to upload
+      if (playerImage) {
+        payload.file = playerImage;
+      }
+
+      console.log("payload", payload);
+
+      const resp = await handleUploadForm(payload);
 
       if (resp) {
-        //empty all field
+        // empty all field
         clearData();
 
         push("/");
@@ -96,16 +122,18 @@ export const SecondStep = () => {
         )}
 
         {!processedData && (
-          <FileUploader
-            handleChange={handleFileChange}
-            name="file"
-            types={fileTypes}
-            classes="custom_dropzone"
-            label={t("textDragAndDropForm")}
-            uploadedLabel={file ? (file as File).name : t("noFileUploaded")}
-            hoverTitle={t("dropFileHere")}
-            maxSize={10}
-          />
+          <>
+            <FileUploader
+              handleChange={handleFileChange}
+              name="file"
+              types={fileTypes}
+              classes="custom_dropzone"
+              label={t("textDragAndDropForm")}
+              uploadedLabel={file ? (file as File).name : t("noFileUploaded")}
+              hoverTitle={t("dropFileHere")}
+              maxSize={10}
+            />
+          </>
         )}
 
         {/* Mostrar errores */}
@@ -118,11 +146,15 @@ export const SecondStep = () => {
 
         {/* Mostrar resultado del procesamiento */}
         {processedData && selectedTemplateType && (
-          <ProcessedDataView
-            data={processedData}
-            templateType={selectedTemplateType}
-            onSaveData={handleSaveData}
-          />
+          <>
+            <ImageUpload onProcessed={handleProcessedImage} />
+
+            <ProcessedDataView
+              data={processedData}
+              templateType={selectedTemplateType}
+              onSaveData={handleSaveData}
+            />
+          </>
         )}
 
         {/* Términos y condiciones */}

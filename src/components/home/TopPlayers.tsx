@@ -50,6 +50,7 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
   contacto,
   coordinacion,
   deporte,
+  player_image,
   dorsiflexionTobilloDer,
   dorsiflexionTobilloIzq,
   edad,
@@ -100,6 +101,8 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
     return () => obs.disconnect();
   }, []);
 
+  console.log("player_image", player_image);
+
   return (
     <Link
       key={_id}
@@ -121,11 +124,11 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
         )}
       </div>
 
-      <div className="relative w-full h-full rounded-lg flex justify-center items-end shadow-lg overflow-hidden">
+      <div className="relative w-full h-96 rounded-lg flex justify-center items-end shadow-lg overflow-hidden">
         {sexo === "M" ? (
           <div className="flex flex-col w-44">
             <Image
-              src={selectedImg}
+              src={player_image ? player_image : selectedImg}
               alt="Player Cover"
               className="h-full w-full rounded-lg"
               width={2400}
@@ -135,7 +138,7 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
         ) : (
           <div className="flex flex-col w-60">
             <Image
-              src={selectedImg}
+              src={player_image ? player_image : selectedImg}
               alt="Player Cover"
               className="h-full w-full rounded-lg"
               width={2400}

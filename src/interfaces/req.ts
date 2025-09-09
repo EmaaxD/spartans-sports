@@ -38,6 +38,7 @@ export interface PlayerDataProps {
   piernaDirectora: string;
   piernaDominante: string;
   playerValue: number;
+  player_image: string;
   posicion: string;
   rowNumber: number;
   sentadillaProfunda: string;

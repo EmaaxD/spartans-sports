@@ -37,7 +37,6 @@ export interface PlayerDataProps {
   pieIzq: string;
   piernaDirectora: string;
   piernaDominante: string;
-  playerValue: number;
   player_image: string;
   posicion: string;
   rowNumber: number;
@@ -46,6 +45,7 @@ export interface PlayerDataProps {
   tmb: number;
   _id: string;
   createdAt: string;
+  value: number;
 }
 
 export interface CreatePlayerResp extends GeneralResponse {

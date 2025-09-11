@@ -120,7 +120,7 @@ export const processExcelFile = async (
     }
 
     // Normalizar templateType (tolerar mayúsculas, espacios, traducciones simples)
-    const rawType = (templateType || "").toString().trim().toLowerCase();
+  const rawType = String(templateType ?? "").trim().toLowerCase();
     let normalizedType: "player" | "club" | "danceAcademy" | null = null;
     if (rawType === "player") normalizedType = "player";
     else if (rawType === "club") normalizedType = "club";
@@ -229,7 +229,7 @@ const processPlayerData = (
     const rowNumber = index + 2; // +2 porque empezamos desde la fila 2 (después de headers)
 
     // Verificar si la fila está completamente vacía
-    if (row.every((cell) => !cell || cell.toString().trim() === "")) {
+  if (row.every((cell) => !cell || String(cell ?? "").trim() === "")) {
       return; // Saltar filas vacías
     }
 
@@ -321,7 +321,7 @@ const processClubData = (
   dataRows.forEach((row, index) => {
     const rowNumber = index + 2;
 
-    if (row.every((cell) => !cell || cell.toString().trim() === "")) {
+  if (row.every((cell) => !cell || String(cell ?? "").trim() === "")) {
       return;
     }
 
@@ -365,7 +365,7 @@ const processDanceAcademyData = (
   dataRows.forEach((row, index) => {
     const rowNumber = index + 2;
 
-    if (row.every((cell) => !cell || cell.toString().trim() === "")) {
+  if (row.every((cell) => !cell || String(cell ?? "").trim() === "")) {
       return;
     }
 

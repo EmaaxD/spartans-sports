@@ -71,7 +71,7 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
   pieIzq,
   piernaDirectora,
   piernaDominante,
-  playerValue,
+  value,
   posicion,
   rank,
   rowNumber,
@@ -102,6 +102,7 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
   }, []);
 
   console.log("player_image", player_image);
+  console.log("playerValue", value, typeof value);
 
   return (
     <Link
@@ -124,13 +125,13 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
         )}
       </div>
 
-      <div className="relative w-full h-96 rounded-lg flex justify-center items-end shadow-lg overflow-hidden">
+      <div className="relative w-full h-96 rounded-lg flex justify-center items-start pt-8 shadow-lg overflow-hidden">
         {sexo === "M" ? (
           <div className="flex flex-col w-44">
             <Image
               src={player_image ? player_image : selectedImg}
               alt="Player Cover"
-              className="h-full w-full rounded-lg"
+              className="h-full w-full rounded-lg object-cover object-top"
               width={2400}
               height={2400}
             />
@@ -140,7 +141,7 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
             <Image
               src={player_image ? player_image : selectedImg}
               alt="Player Cover"
-              className="h-full w-full rounded-lg"
+              className="h-full w-full rounded-lg object-cover object-top"
               width={2400}
               height={2400}
             />
@@ -150,7 +151,13 @@ const TopPlayerCard: React.FC<TopPlayerCardProps> = ({
 
       <div className="absolute top-2 right-3">
         <span className="bg-gradient-to-r from-orange-400 via-yellow-500 to-red-500 bg-clip-text text-transparent font-extrabold text-base drop-shadow-lg shadow-orange-500/50">
-          $ US {formatPrice(playerValue) || "Unknown Club"}
+          US{" "}
+          {(() => {
+            const valuePlayer = Number(value);
+            return !isNaN(valuePlayer) && valuePlayer > 0
+              ? formatPrice(valuePlayer)
+              : "0.00";
+          })()}
         </span>
       </div>
 

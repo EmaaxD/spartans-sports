@@ -211,10 +211,10 @@ export const getPlayerRank = (
   sexo: string
 ): number => {
   // Normalizar posibles formatos "90.000" / "90,000.50" / "90000"
-  const parseVal = (v: number | string): number => {
+  const parseVal = (v: number | string | null | undefined): number => {
+    if (v === null || v === undefined) return 0;
     if (typeof v === "number") return isFinite(v) ? v : 0;
-    const onlyDigits = v
-      .toString()
+    const onlyDigits = String(v)
       .trim()
       .replace(/[\s]/g, "")
       .replace(/[^0-9.,-]/g, "");

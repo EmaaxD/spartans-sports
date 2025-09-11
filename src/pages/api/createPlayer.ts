@@ -12,12 +12,9 @@ export default async function handler(
       const client = await clientPromise;
       const db = client.db(NAME_DB);
 
-  const data = req.body;
+      const data = req.body;
 
-  // Ensure player_image field exists if provided
-  const toInsert = { ...data } as any;
-
-  const result = await db.collection("players").insertOne(toInsert);
+      const result = await db.collection("players").insertOne(data);
 
       if (result.acknowledged) {
         const player = await db

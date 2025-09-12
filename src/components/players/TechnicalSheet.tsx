@@ -17,7 +17,7 @@ import { playersContext } from "@src/context/players";
 import { PlayerPhoto } from "./PlayerPhoto";
 
 import TestJumpImg from "../../assets/img/testJump.png";
-import { formatIsoToDDMMYYYY } from "@src/utils/functions";
+import { formatIsoToDDMMYYYY, formatPrice } from "@src/utils/functions";
 
 export const FichaTecnicaDeportiva = () => {
   const { selectedPlayer } = useContext(playersContext);
@@ -44,6 +44,8 @@ export const FichaTecnicaDeportiva = () => {
           src={TestJumpImg}
           className="w-full opacity-45"
           alt="Test de Salto"
+          width={2000}
+          height={2000}
         />
       </div>
 
@@ -86,7 +88,7 @@ export const FichaTecnicaDeportiva = () => {
         </section>
 
         <section>
-          <PlayerPhoto />
+          <PlayerPhoto player_image={selectedPlayer.player_image} />
         </section>
 
         <section>
@@ -98,6 +100,12 @@ export const FichaTecnicaDeportiva = () => {
             <li className="capitalize">Posición: {selectedPlayer.posicion}</li>
             <li className="capitalize">
               Club / Escuela: {selectedPlayer.escuelaClub}
+            </li>
+            <li className="text-yellow-300 font-semibold">
+              💰 Valor: {formatPrice(selectedPlayer.value) || "0"} USD
+            </li>
+            <li className="text-amber-300 font-semibold">
+              🏆 Ranking: #{selectedPlayer.rank || "N/A"}
             </li>
           </ul>
         </section>
@@ -152,8 +160,8 @@ export const FichaTecnicaDeportiva = () => {
             <FaDumbbell /> Fuerzas
           </h3>
           <ul className="mt-2 space-y-1 text-yellow-100">
-            <li>Mano derecha: {selectedPlayer.manoDer}</li>
-            <li>Mano izquierda: {selectedPlayer.manoIzq}</li>
+            <li>Hand Grip Der.: {selectedPlayer.manoDer} KG</li>
+            <li>Hand Grip Izq.: {selectedPlayer.manoIzq} KG</li>
             <li>Indice Q: {selectedPlayer.indiceQ}</li>
           </ul>
         </section>

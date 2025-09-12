@@ -30,6 +30,23 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  const handleGetPlayerById = async (playerId: string) => {
+    try {
+      const resp = await fetch(`/api/getPlayerById?playerId=${playerId}`);
+      const data: PlayerDataProps = await resp.json();
+
+      // get rank for the player
+      if (data && data._id) {
+        const rank = getPlayerRank(data.value, data.sexo);
+
+        dispatch({ type: "SET_SELECTED_PLAYER", payload: { ...data, rank } });
+      }
+    } catch (error) {
+      console.log("Error fetching player by ID:", error);
+      return null;
+    }
+  };
+
   const handleSelectedPlayer = (playerId: string | null) => {
     const player = top100PlayersMemo.find((p) => p._id === playerId) || null;
 
@@ -121,6 +138,7 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
         top100PlayersFemaleMemo,
         handleSelectedPlayer,
         handleAddPlayer,
+        handleGetPlayerById,
       }}
     >
       {children}

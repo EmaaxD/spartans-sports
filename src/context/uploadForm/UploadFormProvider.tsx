@@ -81,6 +81,8 @@ export const UploadFormProvider: React.FC<PropsWithChildren> = ({
 
           handleAddPlayer(player.data);
 
+          localStorage.setItem("player_id", player.data._id);
+
           toast.success("Jugador creado correctamente");
         }
       }

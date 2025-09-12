@@ -44,4 +44,5 @@ export interface PlayersProviderProps {
   top100PlayersFemaleMemo: TopPlayerCardProps[];
   handleSelectedPlayer: (playerId: string | null) => void;
   handleAddPlayer: (player: PlayerDataProps) => void;
+  handleGetPlayerById: (playerId: string) => Promise<void | null>;
 }

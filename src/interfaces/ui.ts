@@ -101,3 +101,7 @@ export type TypeFormProps = "player" | "club" | "danceAcademy" | null;
 export interface TopPlayerCardProps extends PlayerDataProps {
   rank: number;
 }
+
+export interface PlayerPhotoProps {
+  player_image: string;
+}

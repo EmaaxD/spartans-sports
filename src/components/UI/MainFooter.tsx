@@ -44,7 +44,7 @@ export const MainFooter = () => {
         <MainContainer>
           <div className="flex flex-col justify-start gap-8">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-8 md:gap-0">
-              <div className="w-32 flex" data-aos="zoom-in">
+              <div className="w-32 flex">
                 <Image
                   src={LogoFooter}
                   alt="Logo"
@@ -57,8 +57,6 @@ export const MainFooter = () => {
                   <button
                     key={index}
                     className="bg-transparent transition-colors text-[0.6rem] md:text-[0.7rem] lg:text-sm p-2 hover:bg-[#19191994] rounded-lg"
-                    data-aos="zoom-in"
-                    data-aos-delay={`${index + 1 * 2}00`}
                     onClick={() => handleClickLink(item.data)}
                   >
                     <span className="text-white">{t(item.label)}</span>
@@ -66,7 +64,6 @@ export const MainFooter = () => {
                 ))}
                 <a
                   className="bg-transparent transition-colors text-[0.6rem] md:text-[0.7rem] lg:text-sm p-2 hover:bg-[#19191994] rounded-lg"
-                  data-aos="zoom-in"
                   href="mailto:jorgealbertolindon9@gmail.com"
                 >
                   <span className="text-white">{t("contactMe")}</span>
@@ -80,8 +77,6 @@ export const MainFooter = () => {
                   src={LogoCrediCart}
                   alt="Logo CrediCart"
                   className="w-full"
-                  data-aos="zoom-in"
-                  data-aos-delay="1200"
                 />
               </div>
             </div>

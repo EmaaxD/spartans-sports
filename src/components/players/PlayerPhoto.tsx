@@ -1,28 +1,7 @@
-import { useMemo } from "react";
 import Image from "next/image";
+import { PlayerPhotoProps } from "@src/interfaces";
 
-import PlayerOneImg from "@src/assets/img/playerFutbol.png";
-import PlayerTwoImg from "@src/assets/img/playerTwo.png";
-import PlayerThreeImg from "@src/assets/img/playerThree.png";
-import PlayerFourImg from "@src/assets/img/playerFour.png";
-import PlayerFiveImg from "@src/assets/img/playerFive.png";
-import PlayerSixImg from "@src/assets/img/playerSix.png";
-
-const images = [
-  PlayerOneImg,
-  PlayerTwoImg,
-  PlayerThreeImg,
-  PlayerFourImg,
-  PlayerFiveImg,
-  PlayerSixImg,
-];
-
-export const PlayerPhoto = () => {
-  const selectedImg = useMemo(() => {
-    const idx = Math.floor(Math.random() * images.length);
-    return images[idx];
-  }, []);
-
+export const PlayerPhoto: React.FC<PlayerPhotoProps> = ({ player_image }) => {
   return (
     <>
       <div className="relative flex justify-center items-center md:justify-normal md:items-start">
@@ -36,7 +15,7 @@ export const PlayerPhoto = () => {
         ></video>
         <div className="relative w-60 md:w-52 rounded-lg flex items-center justify-center shadow-lg z-30 fire-border">
           <Image
-            src={selectedImg}
+            src={player_image}
             alt="Player Cover"
             className="h-full w-full rounded-lg"
             width={2400}

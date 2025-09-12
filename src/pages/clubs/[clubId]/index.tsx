@@ -30,16 +30,18 @@ const SelectedEbookScreen = () => {
   const { t } = useI18n();
 
   useEffect(() => {
-    // set loading state to false after 1000ms
-    const timer = setTimeout(() => {
-      if (typeof clubId === "string") {
-        handleGetClub(clubId);
-      }
-      setLoadingEbooks(false);
-    }, 1000);
-  }, [clubId]);
+    if (typeof clubId === "string") {
+      handleGetClub(clubId);
+      // set loading state to false after the club is fetched
+      const timer = setTimeout(() => {
+        setLoadingEbooks(false);
+      }, 1000);
 
-  if (loadingEbooks && !selectedClub)
+      return () => clearTimeout(timer);
+    }
+  }, [clubId, handleGetClub]);
+
+  if (loadingEbooks || !selectedClub)
     return (
       <div className="mt-20">
         <MainContainer>
@@ -55,8 +57,10 @@ const SelectedEbookScreen = () => {
           <div className="flex flex-col items-center gap-5">
             <div className="w-60 h-60">
               <Image
-                src={selectedClub?.logo}
+                src={selectedClub?.logo || ClubImage}
                 alt={selectedClub?.name || "Club Logo"}
+                width={240}
+                height={240}
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
@@ -117,26 +121,35 @@ const SelectedEbookScreen = () => {
 
             <div className="flex flex-col gap-5 mt-10">
               <h2 className="text-xl font-bold text-gray-200">
-                {t("players")}
+                {t("players")} ({selectedClub?.players?.length || 0})
               </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                {selectedClub?.players.slice(0, 10).map((team, index) => (
-                  <div
-                    key={index}
-                    data-aos="zoom-in"
-                    data-aos-delay={`${index + 1 * 2}00`}
-                  >
-                    <PlayerCard
-                      {...team}
-                      category={selectedClub?.category}
-                      clubId={selectedClub?._id}
-                      clubLogo={selectedClub?.logo}
-                      clubName={selectedClub?.name}
-                    />
-                  </div>
-                ))}
-              </div>
+              {selectedClub?.players && selectedClub.players.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                  {selectedClub.players.slice(0, 10).map((team, index) => (
+                    <div
+                      key={index}
+                      data-aos="zoom-in"
+                      data-aos-delay={`${index + 1 * 2}00`}
+                    >
+                      <PlayerCard
+                        {...team}
+                        category={selectedClub.category || ""}
+                        clubId={selectedClub._id || ""}
+                        clubLogo={selectedClub.logo}
+                        clubName={selectedClub.name || ""}
+                        playerId={`${selectedClub._id}-${index}`}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-10">
+                  <p className="text-gray-400 text-lg">
+                    No hay jugadores registrados en este club.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

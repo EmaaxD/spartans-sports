@@ -30,10 +30,21 @@ export const UserLogin: React.FC<UserLoginProps> = ({ isMobile = false }) => {
 
   const handleSignOut = async () => {
     try {
+      if (isMobile) {
+        handleToggleMenu();
+      }
       await signOut();
-
       push("/");
     } catch (error) {}
+  };
+
+  const handleNavigate = (href: string) => {
+    if (isMobile) {
+      handleToggleMenu();
+      setTimeout(() => {
+        push(href);
+      }, 100);
+    }
   };
 
   useEffect(() => {
@@ -134,25 +145,53 @@ export const UserLogin: React.FC<UserLoginProps> = ({ isMobile = false }) => {
           </div>
 
           <div className="flex md:hidden">
-            <Link
-              href="/profile"
-              className={`flex flex-row items-center gap-3 transition-colors text-white hover:text-gray-300`}
-              onClick={handleToggleMenu}
-            >
-              <div className="w-7 h-7 grid place-items-center box-border">
-                <Image
-                  src={avatarSrc}
-                  alt="avatar"
-                  width={28}
-                  height={28}
-                  className="w-full h-full rounded-full"
-                />
-              </div>
+            {/* Caja con blur que incluye todo */}
+            <div className="w-full">
+              <div className="relative bg-gradient-to-r from-indigo-600/20 to-purple-600/20 backdrop-blur-sm rounded-xl p-4 border border-indigo-400/30">
+                {/* Foto y nombre del usuario */}
+                <div className="flex flex-row items-center gap-3 mb-4 pb-3 border-b border-white/20">
+                  <div className="w-10 h-10 grid place-items-center box-border">
+                    <Image
+                      src={avatarSrc}
+                      alt="avatar"
+                      width={40}
+                      height={40}
+                      className="w-full h-full rounded-full border-2 border-white/30"
+                    />
+                  </div>
+                  <span className="text-white font-medium">
+                    {session.user?.name || "Mi cuenta"}
+                  </span>
+                </div>
 
-              <span className={`${isMobile ? "flex" : "hidden lg:flex"}`}>
-                Mi cuenta
-              </span>
-            </Link>
+                {/* Tres opciones dentro de la misma caja */}
+                <div className="space-y-2">
+                  <button
+                    className="flex flex-row items-center gap-3 text-white hover:text-indigo-300 transition-colors p-2 rounded-lg hover:bg-white/10 w-full text-left"
+                    onClick={() => handleNavigate("/profile")}
+                  >
+                    <HiUser size={18} />
+                    <span className="text-sm">{t("profile")}</span>
+                  </button>
+
+                  <button
+                    className="flex flex-row items-center gap-3 text-white hover:text-purple-300 transition-colors p-2 rounded-lg hover:bg-white/10 w-full text-left"
+                    onClick={() => handleNavigate("/upload-form")}
+                  >
+                    <BiSolidBookAdd size={18} />
+                    <span className="text-sm">{t("uploadForm")}</span>
+                  </button>
+
+                  <button
+                    className="flex flex-row items-center gap-3 text-white hover:text-red-300 transition-colors p-2 rounded-lg hover:bg-white/10 w-full text-left"
+                    onClick={handleSignOut}
+                  >
+                    <PiSignOutBold size={18} />
+                    <span className="text-sm">{t("logout")}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </>
       ) : (

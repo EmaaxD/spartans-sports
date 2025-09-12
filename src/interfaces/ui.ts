@@ -77,7 +77,9 @@ export interface MainSelectDataOptionProps {
   label: string;
 }
 
-export interface PlayerCardProps extends PlayerWithCategory {}
+export interface PlayerCardProps extends PlayerWithCategory {
+  playerId: string;
+}
 
 export interface BadgetInfoProps {
   colorCard: string;

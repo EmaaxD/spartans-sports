@@ -37,7 +37,7 @@ export const MainHeaderLink: React.FC<MainHeaderLinkProps> = ({
 
   return (
     <>
-      <li data-aos="zoom-in" data-aos-delay={`${index + 1 * 2}00`}>
+      <div data-aos="zoom-in" data-aos-delay={`${index + 1 * 2}00`}>
         <Link href={href ? href : "/"} onClick={handleClickLink}>
           <div
             className={`flex flex-row items-center gap-3 transition-colors ${
@@ -48,7 +48,7 @@ export const MainHeaderLink: React.FC<MainHeaderLinkProps> = ({
             <span>{t(label)}</span>
           </div>
         </Link>
-      </li>
+      </div>
     </>
   );
 };

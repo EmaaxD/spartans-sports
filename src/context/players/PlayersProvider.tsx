@@ -60,14 +60,14 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     const withRank = malePlayers.map((player) => ({
       ...player,
-      rank: getPlayerRank(player.playerValue, player.sexo),
+      rank: getPlayerRank(player.value, player.sexo),
     }));
 
-    // Ordenar por rank ascendente; si empatan, priorizar mayor playerValue
+    // Ordenar por rank ascendente; si empatan, priorizar mayor value
     const sorted = withRank.sort((a, b) => {
       if (a.rank !== b.rank) return a.rank - b.rank;
-      const av = a.playerValue ?? 0;
-      const bv = b.playerValue ?? 0;
+      const av = a.value ?? 0;
+      const bv = b.value ?? 0;
       return bv - av;
     });
 
@@ -90,14 +90,14 @@ export const PlayersProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     const withRank = femalePlayers.map((player) => ({
       ...player,
-      rank: getPlayerRank(player.playerValue, player.sexo),
+      rank: getPlayerRank(player.value, player.sexo),
     }));
 
-    // Ordenar por rank ascendente; si empatan, priorizar mayor playerValue
+    // Ordenar por rank ascendente; si empatan, priorizar mayor value
     const sorted = withRank.sort((a, b) => {
       if (a.rank !== b.rank) return a.rank - b.rank;
-      const av = a.playerValue ?? 0;
-      const bv = b.playerValue ?? 0;
+      const av = a.value ?? 0;
+      const bv = b.value ?? 0;
       return bv - av;
     });
 

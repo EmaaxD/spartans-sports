@@ -154,12 +154,15 @@ export default function ImageUpload({ onProcessed }: Props) {
   };
 
   return (
-    <div className="w-fit p-4 bg-gray-800/80 border border-gray-700 rounded-lg shadow-lg">
-      <label className="block text-sm font-medium text-gray-100">
+    <div className="w-full max-w-2xl mx-auto p-3 sm:p-4 bg-gray-800/80 border border-gray-700 rounded-lg shadow-lg">
+      <label className="block text-sm font-medium text-gray-100 mb-3">
         Subir imagen
       </label>
-      <div className="mt-2 flex items-center gap-4">
-        <div className="relative bg-[#374151] w-32 h-32 rounded-md flex items-center justify-center overflow-hidden">
+
+      {/* Layout responsive: vertical en móvil, horizontal en desktop */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        {/* Contenedor de imagen - se adapta al ancho disponible */}
+        <div className="relative bg-[#374151] w-full sm:w-32 h-32 sm:h-32 max-w-xs mx-auto sm:mx-0 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0">
           {preview ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -177,22 +180,23 @@ export default function ImageUpload({ onProcessed }: Props) {
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/25">
               <div
-                className="animate-spin rounded-full h-8 w-8 border-4 border-white border-t-transparent"
+                className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-4 border-white border-t-transparent"
                 aria-hidden="true"
               />
               <span className="sr-only">Procesando imagen...</span>
             </div>
           )}
-
-          {/* badge removed from image overlay; moved below into controls */}
         </div>
 
-        <div className="flex-1">
+        {/* Controles - toman el espacio restante */}
+        <div className="flex-1 w-full sm:w-auto">
+          {/* Badge de estado */}
           {!loading && backgroundRemoved && (
-            <div className="mb-2 inline-flex items-center gap-2 bg-violet-600 text-white text-xs px-2 py-1 rounded">
+            <div className="mb-3 inline-flex items-center gap-2 bg-violet-600 text-white text-xs px-2 py-1 rounded">
               <span>Fondo removido</span>
             </div>
           )}
+
           <input
             ref={inputRef}
             type="file"
@@ -203,12 +207,13 @@ export default function ImageUpload({ onProcessed }: Props) {
             className="hidden"
           />
 
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-2">
+          <div className="flex flex-col gap-3">
+            {/* Botones - stack vertical en móvil, horizontal en tablet+ */}
+            <div className="flex flex-col xs:flex-row gap-2">
               <button
                 type="button"
                 onClick={() => inputRef.current?.click()}
-                className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium bg-gradient-to-br from-violet-600 to-violet-500 text-white rounded-md shadow-md hover:from-violet-500 hover:to-violet-400 transform hover:-translate-y-0.5 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-400"
+                className="flex-1 xs:flex-initial inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium bg-gradient-to-br from-violet-600 to-violet-500 text-white rounded-md shadow-md hover:from-violet-500 hover:to-violet-400 transform hover:-translate-y-0.5 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-400"
               >
                 Seleccionar
               </button>
@@ -217,7 +222,7 @@ export default function ImageUpload({ onProcessed }: Props) {
                 type="button"
                 onClick={() => processFile(file).catch(() => {})}
                 disabled={!file || loading}
-                className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white rounded-md shadow-md bg-gradient-to-br from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 transform hover:-translate-y-0.5 transition disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-300"
+                className="flex-1 xs:flex-initial inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white rounded-md shadow-md bg-gradient-to-br from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 transform hover:-translate-y-0.5 transition disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-300"
               >
                 {loading ? "Procesando..." : "Remover fondo"}
               </button>
@@ -236,12 +241,15 @@ export default function ImageUpload({ onProcessed }: Props) {
                   if (inputRef.current) inputRef.current.value = "";
                   onProcessed?.(null);
                 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium bg-gradient-to-br from-red-500 to-red-400 text-white rounded-md shadow-md hover:from-red-400 hover:to-red-300 transform hover:-translate-y-0.5 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-300"
+                className="xs:w-auto w-12 h-10 xs:h-auto inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium bg-gradient-to-br from-red-500 to-red-400 text-white rounded-md shadow-md hover:from-red-400 hover:to-red-300 transform hover:-translate-y-0.5 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-300"
               >
-                <MdCleaningServices />
+                <MdCleaningServices className="text-base" />
+                <span className="hidden xs:inline">Limpiar</span>
               </button>
             </div>
-            <span className="text-xs text-gray-300">
+
+            {/* Texto de ayuda */}
+            <span className="text-xs text-gray-300 text-center sm:text-left">
               Selecciona una imagen y pulsa "Remover fondo"
             </span>
           </div>

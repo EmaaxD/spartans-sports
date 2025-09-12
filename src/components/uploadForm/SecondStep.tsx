@@ -557,7 +557,7 @@ export const SecondStep = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-3 flex-1">
+      <div className="w-full md:w-auto flex flex-col gap-3 flex-1">
         <button
           className="bg-transparent flex items-center gap-1 text-gray-200 hover:text-white transition-colors outline-none"
           onClick={() => handleSetStepForm(1)}

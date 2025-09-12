@@ -120,7 +120,7 @@ export const processExcelFile = async (
     }
 
     // Normalizar templateType (tolerar mayúsculas, espacios, traducciones simples)
-  const rawType = String(templateType ?? "").trim().toLowerCase();
+    const rawType = (templateType || "").toString().trim().toLowerCase();
     let normalizedType: "player" | "club" | "danceAcademy" | null = null;
     if (rawType === "player") normalizedType = "player";
     else if (rawType === "club") normalizedType = "club";
@@ -167,7 +167,7 @@ const processPlayerData = (
     "sexo",
     "clase",
     "fechaNacimiento",
-  "alturaTorso",
+    "alturaTorso",
     "envergaduraBrazos",
     "alturaDeVuelo(m)",
     "tiempoDeContacto(s)",
@@ -184,9 +184,9 @@ const processPlayerData = (
     "piernaDirectora",
     "dorsiflexionTobilloIzq",
     "dorsiflexionTobilloDer",
-  "posicion",
-  "localidad",
-  "provincia",
+    "posicion",
+    "localidad",
+    "provincia",
     "escuelaClub",
     "contacto",
     "deporte",
@@ -229,17 +229,17 @@ const processPlayerData = (
     const rowNumber = index + 2; // +2 porque empezamos desde la fila 2 (después de headers)
 
     // Verificar si la fila está completamente vacía
-  if (row.every((cell) => !cell || String(cell ?? "").trim() === "")) {
+    if (row.every((cell) => !cell || cell.toString().trim() === "")) {
       return; // Saltar filas vacías
     }
 
-  // Mapeo correcto según headers de la planilla (reordenados):
-  // 0 nombre,1 apellido,2 edad,3 peso,4 altura,5 sexo,6 clase,7 fechaNacimiento,
-  // 8 alturaTorso,9 envergaduraBrazos,10 alturaDeVuelo(m),11 tiempoDeContacto(s),12 imc,13 tmb,14 indiceQ,15 biotipo,
-  // 16 lateralidad,17 ojoDirector,18 hombro,19 brazoDirector,20 cintura,21 piernaDominante,22 piernaDirectora,
-  // 23 dorsiflexionTobilloIzq,24 dorsiflexionTobilloDer,25 posicion,26 localidad,27 provincia,28 escuelaClub,29 contacto,
-  // 30 deporte,31 manoDer,32 manoIzq,33 sentadillaProfunda,
-  // 34 capacidadPulmonarTotal,35 coordinacion,36 capacidadPulmunarResidual
+    // Mapeo correcto según headers de la planilla (reordenados):
+    // 0 nombre,1 apellido,2 edad,3 peso,4 altura,5 sexo,6 clase,7 fechaNacimiento,
+    // 8 alturaTorso,9 envergaduraBrazos,10 alturaDeVuelo(m),11 tiempoDeContacto(s),12 imc,13 tmb,14 indiceQ,15 biotipo,
+    // 16 lateralidad,17 ojoDirector,18 hombro,19 brazoDirector,20 cintura,21 piernaDominante,22 piernaDirectora,
+    // 23 dorsiflexionTobilloIzq,24 dorsiflexionTobilloDer,25 posicion,26 localidad,27 provincia,28 escuelaClub,29 contacto,
+    // 30 deporte,31 manoDer,32 manoIzq,33 sentadillaProfunda,
+    // 34 capacidadPulmonarTotal,35 coordinacion,36 capacidadPulmunarResidual
     const playerData: ProcessedPlayerData = {
       nombre: cleanString(row[0]),
       apellido: cleanString(row[1]),
@@ -249,35 +249,35 @@ const processPlayerData = (
       sexo: cleanString(row[5]),
       clase: cleanString(row[6]),
       fechaNacimiento: cleanString(row[7]),
-    alturaTorso: parseNumber(row[8]) || 0,
-    envergaduraBrazos: parseNumber(row[9]) || 0,
-    alturaDeVuelo: parseNumber(row[10]) || 0,
-    tiempoDeContacto: parseNumber(row[11]) || 0,
-    imc: parseNumber(row[12]) || 0,
-    tmb: parseNumber(row[13]) || 0,
-    indiceQ: cleanString(row[14]),
-    biotipo: cleanString(row[15]),
-    lateralidad: cleanString(row[16]),
-    ojoDirector: cleanString(row[17]),
-    hombro: cleanString(row[18]),
-    brazoDirector: cleanString(row[19]),
-    cintura: cleanString(row[20]),
-    piernaDominante: cleanString(row[21]),
-    piernaDirectora: cleanString(row[22]),
-    dorsiflexionTobilloIzq: cleanString(row[23]),
-    dorsiflexionTobilloDer: cleanString(row[24]),
-  posicion: cleanString(row[25]),
-  localidad: cleanString(row[26]),
-  provincia: cleanString(row[27]),
-  escuelaClub: cleanString(row[28]),
-  contacto: cleanString(row[29]),
-  deporte: cleanString(row[30]),
-  manoDer: cleanString(row[31]),
-  manoIzq: cleanString(row[32]),
-  sentadillaProfunda: cleanString(row[33]),
-  capacidadPulmonarTotal: cleanString(row[34]),
-  coordinacion: cleanString(row[35]),
-  capacidadPulmunarResidual: cleanString(row[36]),
+      alturaTorso: parseNumber(row[8]) || 0,
+      envergaduraBrazos: parseNumber(row[9]) || 0,
+      alturaDeVuelo: parseNumber(row[10]) || 0,
+      tiempoDeContacto: parseNumber(row[11]) || 0,
+      imc: parseNumber(row[12]) || 0,
+      tmb: parseNumber(row[13]) || 0,
+      indiceQ: cleanString(row[14]),
+      biotipo: cleanString(row[15]),
+      lateralidad: cleanString(row[16]),
+      ojoDirector: cleanString(row[17]),
+      hombro: cleanString(row[18]),
+      brazoDirector: cleanString(row[19]),
+      cintura: cleanString(row[20]),
+      piernaDominante: cleanString(row[21]),
+      piernaDirectora: cleanString(row[22]),
+      dorsiflexionTobilloIzq: cleanString(row[23]),
+      dorsiflexionTobilloDer: cleanString(row[24]),
+      posicion: cleanString(row[25]),
+      localidad: cleanString(row[26]),
+      provincia: cleanString(row[27]),
+      escuelaClub: cleanString(row[28]),
+      contacto: cleanString(row[29]),
+      deporte: cleanString(row[30]),
+      manoDer: cleanString(row[31]),
+      manoIzq: cleanString(row[32]),
+      sentadillaProfunda: cleanString(row[33]),
+      capacidadPulmonarTotal: cleanString(row[34]),
+      coordinacion: cleanString(row[35]),
+      capacidadPulmunarResidual: cleanString(row[36]),
       rowNumber,
     };
 
@@ -321,7 +321,7 @@ const processClubData = (
   dataRows.forEach((row, index) => {
     const rowNumber = index + 2;
 
-  if (row.every((cell) => !cell || String(cell ?? "").trim() === "")) {
+    if (row.every((cell) => !cell || cell.toString().trim() === "")) {
       return;
     }
 
@@ -365,7 +365,7 @@ const processDanceAcademyData = (
   dataRows.forEach((row, index) => {
     const rowNumber = index + 2;
 
-  if (row.every((cell) => !cell || String(cell ?? "").trim() === "")) {
+    if (row.every((cell) => !cell || cell.toString().trim() === "")) {
       return;
     }
 

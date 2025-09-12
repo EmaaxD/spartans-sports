@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npm ci --only=production && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "generate:templates": "node scripts/generate-templates.ts",

@@ -22,6 +22,9 @@ const ProfileScreen = () => {
   const { selectedPlayer, handleGetPlayerById } = useContext(playersContext);
 
   useEffect(() => {
+    // Solo ejecutar en el cliente
+    if (typeof window === 'undefined') return;
+    
     const playerId = localStorage.getItem("player_id");
     if (playerId && handleGetPlayerById) {
       handleGetPlayerById(playerId);

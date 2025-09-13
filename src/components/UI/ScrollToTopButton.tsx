@@ -5,6 +5,8 @@ export const ScrollToTopButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => {
+    if (typeof window === 'undefined') return;
+    
     if (window.pageYOffset > 300) {
       setIsVisible(true);
     } else {
@@ -13,6 +15,8 @@ export const ScrollToTopButton: React.FC = () => {
   };
 
   const scrollToTop = () => {
+    if (typeof window === 'undefined') return;
+    
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -20,6 +24,8 @@ export const ScrollToTopButton: React.FC = () => {
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     window.addEventListener("scroll", toggleVisibility);
     return () => {
       window.removeEventListener("scroll", toggleVisibility);

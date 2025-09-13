@@ -31,20 +31,24 @@ export const UploadFormProvider: React.FC<PropsWithChildren> = ({
 
   const handleSetStepForm = (step: number) => {
     if (step === 2) {
-      // Solo persistir si hay un tipo válido
-      if (state.typeForm && state.typeForm !== ("null" as any)) {
+      // Solo persistir si hay un tipo válido y estamos en el cliente
+      if (typeof window !== 'undefined' && state.typeForm && state.typeForm !== ("null" as any)) {
         localStorage.setItem("typeForm", state.typeForm as string);
       }
     } else if (step === 1) {
       // Al volver al paso 1 no forzar a 'null' en storage
       // (opcional: podríamos limpiar) => mantener selección previa
-      localStorage.removeItem("typeForm");
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem("typeForm");
+      }
     }
 
     dispatch({ type: "SET_STEP_FORM", payload: step });
   };
 
   const handleVerifyStep = () => {
+    if (typeof window === 'undefined') return; // Solo ejecutar en el cliente
+    
     const typeFormLs = localStorage.getItem("typeForm");
 
     if (typeFormLs) {
@@ -125,7 +129,9 @@ export const UploadFormProvider: React.FC<PropsWithChildren> = ({
 
           handleAddPlayer(player.data);
 
-          localStorage.setItem("player_id", player.data._id);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem("player_id", player.data._id);
+          }
 
           toast.success("Jugador creado correctamente");
         }

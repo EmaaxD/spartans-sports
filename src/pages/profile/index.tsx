@@ -52,9 +52,9 @@ const ProfileScreen = () => {
             {/* Foto de perfil */}
             <div className="relative flex-shrink-0">
               <div className="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-full overflow-hidden border-4 border-blue-400 shadow-xl bg-gradient-to-br from-blue-500 to-purple-600">
-                {selectedPlayer?.player_image ? (
+                {selectedPlayer?.playerImg ? (
                   <Image
-                    src={selectedPlayer.player_image}
+                    src={selectedPlayer.playerImg}
                     alt="Profile"
                     width={160}
                     height={160}

@@ -11,31 +11,34 @@ import {
   ClubsHomeContainer,
   JoinUsContainer,
 } from "@src/components/containers";
-import {
-  ContentLoading,
-  JoinUsCard,
-  MainBanner,
-  SponsorsSection,
-  TopClubs,
-  TopPlayers,
-  TopPlayersFemale,
-} from "@src/components/home";
 import { ClubCard } from "@src/components/club";
 import { NoSSR } from "@src/components/HOC";
 
 import { joinUsData } from "@src/utils/const";
 
-// Dynamic imports para componentes problemáticos
+// Dynamic imports SOLAMENTE - eliminar imports estáticos para evitar conflictos
 const DynamicMainBanner = dynamic(() => import("@src/components/home").then(mod => ({ default: mod.MainBanner })), { ssr: false });
 const DynamicTopClubs = dynamic(() => import("@src/components/home").then(mod => ({ default: mod.TopClubs })), { ssr: false });
 const DynamicTopPlayers = dynamic(() => import("@src/components/home").then(mod => ({ default: mod.TopPlayers })), { ssr: false });
 const DynamicTopPlayersFemale = dynamic(() => import("@src/components/home").then(mod => ({ default: mod.TopPlayersFemale })), { ssr: false });
+const DynamicJoinUsCard = dynamic(() => import("@src/components/home").then(mod => ({ default: mod.JoinUsCard })), { ssr: false });
+const DynamicSponsorsSection = dynamic(() => import("@src/components/home").then(mod => ({ default: mod.SponsorsSection })), { ssr: false });
 
 export default function Home() {
   const { clubs, handleSelectedClub } = useContext(clubsContext);
   const { players, top100PlayersFemaleMemo } = useContext(playersContext);
+  const [isClient, setIsClient] = useState(false);
 
   const { t } = useTranslation("common");
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Proteger el renderizado hasta que el cliente esté listo
+  if (!isClient) {
+    return <div style={{ minHeight: '100vh' }}></div>;
+  }
 
   return (
     <NoSSR>
@@ -78,11 +81,7 @@ export default function Home() {
               {club.clubes.length > 2 ? (
                 <CarouselContainer>
                   {club.clubes.map((team, index) => (
-                    <div
-                      key={team._id}
-                      data-aos="zoom-in"
-                      data-aos-delay={`${index + 1 * 2}00`}
-                    >
+                    <div key={team._id}>
                       <ClubCard
                         {...team}
                         category={club.category}
@@ -99,11 +98,7 @@ export default function Home() {
               ) : (
                 <AllClubsContainer>
                   {club.clubes.map((team, index) => (
-                    <div
-                      key={team._id}
-                      data-aos="zoom-in"
-                      data-aos-delay={`${index + 1 * 2}00`}
-                    >
+                    <div key={team._id}>
                       <ClubCard
                         {...team}
                         category={club.category}
@@ -127,18 +122,14 @@ export default function Home() {
         >
           <JoinUsContainer>
             {joinUsData.map((item, index) => (
-              <div
-                key={item.id}
-                data-aos="zoom-in"
-                data-aos-delay={`${index + 1 * 2}00`}
-              >
-                <JoinUsCard {...item} />
+              <div key={item.id}>
+                <DynamicJoinUsCard {...item} />
               </div>
             ))}
           </JoinUsContainer>
         </ClubsHomeContainer>
 
-        <SponsorsSection />
+        <DynamicSponsorsSection />
       </div>
     </NoSSR>
   );

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
 
@@ -12,7 +12,7 @@ import {
   JoinUsContainer,
 } from "@src/components/containers";
 import { ClubCard } from "@src/components/club";
-import { NoSSR } from "@src/components/HOC";
+import { ClientOnly } from "@src/components/HOC";
 
 import { joinUsData } from "@src/utils/const";
 
@@ -27,21 +27,11 @@ const DynamicSponsorsSection = dynamic(() => import("@src/components/home").then
 export default function Home() {
   const { clubs, handleSelectedClub } = useContext(clubsContext);
   const { players, top100PlayersFemaleMemo } = useContext(playersContext);
-  const [isClient, setIsClient] = useState(false);
 
   const { t } = useTranslation("common");
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  // Proteger el renderizado hasta que el cliente esté listo
-  if (!isClient) {
-    return <div style={{ minHeight: '100vh' }}></div>;
-  }
-
   return (
-    <NoSSR>
+    <ClientOnly>
       <div className="flex flex-col gap-6 pb-10">
         <DynamicMainBanner />
 
@@ -131,6 +121,6 @@ export default function Home() {
 
         <DynamicSponsorsSection />
       </div>
-    </NoSSR>
+    </ClientOnly>
   );
 }

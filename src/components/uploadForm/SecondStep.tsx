@@ -6,6 +6,7 @@ import ImageUpload from "./ImageUpload";
 import { uploadFormContext } from "@src/context/uploadForm";
 import { useI18n } from "@src/hooks";
 import { classifyIndiceQ } from "@src/utils/functions";
+import { clubCategories } from "@src/utils/const";
 
 // Definición de campos del template player
 const playerFields: Array<{
@@ -965,6 +966,34 @@ export const SecondStep = () => {
                                 </div>
                               )}
                             </>
+                          );
+                        }
+                        // Campo deporte como select
+                        if (f.key === "deporte") {
+                          return (
+                            <select
+                              value={formData[f.key] || ""}
+                              onChange={(e) =>
+                                !isDerived &&
+                                handleChangeField(f.key, e.target.value)
+                              }
+                              disabled={isDerived}
+                              className={`px-2 py-2 rounded-md bg-gray-700 text-white text-sm border focus:outline-none focus:ring-2 focus:ring-blue-500/60 placeholder-gray-400 ${
+                                errors[f.key]
+                                  ? "border-red-500"
+                                  : "border-gray-600"
+                              } ${
+                                isDerived ? "opacity-80 cursor-not-allowed" : ""
+                              }`}
+                            >
+                              <option value="">Seleccionar deporte</option>
+                              {clubCategories.map((category) => (
+                                <option key={category.id} value={category.name}>
+                                  {category.name.charAt(0).toUpperCase() +
+                                    category.name.slice(1)}
+                                </option>
+                              ))}
+                            </select>
                           );
                         }
                         return (

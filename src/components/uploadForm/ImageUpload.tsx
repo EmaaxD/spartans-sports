@@ -242,7 +242,6 @@ export default function ImageUpload({ onProcessed }: Props) {
             ref={inputRef}
             type="file"
             accept="image/*"
-            capture="environment"
             onChange={(e) =>
               handleFile(e.target.files ? e.target.files[0] : undefined)
             }
@@ -298,7 +297,7 @@ export default function ImageUpload({ onProcessed }: Props) {
               <p>Selecciona una imagen y pulsa "Remover fondo"</p>
               {!file && (
                 <p className="text-yellow-400">
-                  📱 En móvil: Puedes tomar foto o seleccionar de galería
+                  📱 Selecciona una imagen desde tu galería o archivos
                 </p>
               )}
               {backgroundRemoved && (

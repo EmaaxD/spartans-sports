@@ -88,7 +88,7 @@ export const FichaTecnicaDeportiva = () => {
         </section>
 
         <section>
-          <PlayerPhoto player_image={selectedPlayer.player_image} />
+          <PlayerPhoto player_image={selectedPlayer.playerImg} />
         </section>
 
         <section>

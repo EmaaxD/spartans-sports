@@ -295,23 +295,6 @@ export const SecondStep = () => {
     useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Estado para las categorías de deportes
-  const [deporteCategories, setDeporteCategories] = useState<
-    Array<{ id: string; name: string }>
-  >([
-    { id: "1", name: "soccer" },
-    { id: "2", name: "basketball" },
-    { id: "3", name: "tennis" },
-    { id: "4", name: "volleyball" },
-    { id: "5", name: "swimming" },
-    { id: "6", name: "athletics" },
-    { id: "7", name: "rugby" },
-    { id: "8", name: "hockey" },
-    { id: "9", name: "beisbol" },
-    { id: "10", name: "fitness" },
-    { id: "11", name: "crossfit" },
-  ]);
-
   const isPlayer = !typeForm || typeForm === "player";
   const isClub = typeForm === "club";
 
@@ -550,23 +533,6 @@ export const SecondStep = () => {
     setCapResidualCategoria(item.categoria);
     setCapResidualValorRango(range);
   }, [formData.capacidadPulmunarResidual, formData.sexo, isPlayer]);
-
-  // Cargar categorías de deportes de forma segura
-  useEffect(() => {
-    const loadDeporteCategories = async () => {
-      try {
-        const { clubCategories } = await import("@src/utils/const");
-        if (Array.isArray(clubCategories) && clubCategories.length > 0) {
-          setDeporteCategories(clubCategories);
-        }
-      } catch (error) {
-        console.warn("Could not load club categories, using fallback");
-        // El estado ya tiene valores por defecto, no necesitamos hacer nada
-      }
-    };
-
-    loadDeporteCategories();
-  }, []);
 
   const handleSave = async () => {
     console.log("🚀 handleSave called - playerImage state:", {
@@ -1003,6 +969,20 @@ export const SecondStep = () => {
                         }
                         // Campo deporte como select
                         if (f.key === "deporte") {
+                          const deporteOptions = [
+                            "fitness",
+                            "crossfit",
+                            "futboll",
+                            "baloncesto",
+                            "tenis",
+                            "volleyball",
+                            "natacion",
+                            "atletismo",
+                            "rugby",
+                            "hockey",
+                            "beisbol",
+                          ];
+
                           return (
                             <select
                               value={formData[f.key] || ""}
@@ -1020,19 +1000,12 @@ export const SecondStep = () => {
                               }`}
                             >
                               <option value="">Seleccionar deporte</option>
-                              {deporteCategories.map(
-                                (category: { id: string; name: string }) => (
-                                  <option
-                                    key={category.id}
-                                    value={category.name}
-                                  >
-                                    {category.name
-                                      ? category.name.charAt(0).toUpperCase() +
-                                        category.name.slice(1)
-                                      : category.name}
-                                  </option>
-                                )
-                              )}
+                              {deporteOptions.map((deporte, index) => (
+                                <option key={index} value={deporte}>
+                                  {deporte.charAt(0).toUpperCase() +
+                                    deporte.slice(1)}
+                                </option>
+                              ))}
                             </select>
                           );
                         }

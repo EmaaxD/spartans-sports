@@ -13,6 +13,7 @@ import { ClubCard } from "@src/components/club";
 
 const EbooksScreen = () => {
   const [loadingEbooks, setLoadingEbooks] = useState(true);
+  const [isClient, setIsClient] = useState(false);
 
   const { clubs, handleSelectedClub } = useContext(clubsContext);
 
@@ -28,11 +29,28 @@ const EbooksScreen = () => {
   }, [clubs]);
 
   useEffect(() => {
+    // Marcar que estamos en el cliente
+    setIsClient(true);
+    
     // set loading state to false after 1000ms
     const timer = setTimeout(() => {
       setLoadingEbooks(false);
     }, 1000);
+
+    // Cleanup timer on unmount
+    return () => clearTimeout(timer);
   }, []);
+
+  // Prevenir mismatch de hidratación
+  if (!isClient) {
+    return (
+      <SportsLayout layoutId="clubs-screen">
+        <ContainerContentPage>
+          <EbookScreenSkeleton />
+        </ContainerContentPage>
+      </SportsLayout>
+    );
+  }
 
   return (
     <>

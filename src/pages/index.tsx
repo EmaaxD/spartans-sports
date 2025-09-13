@@ -25,6 +25,7 @@ import { joinUsData } from "@src/utils/const";
 
 export default function Home() {
   const [loadingEbooks, setLoadingEbooks] = useState(true);
+  const [isClient, setIsClient] = useState(false);
 
   const { clubs, handleSelectedClub } = useContext(clubsContext);
   const { players, top100PlayersFemaleMemo } = useContext(playersContext);
@@ -32,11 +33,22 @@ export default function Home() {
   const { t } = useTranslation("common");
 
   useEffect(() => {
+    // Marcar que estamos en el cliente
+    setIsClient(true);
+    
     // set loading state to false after 1000ms
     const timer = setTimeout(() => {
       setLoadingEbooks(false);
     }, 1000);
+
+    // Cleanup timer on unmount
+    return () => clearTimeout(timer);
   }, []);
+
+  // Prevenir mismatch de hidratación
+  if (!isClient) {
+    return <ContentLoading />;
+  }
 
   return (
     <>

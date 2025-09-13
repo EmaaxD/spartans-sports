@@ -18,6 +18,7 @@ import ClubImage from "@src/assets/img/Encabezado-GoClub-Mobile.png";
 
 const SelectedEbookScreen = () => {
   const [loadingEbooks, setLoadingEbooks] = useState(true);
+  const [isClient, setIsClient] = useState(false);
 
   const { selectedClub, handleGetClub } = useContext(clubsContext);
 
@@ -30,6 +31,9 @@ const SelectedEbookScreen = () => {
   const { t } = useI18n();
 
   useEffect(() => {
+    // Marcar que estamos en el cliente
+    setIsClient(true);
+    
     if (typeof clubId === "string") {
       handleGetClub(clubId);
       // set loading state to false after the club is fetched
@@ -40,6 +44,11 @@ const SelectedEbookScreen = () => {
       return () => clearTimeout(timer);
     }
   }, [clubId, handleGetClub]);
+
+  // Prevenir mismatch de hidratación
+  if (!isClient) {
+    return <EbookDetailsSkeleton />;
+  }
 
   if (loadingEbooks || !selectedClub)
     return (

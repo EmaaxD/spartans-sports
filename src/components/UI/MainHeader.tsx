@@ -21,24 +21,32 @@ import { LanguageSelector } from "./LanguageSelector";
 export const MainHeader = () => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [loadingEbooks, setLoadingEbooks] = useState(true);
+  const [isClient, setIsClient] = useState(false);
 
   const { changeLanguage } = useI18n();
 
   const { openMenu, handleToggleMenu } = useContext(uiContext);
 
   useEffect(() => {
+    // Marcar que estamos en el cliente
+    setIsClient(true);
+    
     const handleScroll = () => {
-      if (window.scrollY > 0) {
+      if (typeof window !== 'undefined' && window.scrollY > 0) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    if (typeof window !== 'undefined') {
+      window.addEventListener("scroll", handleScroll);
+    }
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener("scroll", handleScroll);
+      }
     };
   }, []);
 
@@ -47,7 +55,14 @@ export const MainHeader = () => {
     const timer = setTimeout(() => {
       setLoadingEbooks(false);
     }, 1000);
+
+    return () => clearTimeout(timer);
   }, []);
+
+  // Prevenir mismatch de hidratación
+  if (!isClient) {
+    return <HeaderSkeleton />;
+  }
 
   return (
     <>

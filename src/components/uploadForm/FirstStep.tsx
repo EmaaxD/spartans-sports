@@ -20,7 +20,7 @@ export const FirstStep = () => {
   } = useTemplates();
 
   const handleChange = (value: string) => {
-    const v = value && value !== 'null' ? value : '';
+    const v = value && value !== "null" ? value : "";
     setSelectedTemplate(v);
     handleSetTypeForm(v as any);
   };
@@ -50,8 +50,7 @@ export const FirstStep = () => {
               disabled={isDownloading}
               className="flex flex-row items-center gap-2 text-white bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <MdDownload size={20} />
-              {isDownloading ? t("downloading") : t("download")}
+              Comenzar con el formulario
             </button>
           </div>
         )}

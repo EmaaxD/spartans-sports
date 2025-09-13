@@ -1,27 +1,11 @@
-import { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaDollarSign, FaTrophy, FaUser, FaMapMarkerAlt } from "react-icons/fa";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 import { PlayerCardProps } from "@src/interfaces";
 
-import PlayerOneImg from "@src/assets/img/playerFutbol.png";
-import PlayerTwoImg from "@src/assets/img/playerTwo.png";
-import PlayerThreeImg from "@src/assets/img/playerThree.png";
-import PlayerFourImg from "@src/assets/img/playerFour.png";
-import PlayerFiveImg from "@src/assets/img/playerFive.png";
-import PlayerSixImg from "@src/assets/img/playerSix.png";
 import SpartansCoinImg from "@src/assets/img/logos/spartanCoin.png";
 import { formatPrice } from "@src/utils/functions";
-
-const images = [
-  PlayerOneImg,
-  PlayerTwoImg,
-  PlayerThreeImg,
-  PlayerFourImg,
-  PlayerFiveImg,
-  PlayerSixImg,
-];
 
 export const PlayerCard: React.FC<PlayerCardProps> = ({
   age,
@@ -40,11 +24,6 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   weight,
   ims,
 }) => {
-  const selectedImg = useMemo(() => {
-    const idx = Math.floor(Math.random() * images.length);
-    return images[idx];
-  }, []);
-
   return (
     <Link
       href={`/players/${playerId}`}
@@ -82,13 +61,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
             <div className="w-48 h-48 mx-auto rounded-2xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border-2 border-white/20 p-2 shadow-xl">
               <div className="w-full h-full rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
                 <Image
-                  src={
-                    playerImg &&
-                    typeof playerImg === "string" &&
-                    playerImg.trim() !== ""
-                      ? playerImg
-                      : selectedImg
-                  }
+                  src={playerImg}
                   alt={name}
                   width={200}
                   height={200}

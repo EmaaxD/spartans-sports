@@ -30,8 +30,8 @@ const playerFields: Array<{
     label: "Envergadura Brazos (cm)",
     type: "number",
   },
-  { key: "alturaDeVuelo", label: "Altura de Vuelo", type: "number" },
-  { key: "tiempoDeContacto", label: "Tiempo de Contacto (ds)", type: "number" },
+  { key: "alturaDeVuelo", label: "Altura de Vuelo (cm)", type: "number" },
+  { key: "tiempoDeContacto", label: "Tiempo de Contacto (s)", type: "number" },
   { key: "imc", label: "IMC", type: "number", derived: true },
   { key: "tmb", label: "TMB", type: "number", derived: true },
   { key: "indiceQ", label: "Índice Q", optional: true, derived: true },
@@ -54,7 +54,7 @@ const playerFields: Array<{
   { key: "posicion", label: "Posición" },
   { key: "localidad", label: "Localidad" },
   { key: "provincia", label: "Provincia" },
-  { key: "escuelaClub", label: "Escuela / Club", optional: true },
+  { key: "escuelaClub", label: "Escuela / Club / Gym", optional: true },
   { key: "contacto", label: "Contacto (email / tel)" },
   { key: "deporte", label: "Deporte" },
   {
@@ -298,7 +298,13 @@ export const SecondStep = () => {
   const isPlayer = !typeForm || typeForm === "player";
   const isClub = typeForm === "club";
 
-  const resetFormForType = (target: string) => {
+  const resetFormForType = (target: string, preserveImage: boolean = false) => {
+    console.log("🔄 resetFormForType called", {
+      target,
+      preserveImage,
+      currentPlayerImage: !!playerImage,
+    });
+
     if (target === "player") {
       const init: Record<string, any> = {};
       playerFields.forEach((f) => (init[f.key] = ""));
@@ -311,22 +317,53 @@ export const SecondStep = () => {
       setFormData({});
     }
     setErrors({});
-    setPlayerImage(null);
+
+    if (!preserveImage) {
+      setPlayerImage(null);
+    }
     setPlayerValue(0);
   };
 
-  const handleProcessedImage = async (blob: Blob | null) => {
-    if (!blob) {
-      // limpiar si no hay blob
+  const handleProcessedImage = async (fileOrBlob: File | Blob | null) => {
+    console.log("📸 handleProcessedImage called", {
+      hasFile: !!fileOrBlob,
+      type: fileOrBlob?.constructor.name,
+      currentPlayerImage: !!playerImage,
+    });
+
+    if (!fileOrBlob) {
+      // limpiar si no hay archivo/blob
+      console.log("🗑️ Clearing playerImage (null received)");
       setPlayerImage(null);
       return;
     }
 
-    // Convertir Blob en File para la imagen del jugador
-    const f = new File([blob], "processed.png", {
-      type: blob.type || "image/png",
-    });
-    setPlayerImage(f);
+    // Si ya es un File, usarlo directamente; si es Blob, convertir a File
+    let finalFile: File;
+    if (fileOrBlob instanceof File) {
+      console.log("📁 Using File directly:", fileOrBlob.name);
+      finalFile = fileOrBlob;
+    } else {
+      // Es un Blob, convertir a File
+      console.log("🔄 Converting Blob to File");
+      finalFile = new File([fileOrBlob], "processed.png", {
+        type: fileOrBlob.type || "image/png",
+        lastModified: Date.now(),
+      });
+    }
+
+    console.log(
+      "✅ Setting playerImage:",
+      finalFile.name,
+      finalFile.size,
+      "bytes"
+    );
+    setPlayerImage(finalFile);
+
+    // Verificar que el estado se setee correctamente
+    setTimeout(() => {
+      console.log("⏰ playerImage state after setting:", finalFile.name);
+    }, 100);
   };
 
   const handleChangeField = (key: string, value: any) => {
@@ -498,6 +535,13 @@ export const SecondStep = () => {
   }, [formData.capacidadPulmunarResidual, formData.sexo, isPlayer]);
 
   const handleSave = async () => {
+    console.log("🚀 handleSave called - playerImage state:", {
+      hasPlayerImage: !!playerImage,
+      playerImageName: playerImage?.name,
+      playerImageSize: playerImage?.size,
+      playerImageType: playerImage?.type,
+    });
+
     if (isPlayer) {
       setIsLoading(true);
       try {
@@ -510,11 +554,28 @@ export const SecondStep = () => {
         const payload: any = { ...formData };
         // Agregar el valor monetario calculado del jugador
         payload.value = playerValue;
-        if (playerImage) payload.file = playerImage;
+
+        if (playerImage) {
+          console.log("Adding playerImage to payload:", {
+            name: playerImage.name,
+            size: playerImage.size,
+            type: playerImage.type,
+            lastModified: playerImage.lastModified,
+          });
+          payload.file = playerImage;
+        } else {
+          console.warn("No playerImage found, not adding file to payload");
+        }
+
+        console.log("Payload being sent:", {
+          ...payload,
+          file: payload.file
+            ? `File: ${payload.file.name} (${payload.file.size} bytes)`
+            : "No file",
+        });
 
         const ok = await handleUploadForm(payload);
         if (ok) {
-          toast.success("Jugador creado");
           setFormData(() => {
             const init: Record<string, any> = {};
             playerFields.forEach((f) => (init[f.key] = ""));
@@ -551,8 +612,20 @@ export const SecondStep = () => {
 
   const handleTypeSelect = (value: string) => {
     const v = value && value !== "null" ? value : "";
+    const currentType = typeForm || "";
+
+    console.log("🔀 handleTypeSelect", {
+      currentType,
+      newType: v,
+      willReset: currentType !== v,
+    });
+
     handleSetTypeForm(v as any);
-    resetFormForType(v);
+
+    // Solo resetear si realmente está cambiando de tipo
+    if (currentType !== v) {
+      resetFormForType(v);
+    }
   };
 
   return (

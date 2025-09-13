@@ -14,12 +14,20 @@ export default async function handler(
 
       const data = req.body;
 
+      console.log("� Saving player to database:", {
+        name: data.nombre,
+        hasImage: !!data.playerImg,
+        imageUrl: data.playerImg ? data.playerImg.substring(0, 50) + "..." : null
+      });
+
       const result = await db.collection("players").insertOne(data);
 
       if (result.acknowledged) {
         const player = await db
           .collection("players")
           .findOne({ _id: result.insertedId });
+
+        console.log("✅ Player created successfully in database");
 
         return res.status(201).json({
           status: "success",
@@ -28,10 +36,11 @@ export default async function handler(
         });
       }
     } catch (error) {
-      console.error(error);
+      console.error("❌ Error creating player:", error);
       return res.status(500).json({
         status: "error",
         message: "Error al crear el jugador",
+        error: error instanceof Error ? error.message : "Unknown error"
       });
     }
   } else {

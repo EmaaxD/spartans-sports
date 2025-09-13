@@ -37,11 +37,7 @@ export const useTemplates = (): UseTemplatesReturn => {
 
   const handleDownload = useCallback(async () => {
     if (selectedTemplate) {
-      const resp = await downloadTemplateByType(selectedTemplate);
-
-      if (resp) {
-        handleSetStepForm(2);
-      }
+      handleSetStepForm(2);
     }
   }, [selectedTemplate, downloadTemplateByType]);
 

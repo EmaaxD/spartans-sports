@@ -37,7 +37,7 @@ export interface PlayerDataProps {
   pieIzq: string;
   piernaDirectora: string;
   piernaDominante: string;
-  player_image: string;
+  playerImg: string;
   posicion: string;
   rowNumber: number;
   sentadillaProfunda: string;

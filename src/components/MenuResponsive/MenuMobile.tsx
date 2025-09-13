@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { IoClose } from "react-icons/io5";
@@ -15,8 +14,6 @@ import LogoApp from "@src/assets/img/logos/logo-completo-color.png";
 
 export const MenuMobile = () => {
   const { openMenu, handleToggleMenu } = useContext(uiContext);
-
-  const { data: session } = useSession();
 
   return (
     <>

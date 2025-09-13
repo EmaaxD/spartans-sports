@@ -64,16 +64,60 @@ export const UploadFormProvider: React.FC<PropsWithChildren> = ({
       let respPromise = false;
 
       if (state.typeForm === "player") {
+        console.log("📤 Preparing to send player data", {
+          hasFile: !!dataForm.file,
+          fileName: dataForm.file?.name,
+          fileSize: dataForm.file?.size
+        });
+
+        let playerImageUrl = null;
+
+        // Si hay archivo, primero subirlo a S3
+        if (dataForm.file) {
+          console.log("📤 Uploading file to S3 first...");
+          
+          const fileFormData = new FormData();
+          fileFormData.append('file', dataForm.file);
+
+          const uploadResponse = await fetch('/api/uploadFileS3', {
+            method: 'POST',
+            body: fileFormData,
+          });
+
+          if (!uploadResponse.ok) {
+            const errorData = await uploadResponse.json();
+            throw new Error(`Error uploading file: ${errorData.error || 'Unknown error'}`);
+          }
+
+          const uploadResult = await uploadResponse.json();
+          playerImageUrl = uploadResult.url;
+          
+          console.log("✅ File uploaded to S3 successfully:", playerImageUrl);
+        }
+
+        // Preparar datos del jugador (siempre JSON ahora)
+        const playerData = { 
+          ...dataForm,
+          createdAt: new Date().toISOString(),
+          playerImg: playerImageUrl // URL del S3 o null
+        };
+        
+        // Remover file del objeto ya que ahora tenemos la URL
+        delete playerData.file;
+        
+        console.log("📤 Sending player data to database:", {
+          ...playerData,
+          hasImage: !!playerImageUrl
+        });
+
         const resp = await fetch("/api/createPlayer", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            ...dataForm,
-            createdAt: new Date().toISOString(),
-          }),
+          body: JSON.stringify(playerData),
         });
+
         const player: CreatePlayerResp = await resp.json();
 
         if (player.status === "success") {
@@ -90,6 +134,7 @@ export const UploadFormProvider: React.FC<PropsWithChildren> = ({
       return respPromise;
     } catch (error) {
       console.log("Error handling upload form:", error);
+      toast.error(error instanceof Error ? error.message : "Error al crear el jugador");
       return false; // Indicar fallo en la promesa
     }
   };

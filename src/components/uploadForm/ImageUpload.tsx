@@ -4,7 +4,7 @@ import * as ImglyBR from "@imgly/background-removal";
 import { MdCleaningServices } from "react-icons/md";
 
 type Props = {
-  onProcessed?: (blob: Blob | null) => void;
+  onProcessed?: (fileOrBlob: File | Blob | null) => void;
 };
 
 export default function ImageUpload({ onProcessed }: Props) {
@@ -26,6 +26,13 @@ export default function ImageUpload({ onProcessed }: Props) {
     const selected =
       f ?? (inputRef.current?.files ? inputRef.current.files[0] : undefined);
     if (!selected) return;
+
+    // Validar que sea una imagen
+    if (!selected.type.startsWith("image/")) {
+      toast.error("Por favor selecciona solo archivos de imagen");
+      return;
+    }
+
     if (preview) {
       try {
         URL.revokeObjectURL(preview);
@@ -34,11 +41,25 @@ export default function ImageUpload({ onProcessed }: Props) {
     setFile(selected);
     setPreview(URL.createObjectURL(selected));
     setBackgroundRemoved(false);
+
+    // Notificar al padre inmediatamente que hay una imagen original
+    console.log("Sending original file to parent:", selected.name, selected.size, "bytes");
+    onProcessed?.(selected);
   };
 
   const processFile = async (inputFile?: File | null) => {
     const currentFile = inputFile ?? file;
     if (!currentFile) return;
+
+    // Mostrar alerta de proceso largo
+    toast.loading(
+      "Este proceso puede tardar unos minutos, por favor espere...",
+      {
+        duration: 0, // No auto-dismiss
+        id: "background-removal-loading",
+      }
+    );
+
     setLoading(true);
 
     try {
@@ -121,6 +142,7 @@ export default function ImageUpload({ onProcessed }: Props) {
           "removeBackground failed or returned unexpected type",
           normErr
         );
+        toast.dismiss("background-removal-loading");
         toast.error("La librería falló al procesar la imagen");
         setPreview(URL.createObjectURL(currentFile));
         setBackgroundRemoved(false);
@@ -130,6 +152,7 @@ export default function ImageUpload({ onProcessed }: Props) {
       }
 
       if (!outBlob) {
+        toast.dismiss("background-removal-loading");
         toast.error("Resultado vacío al procesar la imagen");
         setPreview(URL.createObjectURL(currentFile));
         setBackgroundRemoved(false);
@@ -138,16 +161,34 @@ export default function ImageUpload({ onProcessed }: Props) {
         return;
       }
 
+      // Convertir Blob a File para compatibilidad
+      const processedFile = new File(
+        [outBlob],
+        `processed-${currentFile.name}`,
+        {
+          type: "image/png",
+          lastModified: Date.now(),
+        }
+      );
+
       const url = URL.createObjectURL(outBlob);
       setPreview(url);
       setBackgroundRemoved(true);
-      onProcessed?.(outBlob);
+
+      // Enviar el File procesado en lugar del Blob
+      console.log("Sending processed file to parent:", processedFile.name, processedFile.size, "bytes");
+      onProcessed?.(processedFile);
+
+      // Dismissar loading y mostrar éxito
+      toast.dismiss("background-removal-loading");
+      toast.success("Fondo removido exitosamente");
     } catch (e) {
       console.error("processFile error", e);
+      toast.dismiss("background-removal-loading");
       toast.error("Error al procesar la imagen");
-      setPreview(URL.createObjectURL(file ?? new Blob()));
+      setPreview(URL.createObjectURL(currentFile));
       setBackgroundRemoved(false);
-      onProcessed?.(file ?? null);
+      onProcessed?.(currentFile);
     } finally {
       setLoading(false);
     }
@@ -201,6 +242,7 @@ export default function ImageUpload({ onProcessed }: Props) {
             ref={inputRef}
             type="file"
             accept="image/*"
+            capture="environment"
             onChange={(e) =>
               handleFile(e.target.files ? e.target.files[0] : undefined)
             }
@@ -239,7 +281,10 @@ export default function ImageUpload({ onProcessed }: Props) {
                   setPreview(null);
                   setBackgroundRemoved(false);
                   if (inputRef.current) inputRef.current.value = "";
+                  // Notificar al padre que se limpió la imagen
+                  console.log("Clearing image, sending null to parent");
                   onProcessed?.(null);
+                  toast.success("Imagen eliminada");
                 }}
                 className="xs:w-auto w-12 h-10 xs:h-auto inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium bg-gradient-to-br from-red-500 to-red-400 text-white rounded-md shadow-md hover:from-red-400 hover:to-red-300 transform hover:-translate-y-0.5 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-300"
               >
@@ -249,9 +294,19 @@ export default function ImageUpload({ onProcessed }: Props) {
             </div>
 
             {/* Texto de ayuda */}
-            <span className="text-xs text-gray-300 text-center sm:text-left">
-              Selecciona una imagen y pulsa "Remover fondo"
-            </span>
+            <div className="text-xs text-gray-300 text-center sm:text-left space-y-1">
+              <p>Selecciona una imagen y pulsa "Remover fondo"</p>
+              {!file && (
+                <p className="text-yellow-400">
+                  📱 En móvil: Puedes tomar foto o seleccionar de galería
+                </p>
+              )}
+              {backgroundRemoved && (
+                <p className="text-green-400">
+                  ✅ Imagen procesada lista para guardar
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>

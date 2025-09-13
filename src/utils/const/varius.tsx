@@ -133,16 +133,6 @@ export const joinUsData = [
 
 export const clubCategories = [
   {
-    id: "10",
-    name: "fitness",
-    color: cardColors.Fútbol,
-  },
-  {
-    id: "11",
-    name: "crossfit",
-    color: cardColors.Baloncesto, // azul oscuro
-  },
-  {
     id: "1",
     name: "soccer",
     color: cardColors.Fútbol,

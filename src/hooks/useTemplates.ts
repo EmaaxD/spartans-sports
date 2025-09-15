@@ -36,10 +36,12 @@ export const useTemplates = (): UseTemplatesReturn => {
   );
 
   const handleDownload = useCallback(async () => {
+    console.log("selectedTemplate", selectedTemplate);
+
     if (selectedTemplate) {
       handleSetStepForm(2);
     }
-  }, [selectedTemplate, downloadTemplateByType]);
+  }, [selectedTemplate]);
 
   return {
     selectedTemplate,
